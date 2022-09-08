@@ -1,0 +1,43 @@
+<launch>
+
+  <param name="use_sim_time" value="true"/>
+
+  <node pkg="ros_interface" type="odom_from_encoders_node" name="odom_from_encoders_node" output="screen" />
+
+  <node pkg="rosbag" type="play" name="player" output="screen" args="--clock $(find slam)/../../bagfiles/t265_myodom_filt_fix.bag -r 4"/>
+
+  <node pkg="tf" type="static_transform_publisher" name="base2laser_bcast" args="0. 0 0.45 0 0 0 base_link base_laser 100" />
+  <!--<node pkg="tf" type="static_transform_publisher" name="laser2laser_bcast" args="0. 0 0.0 0 0 0 base_laser laser 100" />-->
+  <!--<node pkg="tf" type="static_transform_publisher" name="map2world" args="0. 0 0.0 0 0 0 odom world 100" />-->
+
+  <!--<node pkg="map_server" type="map_server" name="map_server" args="mapDisiReal02.yaml" />-->
+
+  <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="scan_matcher"  output="screen">
+    <!-- Output -->
+    <param name="publish_pose_stamped" value="true" />
+    <param name="publish_tf" value="true" />
+
+    <!-- Coordinate frames -->
+    <param name="base_frame" value="base_link" />
+
+     <!-- Key frames -->
+    <param name="kf_dist_linear" value="0.5"/>
+    <param name="kf_dist_angular" value="0.2"/>
+
+    <!-- Scan matching -->
+    <param name="max_iterations" value="100"/>
+    <!-- <param name="max_correspondence_dist" value="0.3"/> -->
+    <param name="max_correspondence_dist" value="0.3"/>
+    <!-- <param name="max_angular_correction_deg" value="45.0"/> -->
+    <param name="max_angular_correction_deg" value="2.0"/>
+    <!-- <param name="max_linear_correction" value="0.5"/> -->
+    <param name="max_linear_correction" value="0.1"/>
+    <param name="epsilon_xy" value="0.00001"/>
+    <param name="epsilon_theta" value="0.00001"/>
+    <!-- <param name="outliers_maxPerc" value="0.90"/> -->
+    <param name="outliers_maxPerc" value="0.8"/>
+
+  </node>
+
+  <node pkg="rviz" type="rviz" name="rviz_viewer" output="screen" args="-d $(find slam)/config/view_scan.rviz" />
+</launch>

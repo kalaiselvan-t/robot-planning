@@ -1,0 +1,18 @@
+<launch>
+  
+  <include file="$(find povo_world)/launch/povo.launch">
+  </include>
+
+  <include file="$(find slam)/launch/slam_loc.launch">
+  </include>
+
+  <!-- <include file="$(find aut_nav)/launch/aut_nav.launch">
+  </include> -->
+
+  <node pkg="ros_interface" type="ros_interface_node" name="ros_interface_node" output="screen">
+  </node>
+
+  <node pkg="rviz" type="rviz" name="rviz_viewer" output="screen" args="-d $(find slam_toolbox)/config/slam_toolbox_default.rviz">
+  </node>
+
+</launch>

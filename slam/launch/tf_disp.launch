@@ -1,0 +1,6 @@
+<launch>
+
+  <param name="use_sim_time" value="true"/>
+  <node pkg="tf" type="tf_echo" name="tf_echo" args="base_link world" output="screen" />  
+
+</launch>
