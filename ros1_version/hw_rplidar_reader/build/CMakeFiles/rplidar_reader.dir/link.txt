@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/rplidar_reader.dir/source/zmq_layer/Publisher.cpp.o CMakeFiles/rplidar_reader.dir/source/main.cpp.o  -o rplidar_reader -rdynamic ../lib/rplidar_sdk/librplidar_sdk.a -lpthread -lzmq 
