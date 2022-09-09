@@ -13,6 +13,10 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
+include_directories(
+  include
+)
+
 add_executable(lidar_node src/shelfino_lidar_publisher.cpp)
 ament_target_dependencies(lidar_node rclcpp std_msgs)
 
