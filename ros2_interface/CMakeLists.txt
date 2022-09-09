@@ -14,7 +14,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 add_executable(lidar_node src/shelfino_lidar_publisher.cpp)
-ament_target_dependencies(talklidar_nodeer rclcpp std_msgs)
+ament_target_dependencies(lidar_node rclcpp std_msgs)
 
 install(TARGETS
   lidar_node
