@@ -12,6 +12,7 @@
 #include "json.hpp"
 
 #include "hardwareparameters.h"
+#include "hardwareglobalinterface.h"
 
 using namespace std::chrono_literals;
 using namespace nlohmann;
