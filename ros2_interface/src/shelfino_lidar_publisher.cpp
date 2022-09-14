@@ -12,13 +12,12 @@
 #include "json.hpp"
 
 #include "hardwareparameters.h"
-#include "hardwareglobalinterface.h"
 
 using namespace std::chrono_literals;
 using namespace nlohmann;
 
 //const auto R_ID_DEFAULT = "localhost";
-const auto R_ID_DEFAULT = 1;
+const auto R_ID_DEFAULT = 2;
 std::unique_ptr<HardwareParameters> hp;
 
 class ShelfinoLidarPublisher : public rclcpp::Node
@@ -27,11 +26,10 @@ class ShelfinoLidarPublisher : public rclcpp::Node
     ShelfinoLidarPublisher()
     : Node("shelfino_lidar_publisher"), count_(0)
     {
-      publisher_ = this->create_publisher<std_msgs::msg::String>("scan", 10);
+      publisher_ = this->create_publisher<sensor_msgs::msg::LaserScan>("scan", 10);
       //timer_ = this->create_wall_timer(
       //500ms, std::bind(&ShelfinoLidarPublisher::timer_callback, this));
       // configuring parameters
-      ZMQCommon::Subscriber subFrontLidar;
       subFrontLidar.register_callback([&](const char *topic, const char *buf, size_t size, void *data){
         nlohmann::json j;
 
@@ -54,11 +52,7 @@ class ShelfinoLidarPublisher : public rclcpp::Node
           msg.ranges = data;
           //msg.intensities = std::vector<float>(size, 0.);
 
-          //publisher.publish(msg);
-
-          auto message = std_msgs::msg::String();
-          message.data = std::to_string(count_++);
-          publisher_->publish(message);
+          publisher_->publish(msg);
         }
         catch(std::exception &e){
           //std::cerr << "error parsing: " << e.what() << std::endl;
@@ -68,8 +62,9 @@ class ShelfinoLidarPublisher : public rclcpp::Node
     }
 
   private:
+    ZMQCommon::Subscriber subFrontLidar;
     rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+    rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr publisher_;
     size_t count_;
     int i = 1;
 };
@@ -78,8 +73,25 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   hp = std::make_unique<HardwareParameters>(R_ID_DEFAULT);
-  HardwareGlobalInterface::initialize(hp.get());
   rclcpp::spin(std::make_shared<ShelfinoLidarPublisher>());
   rclcpp::shutdown();
+  /*hp = std::make_unique<HardwareParameters>(R_ID_DEFAULT);
+  ZMQCommon::Subscriber subFrontLidar;
+  subFrontLidar.register_callback([&](const char *topic, const char *buf, size_t size, void *data){
+        nlohmann::json j;
+
+        try {
+          j = nlohmann::json::parse(std::string(buf, size));
+          
+          std::cout << j.dump() << std::endl;
+        }
+        catch(std::exception &e){
+          //std::cerr << "error parsing: " << e.what() << std::endl;
+        }
+      });
+  subFrontLidar.start(hp->frontLidarPublisher, "LIDAR");
+  while(1){
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }*/
   return 0;
 }

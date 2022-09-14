@@ -5,6 +5,13 @@
  *      Author: "Alessio Colombo <colombo@disi.unitn.it>"
  */
 
+/*
+ * Subscriber.cpp
+ *
+ *  Created on: Oct 9, 2014
+ *      Author: "Alessio Colombo <colombo@disi.unitn.it>"
+ */
+
 #include <Subscriber.hpp>
 #include <iostream>
 #include <system_error>
@@ -57,9 +64,10 @@ void Subscriber::worker(const bool& terminating) {
 		cerr << "Exception connecting to " << address_ << ", \"" << e.what() << "\"" << endl;
 		return;
 	}
-  // set linger value to zero
-  int linger = 0;
-  socket_.setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
+
+  	// set linger value to zero
+  	int linger = 0;
+  	socket_.setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
 	socket_.setsockopt(ZMQ_SUBSCRIBE,topic_.c_str(), topic_.length());
 	// poll items
 	items[0].socket = (void*)socket_;
@@ -73,7 +81,6 @@ void Subscriber::worker(const bool& terminating) {
 	while (!terminating) {
 		try {
 			rc = zmq_poll (items, 1, 500); // usec timeout, 500 ms
-
 			if (rc == 0) {
 				// no messages
 				continue;
@@ -122,7 +129,9 @@ void Subscriber::worker(const bool& terminating) {
 }
 
 
-Subscriber::~Subscriber() {}
+Subscriber::~Subscriber() {
+	this->stop();
+}
 
 void Subscriber::register_callback(callback_t callback, void* user_data) {
   recv_callback = callback;
