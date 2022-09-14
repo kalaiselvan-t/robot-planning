@@ -8,10 +8,10 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-#include "Subscriber.hpp"
 #include "json.hpp"
 
 #include "hardwareparameters.h"
+#include "hardwareglobalinterface.h"
 
 using namespace std::chrono_literals;
 using namespace nlohmann;
@@ -24,12 +24,9 @@ class ShelfinoLidarPublisher : public rclcpp::Node
 {
   public:
     ShelfinoLidarPublisher()
-    : Node("shelfino_lidar_publisher"), count_(0)
+    : Node("shelfino_lidar_publisher")
     {
       publisher_ = this->create_publisher<sensor_msgs::msg::LaserScan>("scan", 10);
-      //timer_ = this->create_wall_timer(
-      //500ms, std::bind(&ShelfinoLidarPublisher::timer_callback, this));
-      // configuring parameters
       subFrontLidar.register_callback([&](const char *topic, const char *buf, size_t size, void *data){
         nlohmann::json j;
 
@@ -63,35 +60,27 @@ class ShelfinoLidarPublisher : public rclcpp::Node
 
   private:
     ZMQCommon::Subscriber subFrontLidar;
-    rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr publisher_;
-    size_t count_;
-    int i = 1;
 };
 
 int main(int argc, char * argv[])
 {
-  rclcpp::init(argc, argv);
   hp = std::make_unique<HardwareParameters>(R_ID_DEFAULT);
-  rclcpp::spin(std::make_shared<ShelfinoLidarPublisher>());
-  rclcpp::shutdown();
-  /*hp = std::make_unique<HardwareParameters>(R_ID_DEFAULT);
-  ZMQCommon::Subscriber subFrontLidar;
-  subFrontLidar.register_callback([&](const char *topic, const char *buf, size_t size, void *data){
-        nlohmann::json j;
+  HardwareGlobalInterface::initialize(hp.get());
+  HardwareGlobalInterface::getInstance().robotOnVelControl();
 
-        try {
-          j = nlohmann::json::parse(std::string(buf, size));
-          
-          std::cout << j.dump() << std::endl;
-        }
-        catch(std::exception &e){
-          //std::cerr << "error parsing: " << e.what() << std::endl;
-        }
-      });
-  subFrontLidar.start(hp->frontLidarPublisher, "LIDAR");
-  while(1){
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  }*/
+  RobotStatus::LidarData lidarData; 
+  HardwareGlobalInterface::getInstance().getFrontLidarData(lidarData);
+  std::cout << lidarData.lidarTimer << std::endl;
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  HardwareGlobalInterface::getInstance().getFrontLidarData(lidarData);
+  std::cout << lidarData.lidarTimer << std::endl;
+
+  HardwareGlobalInterface::getInstance().robotOff();
+
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<ShelfinoLidarPublisher>());
+
+  rclcpp::shutdown();
   return 0;
 }

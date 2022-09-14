@@ -20,7 +20,11 @@ include_directories(
 
 add_executable(lidar_node 
   src/shelfino_lidar_publisher.cpp
+  src/hardwareglobalinterface.cpp
   src/Subscriber.cpp
+  src/Publisher.cpp
+  src/RequesterSimple.cpp
+  src/Replier.cpp
 )
 ament_target_dependencies(lidar_node rclcpp std_msgs sensor_msgs)
 
