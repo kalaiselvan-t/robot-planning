@@ -5,6 +5,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+add_definitions(-w)
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
@@ -23,7 +25,7 @@ add_executable(remote_control_node
 )
 
 target_link_libraries(remote_control_node
-  ${rclcpp_LIBRARIES} -lzmq -lncurses
+  ${rclcpp_LIBRARIES} -lzmq -lncurses -pthread
 )
 
 install(TARGETS

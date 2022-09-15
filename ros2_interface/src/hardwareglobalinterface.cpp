@@ -341,6 +341,45 @@ void HardwareGlobalInterface::sub_tracking(const char *topic, const char *buf, s
   }
 }
 
+void HardwareGlobalInterface::sub_realSenseOdom(const char *topic, const char *buf, size_t size, void *data)
+{
+  std::unique_lock<std::mutex> lock(realSenseOdomMTX);
+
+  nlohmann::json j;
+
+  try{
+    j = nlohmann::json::parse(std::string(buf, size));
+    //std::cout << j.dump() << std::endl;
+
+    realSenseOdom.pose_cov.clear();
+    realSenseOdom.twist_cov.clear();
+
+    realSenseOdom.odomTimer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+    realSenseOdom.pos_x=j.at("pose").at("pose").at("position").at("x");
+    realSenseOdom.pos_y=j.at("pose").at("pose").at("position").at("y");
+    realSenseOdom.pos_z=j.at("pose").at("pose").at("position").at("z");
+    realSenseOdom.orient_x=j.at("pose").at("pose").at("orientation").at("x");
+    realSenseOdom.orient_y=j.at("pose").at("pose").at("orientation").at("y");
+    realSenseOdom.orient_z=j.at("pose").at("pose").at("orientation").at("z");
+    realSenseOdom.orient_w=j.at("pose").at("pose").at("orientation").at("w");
+    realSenseOdom.twist_lin_x=j.at("twist").at("twist").at("linear").at("x");
+    realSenseOdom.twist_lin_y=j.at("twist").at("twist").at("linear").at("y");
+    realSenseOdom.twist_lin_z=j.at("twist").at("twist").at("linear").at("z");
+    realSenseOdom.twist_ang_x=j.at("twist").at("twist").at("angular").at("x");
+    realSenseOdom.twist_ang_y=j.at("twist").at("twist").at("angular").at("y");
+    realSenseOdom.twist_ang_z=j.at("twist").at("twist").at("angular").at("z");
+
+    for(int i=0;i<36;i++){
+      realSenseOdom.pose_cov.push_back(j.at("pose").at("covariance")[i]);
+      realSenseOdom.twist_cov.push_back(j.at("twist").at("covariance")[i]);
+    }
+  }
+  catch(std::exception &e){
+    //std::cerr << "error parsing: " << e.what() << std::endl;
+  }
+}
+
 
 void HardwareGlobalInterface::sub_frontLidar(const char *topic, const char *buf, size_t size, void *data)
 {
@@ -361,8 +400,6 @@ void HardwareGlobalInterface::sub_frontLidar(const char *topic, const char *buf,
 
     frontLidar.datum.clear();
 
-    //std::cout << j.dump() << std::endl;
-
     for(int i=0;i<size;i++){
       val = j.at("data")[i];
 
@@ -370,7 +407,7 @@ void HardwareGlobalInterface::sub_frontLidar(const char *topic, const char *buf,
       count++;
 
       if(val < 0.05){
-        continue;
+        //continue;
       }
 
       //Normalize the angle within 0/2Pi

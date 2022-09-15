@@ -23,6 +23,49 @@ namespace RobotStatus {
         }
     };
 
+    struct OdometryData{
+        double odomTimer = 0;
+
+        // Pose
+        double pos_x=0;
+        double pos_y=0;
+        double pos_z=0;
+        double orient_x=0;
+        double orient_y=0;
+        double orient_z=0;
+        double orient_w=0;
+        std::vector<double> pose_cov{36};
+
+        // Twist
+        double twist_lin_x=0;
+        double twist_lin_y=0;
+        double twist_lin_z=0;
+        double twist_ang_x=0;
+        double twist_ang_y=0;
+        double twist_ang_z=0;
+        std::vector<double> twist_cov{36};
+
+        OdometryData(){}
+
+        OdometryData(const OdometryData & a){
+            pos_x=a.pos_x;
+            pos_y=a.pos_y;
+            pos_z=a.pos_z;
+            orient_x=a.orient_x;
+            orient_y=a.orient_y;
+            orient_z=a.orient_z;
+            orient_w=a.orient_w;
+            pose_cov=a.pose_cov;
+            twist_lin_x=a.twist_lin_x;
+            twist_lin_y=a.twist_lin_y;
+            twist_lin_z=a.twist_lin_z;
+            twist_ang_x=a.twist_ang_x;
+            twist_ang_y=a.twist_ang_y;
+            twist_ang_z=a.twist_ang_z;
+            twist_cov=a.twist_cov;
+        }
+    };
+
     struct RearWheelData{
         double omega = 0;
         double current = 0;

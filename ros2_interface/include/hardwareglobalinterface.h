@@ -91,6 +91,9 @@ public:
     instances.back()->subTracking->register_callback([&](const char *topic, const char *buf, size_t size, void *data){instances.back()->sub_tracking(topic,buf,size,data);});
     instances.back()->subTracking->start(hp->trackingPublisher,"PUB_TRACKER");
 
+    instances.back()->subRealSenseOdom.reset(new ZMQCommon::Subscriber());
+    instances.back()->subRealSenseOdom->register_callback([&](const char *topic, const char *buf, size_t size, void *data){instances.back()->sub_realSenseOdom(topic,buf,size,data);});
+    instances.back()->subRealSenseOdom->start(hp->realSenseOdom,"ODOM");
 
     instances.back()->reqHW.reset(new ZMQCommon::RequesterSimple(hp->hardwareServer));
     instances.back()->reqLoc.reset(new ZMQCommon::RequesterSimple(hp->localizationServer));
@@ -215,6 +218,17 @@ public:
     }
   }
 
+  bool getRealSenseOdomData(RobotStatus::OdometryData &odomData){
+    std::unique_lock<std::mutex> lock(realSenseOdomMTX);
+    double currTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    odomData = this->realSenseOdom;
+    if(currTime - this->realSenseOdom.odomTimer < LIDAR_TIMEOUT){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 
   ~HardwareGlobalInterface();
 
@@ -290,6 +304,9 @@ private:
   double trackingTimer;
   std::unique_ptr<ZMQCommon::Subscriber> subTracking;
 
+  std::mutex realSenseOdomMTX;
+  RobotStatus::OdometryData realSenseOdom;
+  std::unique_ptr<ZMQCommon::Subscriber> subRealSenseOdom;
 
   std::unique_ptr<ZMQCommon::RequesterSimple> reqHW;
   std::unique_ptr<ZMQCommon::RequesterSimple> reqLoc;
@@ -305,6 +322,8 @@ private:
   void sub_locSubscriberKarto(const char *topic, const char *buf, size_t size, void *data);
   void sub_locSubscriberRealSense(const char *topic, const char *buf, size_t size, void *data);
   void sub_tracking(const char *topic, const char *buf, size_t size, void *data);
+  void sub_realSenseOdom(const char *topic, const char *buf, size_t size, void *data);
+
 
   HardwareParameters* params = nullptr;
   double safetyWidth = 0.3;

@@ -3,15 +3,13 @@
 #include <memory>
 #include <string>
 
-#include "sensor_msgs/msg/laser_scan.hpp"
-
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
-
-#include "json.hpp"
+#include "sensor_msgs/msg/laser_scan.hpp"
+#include "nav_msgs/msg/odometry.hpp"
 
 #include "hardwareparameters.h"
 #include "hardwareglobalinterface.h"
+#include "json.hpp"
 
 using namespace std::chrono_literals;
 using namespace nlohmann;
@@ -50,7 +48,9 @@ class ShelfinoHWPublisher : public rclcpp::Node
     : Node("shelfino_hw_publisher")
     {
       lidar_publisher_ = this->create_publisher<sensor_msgs::msg::LaserScan>("scan", 10);
+      t265_publisher_ = this->create_publisher<nav_msgs::msg::Odometry>("t265", 10);
       lidar_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWPublisher::lidar_callback, this));
+      t265_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWPublisher::t265_callback, this));
     }
 
   private:
@@ -71,17 +71,50 @@ class ShelfinoHWPublisher : public rclcpp::Node
       msg.range_max = 10;
 
       std::vector<float> data;
-      for(auto i : lidarData.datum){
-        data.push_back(i.distance);
+      for(int i=0;i<lidarData.datum.size();i++){
+        data.push_back(lidarData.datum.at(i).distance);
       }
 
       msg.ranges = data;
 
       lidar_publisher_->publish(msg);
     }
+    void t265_callback()
+    {
+      RobotStatus::OdometryData odomData; 
+      HardwareGlobalInterface::getInstance().getRealSenseOdomData(odomData);
+
+      nav_msgs::msg::Odometry msg;
+      msg.header.stamp = rclcpp::Node::now();
+      msg.header.frame_id = "odom";
+      msg.child_frame_id = "base_link";
+
+      msg.pose.pose.position.x = odomData.pos_x; 
+      msg.pose.pose.position.y = odomData.pos_y;
+      msg.pose.pose.position.z = odomData.pos_z;
+      msg.pose.pose.orientation.x = odomData.orient_x;
+      msg.pose.pose.orientation.y = odomData.orient_y;
+      msg.pose.pose.orientation.z = odomData.orient_z;
+      msg.pose.pose.orientation.w = odomData.orient_w;
+
+      msg.twist.twist.linear.x = odomData.twist_lin_x;
+      msg.twist.twist.linear.y = odomData.twist_lin_y;
+      msg.twist.twist.linear.z = odomData.twist_lin_z;
+      msg.twist.twist.angular.x = odomData.twist_ang_x;
+      msg.twist.twist.angular.y = odomData.twist_ang_y;
+      msg.twist.twist.angular.z = odomData.twist_ang_z;
+
+      for (int i=0; i<odomData.pose_cov.size(); i++) {
+        msg.pose.covariance[i] = odomData.pose_cov.at(i);
+        msg.twist.covariance[i] = odomData.twist_cov.at(i);
+      }
+
+      t265_publisher_->publish(msg);
+    }
     rclcpp::TimerBase::SharedPtr lidar_timer_;
+    rclcpp::TimerBase::SharedPtr t265_timer_;
     rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr lidar_publisher_;
-    size_t count_;
+    rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr t265_publisher_;
 };
 
 int main(int argc, char * argv[])
