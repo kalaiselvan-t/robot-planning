@@ -20,17 +20,41 @@ using namespace nlohmann;
 const auto R_ID_DEFAULT = 2;
 std::unique_ptr<HardwareParameters> hp;
 
+
+
+void prova(){
+  hp = std::make_unique<HardwareParameters>(R_ID_DEFAULT);
+  ZMQCommon::Subscriber sub;
+  sub.register_callback([&](const char *topic, const char *buf, size_t size, void *data){
+        nlohmann::json j;
+
+        try {
+          j = nlohmann::json::parse(std::string(buf, size));
+          
+          std::cout << j.dump() << std::endl;
+        }
+        catch(std::exception &e){
+          //std::cerr << "error parsing: " << e.what() << std::endl;
+        }
+      });
+  sub.start(hp->realSenseOdom, "ODOM");
+  while(1){
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
+}
+
 class ShelfinoHWPublisher : public rclcpp::Node
 {
   public:
-    ShelfinoLidarPublisher()
+    ShelfinoHWPublisher()
     : Node("shelfino_hw_publisher")
     {
       lidar_publisher_ = this->create_publisher<sensor_msgs::msg::LaserScan>("scan", 10);
       lidar_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWPublisher::lidar_callback, this));
     }
 
-  private:void lidar_callback()
+  private:
+    void lidar_callback()
     {
       RobotStatus::LidarData lidarData; 
       HardwareGlobalInterface::getInstance().getFrontLidarData(lidarData);
@@ -64,8 +88,6 @@ int main(int argc, char * argv[])
 {
   hp = std::make_unique<HardwareParameters>(R_ID_DEFAULT);
   HardwareGlobalInterface::initialize(hp.get());
-  HardwareGlobalInterface::getInstance().robotOnVelControl();
-  HardwareGlobalInterface::getInstance().robotOff();
 
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<ShelfinoHWPublisher>());
@@ -73,3 +95,4 @@ int main(int argc, char * argv[])
   rclcpp::shutdown();
   return 0;
 }
+
