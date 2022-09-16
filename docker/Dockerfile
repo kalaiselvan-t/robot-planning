@@ -3,7 +3,8 @@ FROM arm64v8/ubuntu:jammy
 ARG DEBIAN_FRONTEND=noninteractive
 
 # copy all the files to the container
-ADD ./ros2_interface/ /root/ros2_ws/src
+ADD ./ros2_interface/ /root/ros2_ws/src/ros2_interface
+ADD ./remote_control/ /root/ros2_ws/src/remote_control
 
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
@@ -26,10 +27,10 @@ RUN apt-get install -y software-properties-common && \
 # Install ROS2 packages
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y ros-humble-desktop && \
+    apt-get install -y python3-colcon-common-extensions && \
+    apt-get install -y libzmq3-dev && \
+    apt-get install -y libncurses5-dev && \
     echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
-
-# create environment folder
-RUN mkdir -p /root/ros2_ws/src
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]

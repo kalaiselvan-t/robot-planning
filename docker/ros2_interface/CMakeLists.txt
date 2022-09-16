@@ -32,7 +32,7 @@ add_executable(shelfino_node
 ament_target_dependencies(shelfino_node rclcpp std_msgs sensor_msgs nav_msgs)
 
 target_link_libraries(shelfino_node
-  ${rclcpp_LIBRARIES} -lzmq -lncurses
+  ${rclcpp_LIBRARIES} -lzmq
 )
 
 install(TARGETS
