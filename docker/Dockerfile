@@ -30,7 +30,10 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y python3-colcon-common-extensions && \
     apt-get install -y libzmq3-dev && \
     apt-get install -y libncurses5-dev && \
-    echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
+    apt-get install -y mesa-utils libgl1-mesa-glx
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
+
+# export LIBGL_ALWAYS_INDIRECT=1
+# docker run --rm -it --gpus all --env="DISPLAY=host.docker.internal:0" -v /tmp/.X11-unix:/tmp/.X11-unix:rw f7c15b19d565 /bin/bash
