@@ -43,21 +43,21 @@ void prova(){
   char key_p;
   int v = 0;
   int omega = 0;
-  double V_MAX = 0.1;
-  double O_MAX = 0.1;
+  double V_MAX = 0.05;
+  double O_MAX = 0.05;
   bool terminate = false;
 
   double v_c = 0., omega_c = 0.;
 
-  double V_MIN_LIMIT = 0.1;
+  double V_MIN_LIMIT = 0.01;
   double V_MAX_LIMIT = 1;
-  double O_MIN_LIMIT = 0.1;
+  double O_MIN_LIMIT = 0.01;
   double O_MAX_LIMIT = 1;
   double ACC_V = 0.1;
   double ACC_OMEGA = 1.0;
   double DEC_V = 0.5;
   double DEC_OMEGA = 2.0;
-  double STEP = 0.1;
+  double STEP = 0.01;
   double A_LAT = 2.0;
   
   auto last = std::chrono::system_clock::now();
@@ -184,7 +184,7 @@ void prova(){
       }
     }
     HardwareGlobalInterface::getInstance().vehicleMove(v_c,omega_c);
-    printw("dT: %f\n", dT);
+    //printw("dT: %f\n", dT);
     printw("v_c: %f omega_c: %f\n", v_c, omega_c);
     refresh();
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

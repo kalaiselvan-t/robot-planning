@@ -21,6 +21,17 @@
 #define LIDAR_TIMEOUT 200
 #define TRACKING_TIMEOUT 200
 
+static const double LEFT_INCREMENTS_PER_TOUR = 294912.;
+static const double RIGHT_INCREMENTS_PER_TOUR = 294912.;
+static const double LEFT_RADIUS = 0.99 * 0.125 ; //0.9907*0.125; //0.125186;
+static const double RIGHT_RADIUS = 0.99 * 0.125 ; //0.99*0.125; //0.125138;
+static const double WHEEL_BASE = 0.383;
+static const double LEFT_B_D = 4* WHEEL_BASE / (2.*LEFT_RADIUS); 
+static const double RIGHT_B_D = 4* WHEEL_BASE / (2.*RIGHT_RADIUS); 
+static const double ENCODER_PPR = 36*4*2048;
+static const double RATIO_LEFT_RIGHT = RIGHT_B_D/LEFT_B_D;
+
+
 class HardwareGlobalInterface
 {
 public:
@@ -222,7 +233,18 @@ public:
     std::unique_lock<std::mutex> lock(realSenseOdomMTX);
     double currTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     odomData = this->realSenseOdom;
-    if(currTime - this->realSenseOdom.odomTimer < LIDAR_TIMEOUT){
+    if(currTime - this->realSenseOdom.last_odom_update < LIDAR_TIMEOUT){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  bool getOdomData(RobotStatus::OdometryData &odomData){
+    std::unique_lock<std::mutex> lock(odomMTX);
+    double currTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    odomData = this->odomData;
+    if(currTime - this->odomData.last_odom_update < LIDAR_TIMEOUT){
       return true;
     }else{
       return false;
@@ -308,6 +330,10 @@ private:
   RobotStatus::OdometryData realSenseOdom;
   std::unique_ptr<ZMQCommon::Subscriber> subRealSenseOdom;
 
+  std::mutex odomMTX;
+  RobotStatus::OdometryData odomData;
+  RobotStatus::WheelSpeed wsLeft, wsRight;
+
   std::unique_ptr<ZMQCommon::RequesterSimple> reqHW;
   std::unique_ptr<ZMQCommon::RequesterSimple> reqLoc;
 
@@ -323,6 +349,9 @@ private:
   void sub_locSubscriberRealSense(const char *topic, const char *buf, size_t size, void *data);
   void sub_tracking(const char *topic, const char *buf, size_t size, void *data);
   void sub_realSenseOdom(const char *topic, const char *buf, size_t size, void *data);
+  void updateOdometryV(double current_time, double vl, double vr);
+  void updateOdometryOmega(double current_time, std::vector<double> const & orientation, std::vector<double> const & angular_vel);
+  std::vector<double> ToEulerAngles(std::vector<double> const & q);
 
 
   HardwareParameters* params = nullptr;

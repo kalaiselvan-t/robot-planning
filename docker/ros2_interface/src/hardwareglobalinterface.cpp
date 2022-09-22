@@ -107,6 +107,8 @@ void HardwareGlobalInterface::subHW_callback(const char *topic, const char *buf,
 
     hwData.hardwareTimer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
+    updateOdometryV(hwData.hardwareTimer, omega_l, -omega_r);
+
   }catch(std::exception &e){
 
   }
@@ -341,6 +343,129 @@ void HardwareGlobalInterface::sub_tracking(const char *topic, const char *buf, s
   }
 }
 
+void HardwareGlobalInterface::updateOdometryV(double current_time, double vl, double vr)
+{
+  std::unique_lock<std::mutex> lock(odomMTX);
+
+  bool firstTime = !wsLeft.init;
+  double seconds_since_last_update = (current_time - wsLeft.lastTime)/1000;
+
+  if(seconds_since_last_update < 0.005) return;
+
+  if (!wsLeft.init) {
+    wsLeft.dTick = 0;
+    //wsLeft.lastTick = pL;
+    wsLeft.lastTime = current_time;
+    wsLeft.init = true;
+  }
+  else {
+    //wsLeft.dTick = (vl*36/(2*M_PI)*2048)*(current_time-wsLeft.lastTime)/1000; //pL-wsLeft.lastTick;
+    wsLeft.dTick = (vl/(2*M_PI)*ENCODER_PPR)*(current_time-wsLeft.lastTime)/1000; //pL-wsLeft.lastTick;
+    //wsLeft.lastTick = pL;
+    wsLeft.lastTime = current_time;
+  }
+
+  if (!wsRight.init) {
+    wsRight.dTick = 0;
+    //wsRight.lastTick = pR;
+    wsRight.lastTime = current_time;
+    wsRight.init = true;
+  }
+  else {
+    //wsRight.dTick = (vr*36/(2*M_PI)*2048)*(current_time-wsRight.lastTime)/1000; //pR-wsRight.lastTick;
+    wsRight.dTick = (vr/(2*M_PI)*ENCODER_PPR)*(current_time-wsRight.lastTime)/1000; //pR-wsRight.lastTick;
+    //wsRight.lastTick = pR;
+    wsRight.lastTime = current_time;
+  }
+  
+  if (firstTime) return;
+  
+  double ticks_l = wsLeft.dTick;
+  double ticks_r = wsRight.dTick;
+  double df = 0.5 * (ticks_l/LEFT_INCREMENTS_PER_TOUR * 2*M_PI * LEFT_RADIUS + ticks_r/RIGHT_INCREMENTS_PER_TOUR * 2*M_PI * RIGHT_RADIUS);
+
+  odomData.twist_lin_x = df/seconds_since_last_update;
+}
+
+void HardwareGlobalInterface::updateOdometryOmega(double current_time, std::vector<double> const & orientation, std::vector<double> const & angular_vel){
+  std::unique_lock<std::mutex> lock(odomMTX);
+
+  double seconds_since_last_update = (current_time - odomData.last_odom_update)/1000;
+  odomData.last_odom_update = current_time;
+
+  if(seconds_since_last_update < 0.005) return;
+
+  std::vector<double> angles = ToEulerAngles(orientation);  
+  angles.at(2) = -angles.at(2); // flip sign
+  double dtheta = angles.at(2) - odomData.theta;
+  double df = odomData.twist_lin_x * seconds_since_last_update; 
+  if (dtheta != 0)
+    dtheta = std::atan2(std::sin(dtheta), std::cos(dtheta)); // angdiff?
+  odomData.twist_ang_z = dtheta/seconds_since_last_update;
+
+  double dx, dy;
+  double theta_k, theta_k1;
+  theta_k = odomData.theta;
+  theta_k1 = odomData.theta + dtheta;
+  if (std::abs(odomData.twist_ang_z)>1e-6) {
+    dx = odomData.twist_lin_x/odomData.twist_ang_z*(std::sin(theta_k1)-std::sin(theta_k));
+    dy = -odomData.twist_lin_x/odomData.twist_ang_z*(std::cos(theta_k1)-std::cos(theta_k));
+  }
+  else {
+    dx = df*std::cos(theta_k + 0.5*dtheta);
+    dy = df*std::sin(theta_k + 0.5*dtheta);
+  }
+
+  odomData.pos_x += dx;
+  odomData.pos_y += dy;
+  odomData.theta += dtheta;
+
+  double cy = cos(odomData.theta * 0.5);
+  double sy = sin(odomData.theta * 0.5);
+  double cp = cos(0 * 0.5);
+  double sp = sin(0 * 0.5);
+  double cr = cos(0 * 0.5);
+  double sr = sin(0 * 0.5);
+  odomData.orient_x = sr * cp * cy - cr * sp * sy;
+  odomData.orient_y = cr * sp * cy + sr * cp * sy;
+  odomData.orient_z = cr * cp * sy - sr * sp * cy;
+  odomData.orient_w = cr * cp * cy + sr * sp * sy;
+
+}
+
+std::vector<double> HardwareGlobalInterface::ToEulerAngles(std::vector<double> const & q) {
+  double angles[3];
+  //std::cout << "+++ x: " << q.at(0) << "| y: " << q.at(1) << "| z: " << q.at(2) << "| w: " << q.at(3) << std::endl;
+
+  double test = q.at(0)*q.at(1) + q.at(2)*q.at(3);
+  if (test > 0.499) { // singularity at north pole
+    angles[0] = 2 * std::atan2(q.at(0),q.at(3));
+    angles[1] = M_PI/2;
+    angles[2] = 0;
+    std::vector<double> dest(std::begin(angles), std::end(angles));
+    //std::cout << "-1- x: " << q.at(0) << "| y: " << q.at(1) << "| z: " << q.at(2) << std::endl;
+    return dest;
+  }
+  if (test < -0.499) { // singularity at south pole
+    angles[0] = -2 * std::atan2(q.at(0),q.at(3));
+    angles[1] = - M_PI/2;
+    angles[2] = 0;
+    std::vector<double> dest(std::begin(angles), std::end(angles));
+    //std::cout << "-2- x: " << dest.at(0) << "| y: " << dest.at(1) << "| z: " << dest.at(2) << std::endl;
+    return dest;
+  }
+  double sqx = q.at(0)*q.at(0);
+  double sqy = q.at(1)*q.at(1);
+  double sqz = q.at(2)*q.at(2);
+  angles[0] = std::atan2(2*q.at(1)*q.at(3)-2*q.at(0)*q.at(2) , 1 - 2*sqy - 2*sqz);
+  angles[1] = std::asin(2*test);
+  angles[2] = std::atan2(2*q.at(0)*q.at(3)-2*q.at(1)*q.at(2) , 1 - 2*sqx - 2*sqz);
+  std::vector<double> dest(std::begin(angles), std::end(angles));
+  //std::cout << "-3- x: " << dest.at(0) << "| y: " << dest.at(1) << "| z: " << dest.at(2) << std::endl;
+  return dest;
+
+}
+
 void HardwareGlobalInterface::sub_realSenseOdom(const char *topic, const char *buf, size_t size, void *data)
 {
   std::unique_lock<std::mutex> lock(realSenseOdomMTX);
@@ -354,7 +479,7 @@ void HardwareGlobalInterface::sub_realSenseOdom(const char *topic, const char *b
     realSenseOdom.pose_cov.clear();
     realSenseOdom.twist_cov.clear();
 
-    realSenseOdom.odomTimer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    realSenseOdom.last_odom_update = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
     realSenseOdom.pos_x=j.at("pose").at("pose").at("position").at("x");
     realSenseOdom.pos_y=j.at("pose").at("pose").at("position").at("y");
@@ -370,10 +495,43 @@ void HardwareGlobalInterface::sub_realSenseOdom(const char *topic, const char *b
     realSenseOdom.twist_ang_y=j.at("twist").at("twist").at("angular").at("y");
     realSenseOdom.twist_ang_z=j.at("twist").at("twist").at("angular").at("z");
 
+    std::unique_lock<std::mutex> lock1(odomMTX);
+    odomData.pose_cov.clear();
+    odomData.twist_cov.clear();
     for(int i=0;i<36;i++){
       realSenseOdom.pose_cov.push_back(j.at("pose").at("covariance")[i]);
       realSenseOdom.twist_cov.push_back(j.at("twist").at("covariance")[i]);
+
+      odomData.pose_cov.push_back(j.at("pose").at("covariance")[i]);
+      odomData.twist_cov.push_back(j.at("twist").at("covariance")[i]);
     }
+    std::vector<double> cov = std::vector<double>(25, 0.01); // j.at("covariance");
+    odomData.pose_cov.at(0) = cov[0]; // cov_x
+    odomData.pose_cov.at(7) = cov[6]; // cov_y
+    odomData.pose_cov.at(14) = 1000000000000.0;
+    odomData.pose_cov.at(21) = 1000000000000.0;
+    odomData.pose_cov.at(28) = 1000000000000.0;
+    odomData.pose_cov.at(35) = cov[12]; // cov_theta
+    
+    odomData.twist_cov.at(0) = cov[18]; // cov_v_x
+    odomData.twist_cov.at(7) = cov[18]; // cov_v_y
+    odomData.twist_cov.at(14) = 1000000000000.0;
+    odomData.twist_cov.at(21) = 1000000000000.0;
+    odomData.twist_cov.at(28) = 1000000000000.0;
+    odomData.twist_cov.at(35) = cov[24]; // cov_omega
+    lock1.unlock();
+
+    std::vector<double> orientation, angular_vel;
+
+    orientation.push_back(realSenseOdom.orient_x);
+    orientation.push_back(realSenseOdom.orient_y);
+    orientation.push_back(realSenseOdom.orient_z);
+    orientation.push_back(realSenseOdom.orient_w);
+    angular_vel.push_back(realSenseOdom.twist_ang_x);
+    angular_vel.push_back(realSenseOdom.twist_ang_y);
+    angular_vel.push_back(realSenseOdom.twist_ang_z);
+
+    updateOdometryOmega(realSenseOdom.last_odom_update, orientation, angular_vel);
   }
   catch(std::exception &e){
     //std::cerr << "error parsing: " << e.what() << std::endl;

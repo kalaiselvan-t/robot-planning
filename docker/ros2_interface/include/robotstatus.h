@@ -23,8 +23,17 @@ namespace RobotStatus {
         }
     };
 
+    struct WheelSpeed {
+        double dTick = 0.0;
+        //double lastTick;
+        double lastTime = 0.0;
+        bool init = false;
+    };
+
     struct OdometryData{
-        double odomTimer = 0;
+        double last_odom_update = 0;
+
+        double theta = 0;
 
         // Pose
         double pos_x=0;
@@ -34,7 +43,7 @@ namespace RobotStatus {
         double orient_y=0;
         double orient_z=0;
         double orient_w=0;
-        std::vector<double> pose_cov{36};
+        std::vector<double> pose_cov;
 
         // Twist
         double twist_lin_x=0;
@@ -43,7 +52,7 @@ namespace RobotStatus {
         double twist_ang_x=0;
         double twist_ang_y=0;
         double twist_ang_z=0;
-        std::vector<double> twist_cov{36};
+        std::vector<double> twist_cov;
 
         OdometryData(){}
 
@@ -63,6 +72,8 @@ namespace RobotStatus {
             twist_ang_y=a.twist_ang_y;
             twist_ang_z=a.twist_ang_z;
             twist_cov=a.twist_cov;
+            last_odom_update=a.last_odom_update;
+            theta=a.theta;
         }
     };
 
