@@ -5,6 +5,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # copy all the files to the container
 ADD ./ros2_interface/ /root/ros2_ws/src/ros2_interface
 ADD ./remote_control/ /root/ros2_ws/src/remote_control
+ADD ./shelfino_interfaces/ /root/ros2_ws/src/shelfino_interfaces
 
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
@@ -30,7 +31,8 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y python3-colcon-common-extensions && \
     apt-get install -y libzmq3-dev && \
     apt-get install -y libncurses5-dev && \
-    apt-get install -y mesa-utils libgl1-mesa-glx
+    apt-get install -y mesa-utils libgl1-mesa-glx && \
+    apt-get install -y ros-humble-slam-toolbox
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
