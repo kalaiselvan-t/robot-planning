@@ -2,6 +2,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <cmath>
 
 #include "rclcpp/rclcpp.hpp"
 #include "tf2_ros/transform_broadcaster.h"
@@ -75,6 +76,7 @@ class ShelfinoHWPublisher : public rclcpp::Node
 
       sensor_msgs::msg::LaserScan msg;
       msg.header.stamp = this->get_clock()->now();
+      
       msg.header.frame_id = "base_laser";
       msg.angle_increment = 0.00872664625;
       msg.angle_min = msg.angle_increment;
@@ -100,6 +102,7 @@ class ShelfinoHWPublisher : public rclcpp::Node
 
       nav_msgs::msg::Odometry msg;
       msg.header.stamp = this->get_clock()->now();
+      
       msg.header.frame_id = "odom";
       msg.child_frame_id = "base_link";
 
@@ -132,6 +135,7 @@ class ShelfinoHWPublisher : public rclcpp::Node
 
       nav_msgs::msg::Odometry msg;
       msg.header.stamp = this->get_clock()->now();
+
       msg.header.frame_id = "odom";
       msg.child_frame_id = "base_link";
 
@@ -164,6 +168,7 @@ class ShelfinoHWPublisher : public rclcpp::Node
 
       shelfino_interfaces::msg::Encoders msg;
       msg.header.stamp = this->get_clock()->now();
+
       msg.header.frame_id = "";
 
       msg.left_vel = hwData.leftWheel.omega; 
@@ -178,7 +183,9 @@ class ShelfinoHWPublisher : public rclcpp::Node
     {
       geometry_msgs::msg::TransformStamped t;
 
-      t.header.stamp = this->get_clock()->now();
+      t.header.stamp = msg->header.stamp;
+      t.header.stamp.nanosec += 5000000000;
+
       t.header.frame_id = "odom";
       t.child_frame_id = "base_link";
 
@@ -199,6 +206,7 @@ class ShelfinoHWPublisher : public rclcpp::Node
       geometry_msgs::msg::TransformStamped t;
 
       t.header.stamp = this->get_clock()->now();
+
       t.header.frame_id = "map";
       t.child_frame_id = "odom";
 
@@ -218,6 +226,7 @@ class ShelfinoHWPublisher : public rclcpp::Node
       geometry_msgs::msg::TransformStamped t;
 
       t.header.stamp = this->get_clock()->now();
+
       t.header.frame_id = "base_link";
       t.child_frame_id = "base_laser";
 
