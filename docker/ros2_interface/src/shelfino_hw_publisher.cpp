@@ -81,8 +81,8 @@ class ShelfinoHWPublisher : public rclcpp::Node
       msg.angle_increment = 0.00872664625;
       msg.angle_min = msg.angle_increment;
       msg.angle_max = 6.27445866092 + msg.angle_min;
-      msg.time_increment = (1./10.) / lidarData.datum.size();
-      msg.scan_time = 1./10.;
+      //msg.time_increment = (1./10.) / lidarData.datum.size();
+      //msg.scan_time = 1./10.;
       msg.range_min = 0.05;
       msg.range_max = 10;
 
@@ -184,7 +184,6 @@ class ShelfinoHWPublisher : public rclcpp::Node
       geometry_msgs::msg::TransformStamped t;
 
       t.header.stamp = msg->header.stamp;
-      t.header.stamp.nanosec += 5000000000;
 
       t.header.frame_id = "odom";
       t.child_frame_id = "base_link";
