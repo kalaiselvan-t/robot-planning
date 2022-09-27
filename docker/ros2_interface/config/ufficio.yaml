@@ -1,7 +1,7 @@
-image: ufficio11.pgm
+image: ufficio.pgm
 mode: trinary
 resolution: 0.05
-origin: [-2.36, -6.5, 0]
+origin: [-3.24, -11.9, 0]
 negate: 0
 occupied_thresh: 0.65
 free_thresh: 0.25
