@@ -32,7 +32,8 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y libzmq3-dev && \
     apt-get install -y libncurses5-dev && \
     apt-get install -y mesa-utils libgl1-mesa-glx && \
-    apt-get install -y ros-humble-slam-toolbox
+    apt-get install -y ros-humble-cartographer && \
+    apt-get install -y ros-humble-cartographer-ros
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
