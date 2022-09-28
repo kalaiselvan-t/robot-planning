@@ -1,5 +1,4 @@
-#FROM ubuntu:jammy
-FROM arm64v8/ubuntu:jammy 
+FROM ubuntu:jammy
 ARG DEBIAN_FRONTEND=noninteractive
 
 # copy all the files to the container
