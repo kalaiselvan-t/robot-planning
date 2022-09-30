@@ -91,11 +91,11 @@ void HardwareGlobalInterface::subHW_callback(const char *topic, const char *buf,
     double tick_r = j.at("3").at("state").at("tck");
     double tick_l = j.at("4").at("state").at("tck");
 
-    hwData.rightWheel.omega = -omega_r/180*M_PI;
+    hwData.rightWheel.omega = -omega_r;
     hwData.rightWheel.current = i_r;
     hwData.rightWheel.ticks = -tick_r/180*M_PI;
 
-    hwData.leftWheel.omega = omega_l/180*M_PI;
+    hwData.leftWheel.omega = omega_l;
     hwData.leftWheel.current = i_l;
     hwData.leftWheel.ticks = tick_l/180*M_PI;
 
