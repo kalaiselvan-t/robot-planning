@@ -12,6 +12,8 @@ find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 include_directories(
   include
@@ -19,17 +21,18 @@ include_directories(
 
 add_executable(remote_control_node 
   src/remote_control.cpp
-  src/hardwareglobalinterface.cpp
-  src/Subscriber.cpp
-  src/RequesterSimple.cpp
+)
+ament_target_dependencies(remote_control_node 
+  rclcpp
+  geometry_msgs
 )
 
 target_link_libraries(remote_control_node
-  ${rclcpp_LIBRARIES} -lzmq -lncurses -pthread
+  ${rclcpp_LIBRARIES} -lncurses -pthread
 )
 
 install(TARGETS
-remote_control_node
+  remote_control_node
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

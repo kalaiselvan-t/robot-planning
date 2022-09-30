@@ -10,7 +10,8 @@
 #include "tf2/LinearMath/Quaternion.h"
 #include "sensor_msgs/msg/laser_scan.hpp"
 #include "nav_msgs/msg/odometry.hpp"
-#include "shelfino_interfaces/msg/encoders.hpp"
+#include "sensor_msgs/msg/joint_state.hpp"
+#include "geometry_msgs/msg/twist.hpp"
 
 #include "hardwareparameters.h"
 #include "hardwareglobalinterface.h"
@@ -56,16 +57,16 @@ class ShelfinoHWPublisher : public rclcpp::Node
       this->make_odom_transforms();
       this->make_transforms();
       tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
-      subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
-        "odom", 10, std::bind(&ShelfinoHWPublisher::handle_shelfino_pose, this, std::placeholders::_1));
       lidar_publisher_ = this->create_publisher<sensor_msgs::msg::LaserScan>("scan", 10);
       t265_publisher_ = this->create_publisher<nav_msgs::msg::Odometry>("t265", 10);
       odom_publisher_ = this->create_publisher<nav_msgs::msg::Odometry>("odom", 10);
-      encoders_publisher_ = this->create_publisher<shelfino_interfaces::msg::Encoders>("encoders", 10);
+      encoders_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("joint_states", 10);
       lidar_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWPublisher::lidar_callback, this));
       t265_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWPublisher::t265_callback, this));
       odom_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWPublisher::odom_callback, this));
       encoders_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWPublisher::enc_callback, this));
+      cmd_subscription_ = this->create_subscription<geometry_msgs::msg::Twist>(
+        "cmd_vel", 10, std::bind(&ShelfinoHWPublisher::handle_shelfino_cmd_vel, this, std::placeholders::_1));
     }
 
   private:
@@ -160,41 +161,111 @@ class ShelfinoHWPublisher : public rclcpp::Node
       }
 
       odom_publisher_->publish(msg);
+      handle_shelfino_pose(msg);
     }
     void enc_callback()
     {
       RobotStatus::HardwareData hwData; 
       HardwareGlobalInterface::getInstance().getHardwareData(hwData);
 
-      shelfino_interfaces::msg::Encoders msg;
+      sensor_msgs::msg::JointState msg;
       msg.header.stamp = this->get_clock()->now();
 
       msg.header.frame_id = "";
 
-      msg.left_vel = hwData.leftWheel.omega; 
-      msg.right_vel = hwData.rightWheel.omega;
-      msg.left_ticks = hwData.leftWheel.ticks;
-      msg.right_ticks = hwData.rightWheel.ticks;
+      msg.name.push_back("wheel_left_joint");
+      msg.position.push_back(hwData.leftWheel.ticks);
+      msg.velocity.push_back(hwData.leftWheel.omega);
+      msg.name.push_back("wheel_right_joint");
+      msg.position.push_back(hwData.rightWheel.ticks);
+      msg.velocity.push_back(hwData.rightWheel.omega);
 
       encoders_publisher_->publish(msg);
+      handle_shelfino_joints(msg);
     }
 
-    void handle_shelfino_pose(const std::shared_ptr<nav_msgs::msg::Odometry> msg)
+    void handle_shelfino_cmd_vel(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
+    {
+      double v = 0., omega = 0.;
+      v = msg->linear.x;
+      omega = msg->angular.z;
+      if(v != 0 || omega != 0){
+        if(!robot_state){
+          robot_state = true;
+          HardwareGlobalInterface::getInstance().robotOnVelControl();
+        }
+      } else {
+        robot_state = false;
+        HardwareGlobalInterface::getInstance().robotOff();
+        return;
+      }
+
+      HardwareGlobalInterface::getInstance().vehicleMove(v,omega);
+
+      return;
+    }
+
+    void handle_shelfino_joints(sensor_msgs::msg::JointState msg)
+    {
+      geometry_msgs::msg::TransformStamped t;
+      tf2::Quaternion q, joint;
+      double angle;
+
+      joint.setRPY(0,1.5707,1.5707);
+
+      t.header.stamp = this->get_clock()->now();
+
+      t.header.frame_id = "base_link";
+      t.child_frame_id = "left_wheel";
+
+      t.transform.translation.x = 0.0;
+      t.transform.translation.y = 0.27;
+      t.transform.translation.z = 0.125;
+      angle = msg.position.at(0);
+      q.setRPY(0,angle,0);
+      q = q * joint;
+      t.transform.rotation.x = q.x();
+      t.transform.rotation.y = q.y();
+      t.transform.rotation.z = q.z();
+      t.transform.rotation.w = q.w();
+
+      tf_static_broadcaster_->sendTransform(t);
+
+      t.header.stamp = this->get_clock()->now();
+
+      t.header.frame_id = "base_link";
+      t.child_frame_id = "right_wheel";
+
+      t.transform.translation.x = 0.0;
+      t.transform.translation.y = -0.27;
+      t.transform.translation.z = 0.125;
+      angle = msg.position.at(1);
+      q.setRPY(0,angle,0);
+      q = q * joint;
+      t.transform.rotation.x = q.x();
+      t.transform.rotation.y = q.y();
+      t.transform.rotation.z = q.z();
+      t.transform.rotation.w = q.w();
+
+      tf_static_broadcaster_->sendTransform(t);
+    }
+
+    void handle_shelfino_pose(nav_msgs::msg::Odometry msg)
     {
       geometry_msgs::msg::TransformStamped t;
 
-      t.header.stamp = msg->header.stamp;
+      t.header.stamp = msg.header.stamp;
 
       t.header.frame_id = "odom";
       t.child_frame_id = "base_link";
 
-      t.transform.translation.x = msg->pose.pose.position.x;
-      t.transform.translation.y = msg->pose.pose.position.y;
+      t.transform.translation.x = msg.pose.pose.position.x;
+      t.transform.translation.y = msg.pose.pose.position.y;
       t.transform.translation.z = 0.0;
-      t.transform.rotation.x = msg->pose.pose.orientation.x;
-      t.transform.rotation.y = msg->pose.pose.orientation.y;
-      t.transform.rotation.z = msg->pose.pose.orientation.z;
-      t.transform.rotation.w = msg->pose.pose.orientation.w;
+      t.transform.rotation.x = msg.pose.pose.orientation.x;
+      t.transform.rotation.y = msg.pose.pose.orientation.y;
+      t.transform.rotation.z = msg.pose.pose.orientation.z;
+      t.transform.rotation.w = msg.pose.pose.orientation.w;
 
       // Send the transformation
       tf_broadcaster_->sendTransform(t);
@@ -233,10 +304,7 @@ class ShelfinoHWPublisher : public rclcpp::Node
       t.transform.translation.y = 0.0;
       t.transform.translation.z = 0.45;
       tf2::Quaternion q;
-      q.setRPY(
-        0,
-        0,
-        0);
+      q.setRPY(0,0,0);
       t.transform.rotation.x = q.x();
       t.transform.rotation.y = q.y();
       t.transform.rotation.z = q.z();
@@ -245,8 +313,9 @@ class ShelfinoHWPublisher : public rclcpp::Node
       tf_static_broadcaster_->sendTransform(t);
     }
 
+    bool robot_state = false;
     std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster_;
-    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr subscription_;
+    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscription_;
     std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
     rclcpp::TimerBase::SharedPtr lidar_timer_;
     rclcpp::TimerBase::SharedPtr t265_timer_;
@@ -255,7 +324,8 @@ class ShelfinoHWPublisher : public rclcpp::Node
     rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr lidar_publisher_;
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr t265_publisher_;
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_publisher_;
-    rclcpp::Publisher<shelfino_interfaces::msg::Encoders>::SharedPtr encoders_publisher_;
+    rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr encoders_publisher_;
+    rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_subscription_;
 };
 
 int main(int argc, char * argv[])

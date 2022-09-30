@@ -19,6 +19,7 @@ find_package(nav_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(shelfino_interfaces REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 include_directories(
   include
@@ -40,6 +41,7 @@ ament_target_dependencies(shelfino_node
   tf2
   tf2_ros
   shelfino_interfaces
+  geometry_msgs
 )
 
 target_link_libraries(shelfino_node
