@@ -46,12 +46,10 @@ target_link_libraries(shelfino_node
   ${rclcpp_LIBRARIES} -lzmq
 )
 
-install(DIRECTORY launch
+install(DIRECTORY 
+        launch
+        config
   DESTINATION share/${PROJECT_NAME})
-
-install(DIRECTORY config
-  DESTINATION share/${PROJECT_NAME})
-
 
 install(TARGETS
   shelfino_node

@@ -22,8 +22,10 @@ def generate_launch_description():
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
 
     gazebo_models_path = os.path.join(get_package_share_directory('shelfino_gazebo'), 'models')
-    model = os.path.join(gazebo_models_path, 'shelfino', 'model.urdf')
+    model = os.path.join(gazebo_models_path, 'shelfino', 'model.sdf')
     os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
+
+    rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'config', 'shelfino.rviz')
 
     return LaunchDescription([
         IncludeLaunchDescription(
@@ -52,4 +54,11 @@ def generate_launch_description():
             PythonLaunchDescriptionSource([launch_file_dir, '/robot_state_publisher.launch.py']),
             launch_arguments={'use_sim_time': use_sim_time}.items(),
         ),
+
+        Node(
+            package='rviz2',
+            namespace='shelfino2',
+            executable='rviz2',
+            arguments=['-d', rviz_config]
+        )
     ])
