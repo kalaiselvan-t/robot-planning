@@ -15,13 +15,14 @@ from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    world_file_name = 'Povo2_floor1.sdf'
+    world_file_name = 'Povo2_floor1.world'
     world = os.path.join(get_package_share_directory('shelfino_gazebo'),
                          'worlds', world_file_name)
     launch_file_dir = os.path.join(get_package_share_directory('shelfino_gazebo'), 'launch')
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
 
     gazebo_models_path = os.path.join(get_package_share_directory('shelfino_gazebo'), 'models')
+    model = os.path.join(gazebo_models_path, 'shelfino', 'model.urdf')
     os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
 
     return LaunchDescription([
@@ -41,7 +42,7 @@ def generate_launch_description():
         Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
-            arguments=['-file', os.path.join(gazebo_models_path, 'shelfino', 'model.sdf'),
+            arguments=['-file', model,
                        '-entity', 'shelfino',
                        '-x', '40',
                        '-y', '17']

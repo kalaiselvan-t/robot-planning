@@ -156,7 +156,7 @@
   <joint name="lidar2d_joint" type="fixed">
     <parent link="base_link"></parent>
     <child link="base_laser"></child>
-    <origin xyz="0 0 0.45" rpy="0 0 0"/>
+    <origin xyz="0 0 0.51" rpy="0 0 0"/>
   </joint>
 
 <!--
@@ -164,14 +164,15 @@
 -->
   <link name="base_laser">
     <visual>
+      <origin xyz="0 0 -0.04"/>
       <geometry>
-        <mesh filename="package://shelfino_gazebo/models/lidar2d/meshes/hokuyo.dae" />
+        <mesh filename="model://lidar2d/meshes/hokuyo.dae" />
       </geometry>
       <material name="black"/>
     </visual>
 
     <collision>
-      <origin xyz="0 0 0.02"/>
+      <origin xyz="0 0 -0.02"/>
       <geometry>
         <cylinder length="0.04" radius="0.023"/>
       </geometry>
@@ -185,5 +186,111 @@
                izz="0.001" />
     </inertial>
   </link>
+
+
+<!--
+                                                      DIFFERENTIAL DRIVE CONTROLLER 
+-->
+  <gazebo>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <!-- <alwaysOn>true</alwaysOn> -->
+
+      <!-- Plugin update rate in Hz -->
+      <update_rate>30</update_rate>
+
+      <!-- Name of left joint, defaults to `left_joint` -->
+      <left_joint>wheel_left_joint</left_joint>
+
+      <!-- Name of right joint, defaults to `right_joint` -->
+      <right_joint>wheel_right_joint</right_joint>
+
+      <!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
+      <wheel_separation>0.54</wheel_separation>
+
+      <!-- Diameter of the wheels, in meters, defaults to 0.15 m -->
+      <wheel_diameter>0.25</wheel_diameter>
+
+      <!-- Wheel acceleration, in rad/s^2, defaults to 0.0 rad/s^2 -->
+      <max_wheel_acceleration>1.0</max_wheel_acceleration>
+
+      <!-- Maximum torque which the wheels can produce, in Nm, defaults to 5 Nm -->
+      <max_wheel_torque>20</max_wheel_torque>
+
+      <!-- Topic to receive geometry_msgs/Twist message commands, defaults to `cmd_vel` -->
+      <command_topic>cmd_vel</command_topic>
+
+      <!-- Topic to publish nav_msgs/Odometry messages, defaults to `odom` -->
+      <odometry_topic>odom</odometry_topic>
+
+      <!-- Odometry frame, defaults to `odom` -->
+      <odometry_frame>odom</odometry_frame>
+
+      <!-- Robot frame to calculate odometry from, defaults to `base_footprint` -->
+      <robot_base_frame>base_link</robot_base_frame>
+
+      <!-- Odometry source, 0 for ENCODER, 1 for WORLD, defaults to WORLD -->
+      <odometry_source>1</odometry_source>
+
+      <!-- Set to true to publish transforms for the wheel links, defaults to false -->
+      <publish_wheel_tf>false</publish_wheel_tf>
+
+      <!-- Set to true to publish transforms for the odometry, defaults to true -->
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+
+    </plugin>
+  </gazebo>
+
+<!--
+                                                      JOINT STATE PUBLISHER 
+-->
+  <gazebo>
+    <plugin name="joint_state" filename="libgazebo_ros_joint_state_publisher.so">
+      <ros>
+        <remapping>~/out:=joint_states</remapping>
+      </ros>
+      <update_rate>30</update_rate>
+      <joint_name>wheel_left_joint</joint_name>
+      <joint_name>wheel_right_joint</joint_name>
+    </plugin> 
+  </gazebo>  
+
+<!--
+                                                      LIDAR SENSOR 
+-->
+  <gazebo reference="base_laser">
+    <sensor type="gpu_ray" name="head_hokuyo_sensor">
+      <visualize>true</visualize>
+      <update_rate>40</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>6.28318530718</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.15</min>
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise parameters based on published spec for Hokuyo laser
+               achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+               stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+               reading. -->
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+        <topicName>/scan</topicName>
+        <frameName>base_laser</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
 
 </robot>
