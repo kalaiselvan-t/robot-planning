@@ -4,7 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # copy all the files to the container
 ADD ./ros2_interface/ /root/ros2_ws/src/ros2_interface
 ADD ./remote_control/ /root/ros2_ws/src/remote_control
-ADD ./shelfino_interfaces/ /root/ros2_ws/src/shelfino_interfaces
+ADD ./shelfino_gazebo/ /root/ros2_ws/src/shelfino_gazebo
 
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
