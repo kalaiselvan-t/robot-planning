@@ -17,8 +17,8 @@ double V_MAX_LIMIT = 1;
 double O_MAX_LIMIT = 1;
 double ACC_V = 0.1;
 double DEC_V = 0.3;
-double ACC_OMEGA = 0.2;
-double DEC_OMEGA = 0.5;
+double ACC_OMEGA = 0.1;
+double DEC_OMEGA = 0.3;
 double STEP = 0.01;
 double A_LAT = 2.0;
 
@@ -96,20 +96,20 @@ class CMDPublisher : public rclcpp::Node
         v_c = V_MAX>0?std::min(v_c, V_MAX_N):std::max(v_c, V_MAX_N);
       } else if(std::abs(V_MAX) < std::abs(v_c)) {
         v_c -= DEC_V*(v_c>0?1:-1) * dT;
-        if(std::abs(v_c) < 0.005)v_c = 0;
+        if(std::abs(v_c) < STEP*1,5)v_c = 0;
       }
       if (std::abs(O_MAX) > std::abs(omega_c)) {
         omega_c += ACC_OMEGA*(omega_c==0?(O_MAX>0?1:-1):(omega_c>0?1:-1)) * dT;
         omega_c = O_MAX>0?std::min(omega_c, O_MAX):std::max(omega_c, O_MAX);
       } else if(std::abs(O_MAX) < std::abs(omega_c)) {
         omega_c -= DEC_OMEGA*(omega_c>0?1:-1) * dT;
-        if(std::abs(omega_c) < 0.01)omega_c = 0;
+        if(std::abs(omega_c) < STEP*1,5)omega_c = 0;
       }
 
       clear();
       move(0,0);
       printw("*** USE q TO STOP THE REMOTE CONTROLLER ***\nUse 8, w or arrow up to move forward\nUse 2, x or arrow down to move backwards\nUse 4, a or arrow left to curve left\nUse 6, d or arrow right to curve right\nUse 5 or s to brake\n*******************************************\n");
-      printw("V_MAX: %f O_MAX: %f\n", V_MAX, O_MAX);
+      printw("V: %f OMEGA: %f\n", V_MAX, O_MAX);
 
       msg.linear.x = v_c;
       msg.angular.z = omega_c;

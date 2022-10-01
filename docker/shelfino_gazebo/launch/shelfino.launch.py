@@ -11,6 +11,7 @@ from launch.actions import IncludeLaunchDescription
 from launch.actions import TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
@@ -23,9 +24,12 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(get_package_share_directory('shelfino_gazebo'), 'models')
     model = os.path.join(gazebo_models_path, 'shelfino', 'model.sdf')
+    rviz_model = os.path.join(gazebo_models_path, 'shelfino', 'model.urdf')
     os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
 
     rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'config', 'shelfino.rviz')
+
+    robot_description = ParameterValue(rviz_model, value_type=str)
 
     return LaunchDescription([
         IncludeLaunchDescription(
