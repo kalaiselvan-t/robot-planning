@@ -17,12 +17,9 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-    gui_arg = DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
-                                description='Flag to enable gazebo visualization')
-    rviz_arg = DeclareLaunchArgument(name='rviz', default_value='true', choices=['true', 'false'],
-                                description='Flag to enable rviz visualization')
-
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+    gui = LaunchConfiguration('gui')
+    rviz = LaunchConfiguration('rviz')
     world_file_name = 'Povo2_floor1.world'
     world = os.path.join(get_package_share_directory('shelfino_gazebo'),
                          'worlds', world_file_name)
@@ -39,8 +36,11 @@ def generate_launch_description():
     robot_description = ParameterValue(rviz_model, value_type=str)
 
     return LaunchDescription([
-        gui_arg,
-        rviz_arg,
+        DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
+                                description='Flag to enable gazebo visualization'),
+
+        DeclareLaunchArgument(name='rviz', default_value='true', choices=['true', 'false'],
+                                description='Flag to enable rviz visualization'),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -53,16 +53,14 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(
                 os.path.join(pkg_gazebo_ros, 'launch', 'gzclient.launch.py')
             ),
-            condition=IfCondition(LaunchConfiguration('gui'))
+            condition=IfCondition(gui)
         ),
     
         Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
             arguments=['-file', model,
-                       '-entity', 'shelfino',
-                       '-x', '40',
-                       '-y', '17']
+                       '-entity', 'shelfino']
         ),
 
         IncludeLaunchDescription(
@@ -75,6 +73,6 @@ def generate_launch_description():
             namespace='shelfino2',
             executable='rviz2',
             arguments=['-d', rviz_config],
-            condition=IfCondition(LaunchConfiguration('rviz'))
+            condition=IfCondition(rviz)
         )
     ])

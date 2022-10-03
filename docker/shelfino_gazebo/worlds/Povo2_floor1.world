@@ -34,7 +34,7 @@
 
     <model name='ground_plane'>
       <static>1</static>
-      <pose frame=''>0 0 -0.05 0 0 0</pose>
+      <pose frame=''>-40 -17 -0.05 0 0 0</pose>
       <link name='link'>
         <collision name='collision'>
           <geometry>
@@ -77,7 +77,7 @@
     </model>
 
     <model name="povo_walls">
-      <pose frame=''>0 0 0 0 0 0</pose>
+      <pose frame=''>-40 -17 0 0 0 0</pose>
       <include>
         <static>true</static>
         <uri>model://povo</uri>

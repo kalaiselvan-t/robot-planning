@@ -5,15 +5,15 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition, UnlessCondition
+from launch.substitutions import Command, LaunchConfiguration
 from launch_ros.actions import Node
-from launch.substitutions import LaunchConfiguration
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import ThisLaunchFileDir
 
 
 def generate_launch_description():
-    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     shelfino_cartographer_prefix = get_package_share_directory(
         'ros2_interface')
     cartographer_config_dir = LaunchConfiguration(
@@ -28,6 +28,8 @@ def generate_launch_description():
     rviz_config_dir = os.path.join(get_package_share_directory(
         'ros2_interface'), 'config', 'shelfino_slam.rviz')
 
+    sim = LaunchConfiguration('sim')
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'cartographer_config_dir',
@@ -37,24 +39,26 @@ def generate_launch_description():
             'configuration_basename',
             default_value=configuration_basename,
             description='Name of lua file for cartographer'),
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='false',
-            description='Use simulation (Gazebo) clock if true'),
+        
+        DeclareLaunchArgument(name='sim', default_value='false', choices=['true', 'false'],
+                        description='Flag to toggle between real robot and simulation'),
 
         Node(
 	        package='ros2_interface',
 	        executable='shelfino_node',
-            name='shelfino_node'),
+            name='shelfino_node',
+            condition=UnlessCondition(sim)
+        ),
 
         Node(
             package='cartographer_ros',
             executable='cartographer_node',
             name='cartographer_node',
             output='screen',
-            parameters=[{'use_sim_time': use_sim_time}],
+            parameters=[{'use_sim_time': sim}],
             arguments=['-configuration_directory', cartographer_config_dir,
-                       '-configuration_basename', configuration_basename]),
+                       '-configuration_basename', configuration_basename]
+        ),
 
         DeclareLaunchArgument(
             'resolution',
@@ -71,15 +75,17 @@ def generate_launch_description():
             executable='occupancy_grid_node',
             name='cartographer_occupancy_grid_node',
             output='screen',
-            parameters=[{'use_sim_time': use_sim_time}],
+            parameters=[{'use_sim_time': sim}],
             arguments=['-resolution', resolution,
-                       '-publish_period_sec', publish_period_sec]),
+                       '-publish_period_sec', publish_period_sec]
+        ),
 
         Node(
             package='rviz2',
             executable='rviz2',
             name='rviz2',
             arguments=['-d', rviz_config_dir],
-            parameters=[{'use_sim_time': use_sim_time}],
-            output='screen'),
+            parameters=[{'use_sim_time': sim}],
+            output='screen'
+        ),
     ])

@@ -95,15 +95,15 @@ class CMDPublisher : public rclcpp::Node
         v_c += ACC_V*(v_c==0?(V_MAX>0?1:-1):(v_c>0?1:-1)) * dT;
         v_c = V_MAX>0?std::min(v_c, V_MAX_N):std::max(v_c, V_MAX_N);
       } else if(std::abs(V_MAX) < std::abs(v_c)) {
-        v_c -= DEC_V*(v_c>0?1:-1) * dT;
-        if(std::abs(v_c) < STEP*1,5)v_c = 0;
+        if(std::abs(v_c) < STEP*1.5)v_c = 0;
+        else v_c -= DEC_V*(v_c>0?1:-1) * dT;
       }
       if (std::abs(O_MAX) > std::abs(omega_c)) {
         omega_c += ACC_OMEGA*(omega_c==0?(O_MAX>0?1:-1):(omega_c>0?1:-1)) * dT;
         omega_c = O_MAX>0?std::min(omega_c, O_MAX):std::max(omega_c, O_MAX);
       } else if(std::abs(O_MAX) < std::abs(omega_c)) {
-        omega_c -= DEC_OMEGA*(omega_c>0?1:-1) * dT;
-        if(std::abs(omega_c) < STEP*1,5)omega_c = 0;
+        if(std::abs(omega_c) < STEP*1.5)omega_c = 0;
+        else omega_c -= DEC_OMEGA*(omega_c>0?1:-1) * dT;
       }
 
       clear();
