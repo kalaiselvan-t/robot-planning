@@ -1,4 +1,6 @@
-# /* Author: Placido Falqueto */
+#!/usr/bin/env python3
+#
+# Authors: Placido Falqueto
 
 import os
 
@@ -11,11 +13,12 @@ from launch_ros.actions import Node
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import ThisLaunchFileDir
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
     shelfino_cartographer_prefix = get_package_share_directory(
-        'ros2_interface')
+        'shelfino_node')
     cartographer_config_dir = LaunchConfiguration(
         'cartographer_config_dir',
         default=os.path.join(shelfino_cartographer_prefix, 'config'))
@@ -26,9 +29,13 @@ def generate_launch_description():
     publish_period_sec = LaunchConfiguration('publish_period_sec', default='1.0')
 
     rviz_config_dir = os.path.join(get_package_share_directory(
-        'ros2_interface'), 'config', 'shelfino_slam.rviz')
+        'shelfino_node'), 'config', 'shelfino_slam.rviz')
 
     sim = LaunchConfiguration('sim')
+
+    gazebo_models_path = os.path.join(get_package_share_directory('shelfino_gazebo'), 'models')
+    rviz_model = os.path.join(gazebo_models_path, 'shelfino', 'model.urdf')
+    robot_description = ParameterValue(rviz_model, value_type=str)
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -44,7 +51,7 @@ def generate_launch_description():
                         description='Flag to toggle between real robot and simulation'),
 
         Node(
-	        package='ros2_interface',
+	        package='shelfino_node',
 	        executable='shelfino_node',
             name='shelfino_node',
             condition=UnlessCondition(sim)

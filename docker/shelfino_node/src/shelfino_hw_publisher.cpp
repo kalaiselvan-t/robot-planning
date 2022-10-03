@@ -54,7 +54,6 @@ class ShelfinoHWPublisher : public rclcpp::Node
     : Node("shelfino_hw_publisher")
     {
       tf_static_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
-      this->make_odom_transforms();
       this->make_transforms();
       tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
       lidar_publisher_ = this->create_publisher<sensor_msgs::msg::LaserScan>("scan", 10);
@@ -269,26 +268,6 @@ class ShelfinoHWPublisher : public rclcpp::Node
 
       // Send the transformation
       tf_broadcaster_->sendTransform(t);
-    }
-
-    void make_odom_transforms()
-    {
-      geometry_msgs::msg::TransformStamped t;
-
-      t.header.stamp = this->get_clock()->now();
-
-      t.header.frame_id = "map";
-      t.child_frame_id = "odom";
-
-      t.transform.translation.x = 0.0;
-      t.transform.translation.y = 0.0;
-      t.transform.translation.z = 0.0;
-      t.transform.rotation.x = 0.0;
-      t.transform.rotation.y = 0.0;
-      t.transform.rotation.z = 0.0;
-      t.transform.rotation.w = 1.0;
-
-      tf_static_broadcaster_->sendTransform(t);
     }
     
     void make_transforms()

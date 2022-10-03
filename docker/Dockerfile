@@ -2,7 +2,7 @@ FROM ubuntu:jammy
 ARG DEBIAN_FRONTEND=noninteractive
 
 # copy all the files to the container
-ADD ./ros2_interface/ /root/ros2_ws/src/ros2_interface
+ADD ./shelfino_node/ /root/ros2_ws/src/shelfino_node
 ADD ./remote_control/ /root/ros2_ws/src/remote_control
 ADD ./shelfino_gazebo/ /root/ros2_ws/src/shelfino_gazebo
 
