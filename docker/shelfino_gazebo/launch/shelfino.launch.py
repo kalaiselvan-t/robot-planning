@@ -31,9 +31,7 @@ def generate_launch_description():
     rviz_model = os.path.join(gazebo_models_path, 'shelfino', 'model.urdf')
     os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
 
-    rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'config', 'shelfino.rviz')
-
-    robot_description = ParameterValue(rviz_model, value_type=str)
+    rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfino.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
@@ -70,7 +68,6 @@ def generate_launch_description():
 
         Node(
             package='rviz2',
-            namespace='shelfino2',
             executable='rviz2',
             arguments=['-d', rviz_config],
             condition=IfCondition(rviz)

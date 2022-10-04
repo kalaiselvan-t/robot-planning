@@ -49,6 +49,8 @@ target_link_libraries(shelfino_node
 install(DIRECTORY 
         launch
         config
+        rviz
+        map
   DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS
