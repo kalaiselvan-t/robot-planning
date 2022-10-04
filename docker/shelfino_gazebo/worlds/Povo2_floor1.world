@@ -10,15 +10,13 @@
 
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <!--<pose frame=''>337.440659 -33.31554 10 0 0 0</pose>-->
-        <pose frame=''>63 19 14 0 0.5 -3</pose>
+        <pose frame=''>21.33 3.77 13.72 0 0.5 -3</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
     
     <light name='sun' type='directional'>
-      <!--<pose frame=''>337.440659 -33.31554 10 0 -0 0</pose>-->
       <pose frame=''>10.0 10.0 30 0 -0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <specular>0.1 0.1 0.1 1</specular>

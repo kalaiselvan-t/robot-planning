@@ -23,10 +23,10 @@ def generate_launch_description():
     world_file_name = 'Povo2_floor1.world'
     world = os.path.join(get_package_share_directory('shelfino_gazebo'),
                          'worlds', world_file_name)
-    launch_file_dir = os.path.join(get_package_share_directory('shelfino_gazebo'), 'launch')
+    launch_file_dir = os.path.join(get_package_share_directory('shelfino_description'), 'launch')
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
 
-    gazebo_models_path = os.path.join(get_package_share_directory('shelfino_gazebo'), 'models')
+    gazebo_models_path = os.path.join(get_package_share_directory('shelfino_description'), 'models')
     model = os.path.join(gazebo_models_path, 'shelfino', 'model.sdf')
     rviz_model = os.path.join(gazebo_models_path, 'shelfino', 'model.urdf')
     os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
