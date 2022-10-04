@@ -16,7 +16,7 @@ std::unique_ptr<char> pressed;
 double V_MAX_LIMIT = 1;
 double O_MAX_LIMIT = 1;
 double ACC_V = 0.1;
-double DEC_V = 0.3;
+double DEC_V = 0.2;
 double ACC_OMEGA = 0.1;
 double DEC_OMEGA = 0.3;
 double STEP = 0.01;
