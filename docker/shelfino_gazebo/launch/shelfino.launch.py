@@ -28,7 +28,6 @@ def generate_launch_description():
 
     gazebo_models_path = os.path.join(get_package_share_directory('shelfino_description'), 'models')
     model = os.path.join(gazebo_models_path, 'shelfino', 'model.sdf')
-    rviz_model = os.path.join(gazebo_models_path, 'shelfino', 'model.urdf')
     os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
 
     rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfino.rviz')
