@@ -1,7 +1,0 @@
-scan_filter_chain:
-- name: laser_cutoff
-  type: laser_filters/LaserScanAngularBoundsFilterInPlace
-  params:
-    lower_angle: 3.92699081699
-    upper_angle: 5.49778714378
-    

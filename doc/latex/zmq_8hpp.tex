@@ -1,0 +1,84 @@
+\hypertarget{zmq_8hpp}{}\doxysection{X\+:/shelfino\+\_\+node/include/zmq.hpp File Reference}
+\label{zmq_8hpp}\index{X:/shelfino\_node/include/zmq.hpp@{X:/shelfino\_node/include/zmq.hpp}}
+{\ttfamily \#include $<$zmq.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$exception$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structzmq__event__t}{zmq\+\_\+event\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classzmq_1_1error__t}{zmq\+::error\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classzmq_1_1message__t}{zmq\+::message\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classzmq_1_1context__t}{zmq\+::context\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classzmq_1_1socket__t}{zmq\+::socket\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classzmq_1_1monitor__t}{zmq\+::monitor\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacezmq}{zmq}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{zmq_8hpp_a7d4ac120b73fef58d8e9a92180025d45}{ZMQ\+\_\+\+DELETED\+\_\+\+FUNCTION}}
+\item 
+\#define \mbox{\hyperlink{zmq_8hpp_ade1462cd65bda4d48a473bfa84694eff}{ZMQ\+\_\+\+NEW\+\_\+\+MONITOR\+\_\+\+EVENT\+\_\+\+LAYOUT}}
+\item 
+\#define \mbox{\hyperlink{zmq_8hpp_ad1e288f05295e6cb30529bbaabc2b10d}{ZMQ\+\_\+\+HAS\+\_\+\+PROXY\+\_\+\+STEERABLE}}
+\item 
+\#define \mbox{\hyperlink{zmq_8hpp_a188bda73be51e867c8d99f148a51938d}{ZMQ\+\_\+\+ASSERT}}(expression)~assert(expression)
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef zmq\+\_\+free\+\_\+fn \mbox{\hyperlink{namespacezmq_a56e33ec21b30bfdd123653848e0ff6e9}{zmq\+::free\+\_\+fn}}
+\item 
+typedef zmq\+\_\+pollitem\+\_\+t \mbox{\hyperlink{namespacezmq_afae32df5376640a84a10f2fd3ba2fee9}{zmq\+::pollitem\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespacezmq_aa0a1cd89ebe7c4ca73a6e2aa0559fcee}{zmq\+::poll}} (zmq\+\_\+pollitem\+\_\+t $\ast$items\+\_\+, int nitems\+\_\+, long timeout\+\_\+=-\/1)
+\item 
+void \mbox{\hyperlink{namespacezmq_ab9ccd2f84995b585f715cab73ef48d37}{zmq\+::proxy}} (void $\ast$frontend, void $\ast$backend, void $\ast$capture)
+\item 
+void \mbox{\hyperlink{namespacezmq_a32f5cca844c8304cb6b466a93d3fc485}{zmq\+::proxy\+\_\+steerable}} (void $\ast$frontend, void $\ast$backend, void $\ast$capture, void $\ast$control)
+\item 
+void \mbox{\hyperlink{namespacezmq_af04cbb1885b768c4ce23615883367c20}{zmq\+::version}} (int $\ast$major\+\_\+, int $\ast$minor\+\_\+, int $\ast$patch\+\_\+)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{zmq_8hpp_a188bda73be51e867c8d99f148a51938d}\label{zmq_8hpp_a188bda73be51e867c8d99f148a51938d}} 
+\index{zmq.hpp@{zmq.hpp}!ZMQ\_ASSERT@{ZMQ\_ASSERT}}
+\index{ZMQ\_ASSERT@{ZMQ\_ASSERT}!zmq.hpp@{zmq.hpp}}
+\doxysubsubsection{\texorpdfstring{ZMQ\_ASSERT}{ZMQ\_ASSERT}}
+{\footnotesize\ttfamily \#define ZMQ\+\_\+\+ASSERT(\begin{DoxyParamCaption}\item[{}]{expression }\end{DoxyParamCaption})~assert(expression)}
+
+\mbox{\Hypertarget{zmq_8hpp_a7d4ac120b73fef58d8e9a92180025d45}\label{zmq_8hpp_a7d4ac120b73fef58d8e9a92180025d45}} 
+\index{zmq.hpp@{zmq.hpp}!ZMQ\_DELETED\_FUNCTION@{ZMQ\_DELETED\_FUNCTION}}
+\index{ZMQ\_DELETED\_FUNCTION@{ZMQ\_DELETED\_FUNCTION}!zmq.hpp@{zmq.hpp}}
+\doxysubsubsection{\texorpdfstring{ZMQ\_DELETED\_FUNCTION}{ZMQ\_DELETED\_FUNCTION}}
+{\footnotesize\ttfamily \#define ZMQ\+\_\+\+DELETED\+\_\+\+FUNCTION}
+
+\mbox{\Hypertarget{zmq_8hpp_ad1e288f05295e6cb30529bbaabc2b10d}\label{zmq_8hpp_ad1e288f05295e6cb30529bbaabc2b10d}} 
+\index{zmq.hpp@{zmq.hpp}!ZMQ\_HAS\_PROXY\_STEERABLE@{ZMQ\_HAS\_PROXY\_STEERABLE}}
+\index{ZMQ\_HAS\_PROXY\_STEERABLE@{ZMQ\_HAS\_PROXY\_STEERABLE}!zmq.hpp@{zmq.hpp}}
+\doxysubsubsection{\texorpdfstring{ZMQ\_HAS\_PROXY\_STEERABLE}{ZMQ\_HAS\_PROXY\_STEERABLE}}
+{\footnotesize\ttfamily \#define ZMQ\+\_\+\+HAS\+\_\+\+PROXY\+\_\+\+STEERABLE}
+
+\mbox{\Hypertarget{zmq_8hpp_ade1462cd65bda4d48a473bfa84694eff}\label{zmq_8hpp_ade1462cd65bda4d48a473bfa84694eff}} 
+\index{zmq.hpp@{zmq.hpp}!ZMQ\_NEW\_MONITOR\_EVENT\_LAYOUT@{ZMQ\_NEW\_MONITOR\_EVENT\_LAYOUT}}
+\index{ZMQ\_NEW\_MONITOR\_EVENT\_LAYOUT@{ZMQ\_NEW\_MONITOR\_EVENT\_LAYOUT}!zmq.hpp@{zmq.hpp}}
+\doxysubsubsection{\texorpdfstring{ZMQ\_NEW\_MONITOR\_EVENT\_LAYOUT}{ZMQ\_NEW\_MONITOR\_EVENT\_LAYOUT}}
+{\footnotesize\ttfamily \#define ZMQ\+\_\+\+NEW\+\_\+\+MONITOR\+\_\+\+EVENT\+\_\+\+LAYOUT}
+

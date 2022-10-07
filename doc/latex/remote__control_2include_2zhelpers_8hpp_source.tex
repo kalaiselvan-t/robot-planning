@@ -1,0 +1,252 @@
+\hypertarget{remote__control_2include_2zhelpers_8hpp_source}{}\doxysection{zhelpers.\+hpp}
+\label{remote__control_2include_2zhelpers_8hpp_source}\index{X:/remote\_control/include/zhelpers.hpp@{X:/remote\_control/include/zhelpers.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_\_ZHELPERS\_HPP\_INCLUDED\_\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_\_ZHELPERS\_HPP\_INCLUDED\_\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{comment}{//  Include a bunch of headers that we will need in the examples}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <zmq.hpp>} \textcolor{comment}{// https://github.com/zeromq/cppzmq}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <iomanip>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <assert.h>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <stdlib.h>}        \textcolor{comment}{// random()  RAND\_MAX}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <stdio.h>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <stdarg.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <signal.h>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#if (!defined(WIN32))}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#   include <sys/time.h>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#   include <unistd.h>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{comment}{//  Bring Windows MSVC up to C99 scratch}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#if (defined (WIN32))}}
+\DoxyCodeLine{27     \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} ulong;}
+\DoxyCodeLine{28     \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}  uint;}
+\DoxyCodeLine{29     \textcolor{keyword}{typedef} \_\_int64 int64\_t;}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{comment}{//  On some version of Windows, POSIX subsystem is not installed by default.}}
+\DoxyCodeLine{33 \textcolor{comment}{//  So define srandom and random ourself.}}
+\DoxyCodeLine{34 \textcolor{comment}{//  }}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#if (defined (WIN32))}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#   define srandom srand}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#   define random rand}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{comment}{//  Provide random number from 0..(num-\/1)}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#define within(num) (int) ((float) (num) * random () / (RAND\_MAX + 1.0))}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{comment}{//  Receive 0MQ string from socket and convert into string}}
+\DoxyCodeLine{44 \textcolor{keyword}{static} \textcolor{keyword}{inline} std::string}
+\DoxyCodeLine{45 s\_recv (\mbox{\hyperlink{classzmq_1_1socket__t}{zmq::socket\_t}} \& socket) \{}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47     \mbox{\hyperlink{classzmq_1_1message__t}{zmq::message\_t}} message;}
+\DoxyCodeLine{48     socket.recv(\&message);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{keywordflow}{return} std::string(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(message.data()), message.size());}
+\DoxyCodeLine{51 \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{comment}{//  Convert string to 0MQ string and send to socket}}
+\DoxyCodeLine{54 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{55 s\_send (\mbox{\hyperlink{classzmq_1_1socket__t}{zmq::socket\_t}} \& socket, \textcolor{keyword}{const} std::string \& \textcolor{keywordtype}{string}) \{}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \mbox{\hyperlink{classzmq_1_1message__t}{zmq::message\_t}} message(\textcolor{keywordtype}{string}.size());}
+\DoxyCodeLine{58     memcpy (message.data(), \textcolor{keywordtype}{string}.data(), \textcolor{keywordtype}{string}.size());}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     \textcolor{keywordtype}{bool} rc = socket.send (message);}
+\DoxyCodeLine{61     \textcolor{keywordflow}{return} (rc);}
+\DoxyCodeLine{62 \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{comment}{//  Sends string as 0MQ string, as multipart non-\/terminal}}
+\DoxyCodeLine{65 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{66 s\_sendmore (\mbox{\hyperlink{classzmq_1_1socket__t}{zmq::socket\_t}} \& socket, \textcolor{keyword}{const} std::string \& \textcolor{keywordtype}{string}) \{}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \mbox{\hyperlink{classzmq_1_1message__t}{zmq::message\_t}} message(\textcolor{keywordtype}{string}.size());}
+\DoxyCodeLine{69     memcpy (message.data(), \textcolor{keywordtype}{string}.data(), \textcolor{keywordtype}{string}.size());}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \textcolor{keywordtype}{bool} rc = socket.send (message, ZMQ\_SNDMORE);}
+\DoxyCodeLine{72     \textcolor{keywordflow}{return} (rc);}
+\DoxyCodeLine{73 \}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{comment}{//  Receives all message parts from socket, prints neatly}}
+\DoxyCodeLine{76 \textcolor{comment}{//}}
+\DoxyCodeLine{77 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{78 s\_dump (\mbox{\hyperlink{classzmq_1_1socket__t}{zmq::socket\_t}} \& socket)}
+\DoxyCodeLine{79 \{}
+\DoxyCodeLine{80     std::cout << \textcolor{stringliteral}{"{}-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/"{}} << std::endl;}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82     \textcolor{keywordflow}{while} (1) \{}
+\DoxyCodeLine{83         \textcolor{comment}{//  Process all parts of the message}}
+\DoxyCodeLine{84         \mbox{\hyperlink{classzmq_1_1message__t}{zmq::message\_t}} message;}
+\DoxyCodeLine{85         socket.recv(\&message);}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87         \textcolor{comment}{//  Dump the message as text or binary}}
+\DoxyCodeLine{88         \textcolor{keywordtype}{int} size = message.size();}
+\DoxyCodeLine{89         std::string data(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(message.data()), size);}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91         \textcolor{keywordtype}{bool} is\_text = \textcolor{keyword}{true};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93         \textcolor{keywordtype}{int} char\_nbr;}
+\DoxyCodeLine{94         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} byte;}
+\DoxyCodeLine{95         \textcolor{keywordflow}{for} (char\_nbr = 0; char\_nbr < size; char\_nbr++) \{}
+\DoxyCodeLine{96             \textcolor{keywordtype}{byte} = data [char\_nbr];}
+\DoxyCodeLine{97             \textcolor{keywordflow}{if} (byte < 32 || byte > 127)}
+\DoxyCodeLine{98                 is\_text = \textcolor{keyword}{false};}
+\DoxyCodeLine{99         \}}
+\DoxyCodeLine{100         std::cout << \textcolor{stringliteral}{"{}["{}} << std::setfill(\textcolor{charliteral}{'0'}) << std::setw(3) << size << \textcolor{stringliteral}{"{}]"{}};}
+\DoxyCodeLine{101         \textcolor{keywordflow}{for} (char\_nbr = 0; char\_nbr < size; char\_nbr++) \{}
+\DoxyCodeLine{102             \textcolor{keywordflow}{if} (is\_text)}
+\DoxyCodeLine{103                 std::cout << (char)data [char\_nbr];}
+\DoxyCodeLine{104             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{105                 std::cout << std::setfill(\textcolor{charliteral}{'0'}) << std::setw(2)}
+\DoxyCodeLine{106                    << std::hex << (\textcolor{keywordtype}{unsigned} int) data [char\_nbr];}
+\DoxyCodeLine{107         \}}
+\DoxyCodeLine{108         std::cout << std::endl;}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110         \textcolor{keywordtype}{int} more = 0;           \textcolor{comment}{//  Multipart detection}}
+\DoxyCodeLine{111         \textcolor{keywordtype}{size\_t} more\_size = \textcolor{keyword}{sizeof} (more);}
+\DoxyCodeLine{112         socket.getsockopt (ZMQ\_RCVMORE, \&more, \&more\_size);}
+\DoxyCodeLine{113         \textcolor{keywordflow}{if} (!more)}
+\DoxyCodeLine{114             \textcolor{keywordflow}{break};              \textcolor{comment}{//  Last message part}}
+\DoxyCodeLine{115     \}}
+\DoxyCodeLine{116 \}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{preprocessor}{\#if (!defined (WIN32))}}
+\DoxyCodeLine{119 \textcolor{comment}{//  Set simple random printable identity on socket}}
+\DoxyCodeLine{120 \textcolor{comment}{//  Caution:}}
+\DoxyCodeLine{121 \textcolor{comment}{//    DO NOT call this version of s\_set\_id from multiple threads on MS Windows}}
+\DoxyCodeLine{122 \textcolor{comment}{//    since s\_set\_id will call rand() on MS Windows. rand(), however, is not }}
+\DoxyCodeLine{123 \textcolor{comment}{//    reentrant or thread-\/safe. See issue \#521.}}
+\DoxyCodeLine{124 \textcolor{keyword}{inline} std::string}
+\DoxyCodeLine{125 s\_set\_id (\mbox{\hyperlink{classzmq_1_1socket__t}{zmq::socket\_t}} \& socket)}
+\DoxyCodeLine{126 \{}
+\DoxyCodeLine{127     std::stringstream ss;}
+\DoxyCodeLine{128     ss << std::hex << std::uppercase}
+\DoxyCodeLine{129        << std::setw(4) << std::setfill(\textcolor{charliteral}{'0'}) << within (0x10000) << \textcolor{stringliteral}{"{}-\/"{}}}
+\DoxyCodeLine{130        << std::setw(4) << std::setfill(\textcolor{charliteral}{'0'}) << within (0x10000);}
+\DoxyCodeLine{131     socket.setsockopt(ZMQ\_IDENTITY, ss.str().c\_str(), ss.str().length());}
+\DoxyCodeLine{132     \textcolor{keywordflow}{return} ss.str();}
+\DoxyCodeLine{133 \}}
+\DoxyCodeLine{134 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{135 \textcolor{comment}{// Fix \#521}}
+\DoxyCodeLine{136 \textcolor{keyword}{inline} std::string}
+\DoxyCodeLine{137 s\_set\_id(\mbox{\hyperlink{classzmq_1_1socket__t}{zmq::socket\_t}} \& socket, intptr\_t \textcolor{keywordtype}{id})}
+\DoxyCodeLine{138 \{}
+\DoxyCodeLine{139     std::stringstream ss;}
+\DoxyCodeLine{140     ss << std::hex << std::uppercase}
+\DoxyCodeLine{141         << std::setw(4) << std::setfill(\textcolor{charliteral}{'0'}) << id;}
+\DoxyCodeLine{142     socket.setsockopt(ZMQ\_IDENTITY, ss.str().c\_str(), ss.str().length());}
+\DoxyCodeLine{143     \textcolor{keywordflow}{return} ss.str();}
+\DoxyCodeLine{144 \}}
+\DoxyCodeLine{145 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{comment}{//  Report 0MQ version number}}
+\DoxyCodeLine{148 \textcolor{comment}{//}}
+\DoxyCodeLine{149 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{150 s\_version (\textcolor{keywordtype}{void})}
+\DoxyCodeLine{151 \{}
+\DoxyCodeLine{152     \textcolor{keywordtype}{int} major, minor, patch;}
+\DoxyCodeLine{153     zmq\_version (\&major, \&minor, \&patch);}
+\DoxyCodeLine{154     std::cout << \textcolor{stringliteral}{"{}Current 0MQ version is "{}} << major << \textcolor{stringliteral}{"{}."{}} << minor << \textcolor{stringliteral}{"{}."{}} << patch << std::endl;}
+\DoxyCodeLine{155 \}}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{158 s\_version\_assert (\textcolor{keywordtype}{int} want\_major, \textcolor{keywordtype}{int} want\_minor)}
+\DoxyCodeLine{159 \{}
+\DoxyCodeLine{160     \textcolor{keywordtype}{int} major, minor, patch;}
+\DoxyCodeLine{161     zmq\_version (\&major, \&minor, \&patch);}
+\DoxyCodeLine{162     \textcolor{keywordflow}{if} (major < want\_major}
+\DoxyCodeLine{163     || (major == want\_major \&\& minor < want\_minor)) \{}
+\DoxyCodeLine{164         std::cout << \textcolor{stringliteral}{"{}Current 0MQ version is "{}} << major << \textcolor{stringliteral}{"{}."{}} << minor << std::endl;}
+\DoxyCodeLine{165         std::cout << \textcolor{stringliteral}{"{}Application needs at least "{}} << want\_major << \textcolor{stringliteral}{"{}."{}} << want\_minor}
+\DoxyCodeLine{166               << \textcolor{stringliteral}{"{} -\/ cannot continue"{}} << std::endl;}
+\DoxyCodeLine{167         exit (EXIT\_FAILURE);}
+\DoxyCodeLine{168     \}}
+\DoxyCodeLine{169 \}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{comment}{//  Return current system clock as milliseconds}}
+\DoxyCodeLine{172 \textcolor{keyword}{static} \textcolor{keyword}{inline} int64\_t}
+\DoxyCodeLine{173 s\_clock (\textcolor{keywordtype}{void})}
+\DoxyCodeLine{174 \{}
+\DoxyCodeLine{175 \textcolor{preprocessor}{\#if (defined (WIN32))}}
+\DoxyCodeLine{176     FILETIME fileTime;}
+\DoxyCodeLine{177     GetSystemTimeAsFileTime(\&fileTime);}
+\DoxyCodeLine{178     \textcolor{keywordtype}{unsigned} \_\_int64 largeInt = fileTime.dwHighDateTime;}
+\DoxyCodeLine{179     largeInt <<= 32;}
+\DoxyCodeLine{180     largeInt |= fileTime.dwLowDateTime;}
+\DoxyCodeLine{181     largeInt /= 10000; \textcolor{comment}{// FILETIME is in units of 100 nanoseconds}}
+\DoxyCodeLine{182     \textcolor{keywordflow}{return} (int64\_t)largeInt;}
+\DoxyCodeLine{183 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{184     \textcolor{keyword}{struct }timeval tv;}
+\DoxyCodeLine{185     gettimeofday (\&tv, NULL);}
+\DoxyCodeLine{186     \textcolor{keywordflow}{return} (int64\_t) (tv.tv\_sec * 1000 + tv.tv\_usec / 1000);}
+\DoxyCodeLine{187 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{188 \}}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 \textcolor{comment}{//  Sleep for a number of milliseconds}}
+\DoxyCodeLine{191 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{192 s\_sleep (\textcolor{keywordtype}{int} msecs)}
+\DoxyCodeLine{193 \{}
+\DoxyCodeLine{194 \textcolor{preprocessor}{\#if (defined (WIN32))}}
+\DoxyCodeLine{195     Sleep (msecs);}
+\DoxyCodeLine{196 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{197     \textcolor{keyword}{struct }timespec t;}
+\DoxyCodeLine{198     t.tv\_sec = msecs / 1000;}
+\DoxyCodeLine{199     t.tv\_nsec = (msecs \% 1000) * 1000000;}
+\DoxyCodeLine{200     nanosleep (\&t, NULL);}
+\DoxyCodeLine{201 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{202 \}}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{205 s\_console (\textcolor{keyword}{const} \textcolor{keywordtype}{char} *format, ...)}
+\DoxyCodeLine{206 \{}
+\DoxyCodeLine{207     time\_t curtime = time (NULL);}
+\DoxyCodeLine{208     \textcolor{keyword}{struct }tm *loctime = localtime (\&curtime);}
+\DoxyCodeLine{209     \textcolor{keywordtype}{char} *formatted = \textcolor{keyword}{new} \textcolor{keywordtype}{char}[20];}
+\DoxyCodeLine{210     strftime (formatted, 20, \textcolor{stringliteral}{"{}\%y-\/\%m-\/\%d \%H:\%M:\%S "{}}, loctime);}
+\DoxyCodeLine{211     printf (\textcolor{stringliteral}{"{}\%s"{}}, formatted);}
+\DoxyCodeLine{212     \textcolor{keyword}{delete}[] formatted;}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214     va\_list argptr;}
+\DoxyCodeLine{215     va\_start (argptr, format);}
+\DoxyCodeLine{216     vprintf (format, argptr);}
+\DoxyCodeLine{217     va\_end (argptr);}
+\DoxyCodeLine{218     printf (\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{219 \}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 \textcolor{comment}{//  -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{222 \textcolor{comment}{//  Signal handling}}
+\DoxyCodeLine{223 \textcolor{comment}{//}}
+\DoxyCodeLine{224 \textcolor{comment}{//  Call s\_catch\_signals() in your application at startup, and then exit}}
+\DoxyCodeLine{225 \textcolor{comment}{//  your main loop if s\_interrupted is ever 1. Works especially well with}}
+\DoxyCodeLine{226 \textcolor{comment}{//  zmq\_poll.}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 \textcolor{keyword}{static} \textcolor{keywordtype}{int} s\_interrupted = 0;}
+\DoxyCodeLine{229 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{void} s\_signal\_handler (\textcolor{keywordtype}{int} \textcolor{comment}{/*signal\_value*/})}
+\DoxyCodeLine{230 \{}
+\DoxyCodeLine{231     s\_interrupted = 1;}
+\DoxyCodeLine{232 \}}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{void} s\_catch\_signals ()}
+\DoxyCodeLine{235 \{}
+\DoxyCodeLine{236 \textcolor{preprocessor}{\#if (!defined(WIN32))}}
+\DoxyCodeLine{237     \textcolor{keyword}{struct }sigaction action;}
+\DoxyCodeLine{238     action.sa\_handler = s\_signal\_handler;}
+\DoxyCodeLine{239     action.sa\_flags = 0;}
+\DoxyCodeLine{240     sigemptyset (\&action.sa\_mask);}
+\DoxyCodeLine{241     sigaction (SIGINT, \&action, NULL);}
+\DoxyCodeLine{242     sigaction (SIGTERM, \&action, NULL);}
+\DoxyCodeLine{243 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{244 \}}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

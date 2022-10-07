@@ -1,0 +1,740 @@
+\hypertarget{classnlohmann_1_1basic__json_1_1lexer}{}\doxysection{nlohmann\+::basic\+\_\+json\texorpdfstring{$<$}{<} Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer \texorpdfstring{$>$}{>}\+::lexer Class Reference}
+\label{classnlohmann_1_1basic__json_1_1lexer}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+
+
+lexical analysis  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structnlohmann_1_1basic__json_1_1lexer_1_1strtonum}{strtonum}}
+\begin{DoxyCompactList}\small\item\em parse string into a built-\/in arithmetic type as if the current locale is POSIX. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} \{ \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}{uninitialized}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}{literal\+\_\+true}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}{literal\+\_\+false}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}{literal\+\_\+null}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}{value\+\_\+string}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}{value\+\_\+unsigned}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}{value\+\_\+integer}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}{value\+\_\+float}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}{begin\+\_\+array}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}{begin\+\_\+object}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}{end\+\_\+array}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}{end\+\_\+object}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}{name\+\_\+separator}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}{value\+\_\+separator}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}{parse\+\_\+error}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}{end\+\_\+of\+\_\+input}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}{uninitialized}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}{literal\+\_\+true}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}{literal\+\_\+false}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}{literal\+\_\+null}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}{value\+\_\+string}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}{value\+\_\+unsigned}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}{value\+\_\+integer}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}{value\+\_\+float}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}{begin\+\_\+array}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}{begin\+\_\+object}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}{end\+\_\+array}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}{end\+\_\+object}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}{name\+\_\+separator}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}{value\+\_\+separator}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}{parse\+\_\+error}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}{end\+\_\+of\+\_\+input}}
+ \}
+\begin{DoxyCompactList}\small\item\em token types for the parser \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} \{ \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}{uninitialized}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}{literal\+\_\+true}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}{literal\+\_\+false}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}{literal\+\_\+null}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}{value\+\_\+string}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}{value\+\_\+unsigned}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}{value\+\_\+integer}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}{value\+\_\+float}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}{begin\+\_\+array}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}{begin\+\_\+object}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}{end\+\_\+array}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}{end\+\_\+object}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}{name\+\_\+separator}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}{value\+\_\+separator}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}{parse\+\_\+error}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}{end\+\_\+of\+\_\+input}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}{uninitialized}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}{literal\+\_\+true}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}{literal\+\_\+false}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}{literal\+\_\+null}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}{value\+\_\+string}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}{value\+\_\+unsigned}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}{value\+\_\+integer}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}{value\+\_\+float}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}{begin\+\_\+array}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}{begin\+\_\+object}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}{end\+\_\+array}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}{end\+\_\+object}}
+, \newline
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}{name\+\_\+separator}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}{value\+\_\+separator}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}{parse\+\_\+error}}
+, \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}{end\+\_\+of\+\_\+input}}
+ \}
+\begin{DoxyCompactList}\small\item\em token types for the parser \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}\label{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}} 
+using {\bfseries lexer\+\_\+char\+\_\+t} = unsigned char
+\begin{DoxyCompactList}\small\item\em the char type to use in the lexer \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}\label{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}} 
+using {\bfseries lexer\+\_\+char\+\_\+t} = unsigned char
+\begin{DoxyCompactList}\small\item\em the char type to use in the lexer \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a6f8eac8d6d2b95ce3f10b04104ecda8d}\label{classnlohmann_1_1basic__json_1_1lexer_a6f8eac8d6d2b95ce3f10b04104ecda8d}} 
+{\bfseries lexer} (const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}{lexer\+\_\+char\+\_\+t}} $\ast$buff, const size\+\_\+t len) noexcept
+\begin{DoxyCompactList}\small\item\em a lexer from a buffer with given length \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_aa85fafea3a014e6226be866d33112c49}\label{classnlohmann_1_1basic__json_1_1lexer_aa85fafea3a014e6226be866d33112c49}} 
+{\bfseries lexer} (std\+::istream \&s)
+\begin{DoxyCompactList}\small\item\em a lexer from an input stream \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aa2bf285bc6ee37e2af87dfd627224b41}{scan}} ()
+\item 
+void \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a0b137b9457f558c4b2352259b12ed5ff}{fill\+\_\+line\+\_\+buffer}} (size\+\_\+t n=0)
+\begin{DoxyCompactList}\small\item\em append data from the stream to the line buffer \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_afa23a2d0ad20b047487d388fd4e75657}\label{classnlohmann_1_1basic__json_1_1lexer_afa23a2d0ad20b047487d388fd4e75657}} 
+\mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} {\bfseries get\+\_\+token\+\_\+string} () const
+\begin{DoxyCompactList}\small\item\em return string representation of last read token \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}{get\+\_\+string}} () const
+\begin{DoxyCompactList}\small\item\em return string value for string tokens \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number}} (\mbox{\hyperlink{classnlohmann_1_1basic__json}{basic\+\_\+json}} \&result, const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} token) const
+\begin{DoxyCompactList}\small\item\em return number value for number tokens \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a6f8eac8d6d2b95ce3f10b04104ecda8d}\label{classnlohmann_1_1basic__json_1_1lexer_a6f8eac8d6d2b95ce3f10b04104ecda8d}} 
+{\bfseries lexer} (const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}{lexer\+\_\+char\+\_\+t}} $\ast$buff, const size\+\_\+t len) noexcept
+\begin{DoxyCompactList}\small\item\em a lexer from a buffer with given length \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_aa85fafea3a014e6226be866d33112c49}\label{classnlohmann_1_1basic__json_1_1lexer_aa85fafea3a014e6226be866d33112c49}} 
+{\bfseries lexer} (std\+::istream \&s)
+\begin{DoxyCompactList}\small\item\em a lexer from an input stream \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aa2bf285bc6ee37e2af87dfd627224b41}{scan}} ()
+\item 
+void \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a0b137b9457f558c4b2352259b12ed5ff}{fill\+\_\+line\+\_\+buffer}} (size\+\_\+t n=0)
+\begin{DoxyCompactList}\small\item\em append data from the stream to the line buffer \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_afa23a2d0ad20b047487d388fd4e75657}\label{classnlohmann_1_1basic__json_1_1lexer_afa23a2d0ad20b047487d388fd4e75657}} 
+\mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} {\bfseries get\+\_\+token\+\_\+string} () const
+\begin{DoxyCompactList}\small\item\em return string representation of last read token \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}{get\+\_\+string}} () const
+\begin{DoxyCompactList}\small\item\em return string value for string tokens \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number}} (\mbox{\hyperlink{classnlohmann_1_1basic__json}{basic\+\_\+json}} \&result, const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} token) const
+\begin{DoxyCompactList}\small\item\em return number value for number tokens \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_acdda4a686d6b4fdd4fd995d0ff62b27e}{to\+\_\+unicode}} (const std\+::size\+\_\+t codepoint1, const std\+::size\+\_\+t codepoint2=0)
+\begin{DoxyCompactList}\small\item\em create a string from one or two Unicode code points \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a381fb4f4ec1501fd8327c317c9085628}\label{classnlohmann_1_1basic__json_1_1lexer_a381fb4f4ec1501fd8327c317c9085628}} 
+static std\+::string {\bfseries token\+\_\+type\+\_\+name} (const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} t)
+\begin{DoxyCompactList}\small\item\em return name of values of type token\+\_\+type (only used for errors) \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_acdda4a686d6b4fdd4fd995d0ff62b27e}{to\+\_\+unicode}} (const std\+::size\+\_\+t codepoint1, const std\+::size\+\_\+t codepoint2=0)
+\begin{DoxyCompactList}\small\item\em create a string from one or two Unicode code points \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a381fb4f4ec1501fd8327c317c9085628}\label{classnlohmann_1_1basic__json_1_1lexer_a381fb4f4ec1501fd8327c317c9085628}} 
+static std\+::string {\bfseries token\+\_\+type\+\_\+name} (const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} t)
+\begin{DoxyCompactList}\small\item\em return name of values of type token\+\_\+type (only used for errors) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_abc9f91d7c17dfc536b5dc41c1d7552ea}\label{classnlohmann_1_1basic__json_1_1lexer_abc9f91d7c17dfc536b5dc41c1d7552ea}} 
+std\+::istream $\ast$ {\bfseries m\+\_\+stream} = nullptr
+\begin{DoxyCompactList}\small\item\em optional input stream \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_aeba256e545e3362795f90bf3aafe18d5}\label{classnlohmann_1_1basic__json_1_1lexer_aeba256e545e3362795f90bf3aafe18d5}} 
+\mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} {\bfseries m\+\_\+line\+\_\+buffer} \{\}
+\begin{DoxyCompactList}\small\item\em line buffer buffer for m\+\_\+stream \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a6cab4622ed1fb6525a11e86ef789581d}\label{classnlohmann_1_1basic__json_1_1lexer_a6cab4622ed1fb6525a11e86ef789581d}} 
+\mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} {\bfseries m\+\_\+line\+\_\+buffer\+\_\+tmp} \{\}
+\begin{DoxyCompactList}\small\item\em used for filling m\+\_\+line\+\_\+buffer \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a7faaa7971836e23a2378f8a817b8980b}\label{classnlohmann_1_1basic__json_1_1lexer_a7faaa7971836e23a2378f8a817b8980b}} 
+const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}{lexer\+\_\+char\+\_\+t}} $\ast$ {\bfseries m\+\_\+content} = nullptr
+\begin{DoxyCompactList}\small\item\em the buffer pointer \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a47974b48e4de6e930f8001cd5f1d8283}\label{classnlohmann_1_1basic__json_1_1lexer_a47974b48e4de6e930f8001cd5f1d8283}} 
+const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}{lexer\+\_\+char\+\_\+t}} $\ast$ {\bfseries m\+\_\+start} = nullptr
+\begin{DoxyCompactList}\small\item\em pointer to the beginning of the current symbol \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a5512ed803d85c1b0cb5b31ef6cacbb58}\label{classnlohmann_1_1basic__json_1_1lexer_a5512ed803d85c1b0cb5b31ef6cacbb58}} 
+const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}{lexer\+\_\+char\+\_\+t}} $\ast$ {\bfseries m\+\_\+marker} = nullptr
+\begin{DoxyCompactList}\small\item\em pointer for backtracking information \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a99d4d2b3b9da237e5e55fb5be17ae3ed}\label{classnlohmann_1_1basic__json_1_1lexer_a99d4d2b3b9da237e5e55fb5be17ae3ed}} 
+const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}{lexer\+\_\+char\+\_\+t}} $\ast$ {\bfseries m\+\_\+cursor} = nullptr
+\begin{DoxyCompactList}\small\item\em pointer to the current symbol \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a46f8b520dcc6b16971b9bd9de54ee27a}\label{classnlohmann_1_1basic__json_1_1lexer_a46f8b520dcc6b16971b9bd9de54ee27a}} 
+const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_abe04be04d0575249f8806c334bacbc80}{lexer\+\_\+char\+\_\+t}} $\ast$ {\bfseries m\+\_\+limit} = nullptr
+\begin{DoxyCompactList}\small\item\em pointer to the end of the buffer \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a2ad8bad3a2224be7fdd4e4bb0f757a0e}\label{classnlohmann_1_1basic__json_1_1lexer_a2ad8bad3a2224be7fdd4e4bb0f757a0e}} 
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} {\bfseries last\+\_\+token\+\_\+type} = \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}{token\+\_\+type\+::end\+\_\+of\+\_\+input}}
+\begin{DoxyCompactList}\small\item\em the last token type \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type = std\+::string, class Boolean\+Type = bool, class Number\+Integer\+Type = std\+::int64\+\_\+t, class Number\+Unsigned\+Type = std\+::uint64\+\_\+t, class Number\+Float\+Type = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$\newline
+class nlohmann\+::basic\+\_\+json$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer}
+lexical analysis 
+
+This class organizes the lexical analysis during JSON deserialization. The core of it is a scanner generated by \href{http://re2c.org}{\texttt{ re2c}} that processes a buffer and recognizes tokens according to RFC 7159. 
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!token\_type@{token\_type}}
+\index{token\_type@{token\_type}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{token\_type}{token\_type}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+enum class \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{nlohmann\+::basic\+\_\+json\+::lexer\+::token\+\_\+type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+token types for the parser 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{uninitialized@{uninitialized}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!uninitialized@{uninitialized}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}} 
+uninitialized&indicating the scanner is uninitialized \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_true@{literal\_true}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_true@{literal\_true}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}} 
+literal\+\_\+true&the {\ttfamily true} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_false@{literal\_false}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_false@{literal\_false}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}} 
+literal\+\_\+false&the {\ttfamily false} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_null@{literal\_null}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_null@{literal\_null}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}} 
+literal\+\_\+null&the {\ttfamily null} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_string@{value\_string}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_string@{value\_string}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}} 
+value\+\_\+string&a string -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}{get\+\_\+string()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_unsigned@{value\_unsigned}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_unsigned@{value\_unsigned}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}} 
+value\+\_\+unsigned&an unsigned integer -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_integer@{value\_integer}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_integer@{value\_integer}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}} 
+value\+\_\+integer&a signed integer -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_float@{value\_float}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_float@{value\_float}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}} 
+value\+\_\+float&an floating point number -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{begin\_array@{begin\_array}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!begin\_array@{begin\_array}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}} 
+begin\+\_\+array&the character for array begin {\ttfamily \mbox{[}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{begin\_object@{begin\_object}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!begin\_object@{begin\_object}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}} 
+begin\+\_\+object&the character for object begin {\ttfamily \{} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_array@{end\_array}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_array@{end\_array}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}} 
+end\+\_\+array&the character for array end {\ttfamily \mbox{]}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_object@{end\_object}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_object@{end\_object}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}} 
+end\+\_\+object&the character for object end {\ttfamily \}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{name\_separator@{name\_separator}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!name\_separator@{name\_separator}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}} 
+name\+\_\+separator&the name separator {\ttfamily \+:} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_separator@{value\_separator}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_separator@{value\_separator}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}} 
+value\+\_\+separator&the value separator {\ttfamily ,} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{parse\_error@{parse\_error}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!parse\_error@{parse\_error}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}} 
+parse\+\_\+error&indicating a parse error \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_of\_input@{end\_of\_input}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_of\_input@{end\_of\_input}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}} 
+end\+\_\+of\+\_\+input&indicating the end of the input buffer \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{uninitialized@{uninitialized}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!uninitialized@{uninitialized}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}} 
+uninitialized&indicating the scanner is uninitialized \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_true@{literal\_true}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_true@{literal\_true}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}} 
+literal\+\_\+true&the {\ttfamily true} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_false@{literal\_false}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_false@{literal\_false}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}} 
+literal\+\_\+false&the {\ttfamily false} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_null@{literal\_null}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_null@{literal\_null}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}} 
+literal\+\_\+null&the {\ttfamily null} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_string@{value\_string}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_string@{value\_string}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}} 
+value\+\_\+string&a string -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}{get\+\_\+string()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_unsigned@{value\_unsigned}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_unsigned@{value\_unsigned}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}} 
+value\+\_\+unsigned&an unsigned integer -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_integer@{value\_integer}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_integer@{value\_integer}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}} 
+value\+\_\+integer&a signed integer -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_float@{value\_float}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_float@{value\_float}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}} 
+value\+\_\+float&an floating point number -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{begin\_array@{begin\_array}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!begin\_array@{begin\_array}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}} 
+begin\+\_\+array&the character for array begin {\ttfamily \mbox{[}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{begin\_object@{begin\_object}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!begin\_object@{begin\_object}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}} 
+begin\+\_\+object&the character for object begin {\ttfamily \{} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_array@{end\_array}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_array@{end\_array}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}} 
+end\+\_\+array&the character for array end {\ttfamily \mbox{]}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_object@{end\_object}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_object@{end\_object}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}} 
+end\+\_\+object&the character for object end {\ttfamily \}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{name\_separator@{name\_separator}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!name\_separator@{name\_separator}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}} 
+name\+\_\+separator&the name separator {\ttfamily \+:} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_separator@{value\_separator}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_separator@{value\_separator}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}} 
+value\+\_\+separator&the value separator {\ttfamily ,} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{parse\_error@{parse\_error}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!parse\_error@{parse\_error}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}} 
+parse\+\_\+error&indicating a parse error \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_of\_input@{end\_of\_input}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_of\_input@{end\_of\_input}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}} 
+end\+\_\+of\+\_\+input&indicating the end of the input buffer \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!token\_type@{token\_type}}
+\index{token\_type@{token\_type}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{token\_type}{token\_type}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+enum class \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{nlohmann\+::basic\+\_\+json\+::lexer\+::token\+\_\+type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+token types for the parser 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{uninitialized@{uninitialized}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!uninitialized@{uninitialized}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}} 
+uninitialized&indicating the scanner is uninitialized \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_true@{literal\_true}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_true@{literal\_true}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}} 
+literal\+\_\+true&the {\ttfamily true} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_false@{literal\_false}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_false@{literal\_false}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}} 
+literal\+\_\+false&the {\ttfamily false} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_null@{literal\_null}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_null@{literal\_null}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}} 
+literal\+\_\+null&the {\ttfamily null} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_string@{value\_string}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_string@{value\_string}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}} 
+value\+\_\+string&a string -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}{get\+\_\+string()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_unsigned@{value\_unsigned}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_unsigned@{value\_unsigned}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}} 
+value\+\_\+unsigned&an unsigned integer -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_integer@{value\_integer}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_integer@{value\_integer}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}} 
+value\+\_\+integer&a signed integer -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_float@{value\_float}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_float@{value\_float}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}} 
+value\+\_\+float&an floating point number -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{begin\_array@{begin\_array}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!begin\_array@{begin\_array}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}} 
+begin\+\_\+array&the character for array begin {\ttfamily \mbox{[}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{begin\_object@{begin\_object}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!begin\_object@{begin\_object}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}} 
+begin\+\_\+object&the character for object begin {\ttfamily \{} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_array@{end\_array}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_array@{end\_array}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}} 
+end\+\_\+array&the character for array end {\ttfamily \mbox{]}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_object@{end\_object}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_object@{end\_object}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}} 
+end\+\_\+object&the character for object end {\ttfamily \}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{name\_separator@{name\_separator}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!name\_separator@{name\_separator}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}} 
+name\+\_\+separator&the name separator {\ttfamily \+:} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_separator@{value\_separator}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_separator@{value\_separator}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}} 
+value\+\_\+separator&the value separator {\ttfamily ,} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{parse\_error@{parse\_error}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!parse\_error@{parse\_error}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}} 
+parse\+\_\+error&indicating a parse error \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_of\_input@{end\_of\_input}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_of\_input@{end\_of\_input}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}} 
+end\+\_\+of\+\_\+input&indicating the end of the input buffer \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{uninitialized@{uninitialized}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!uninitialized@{uninitialized}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a42dd1a73d072bb6bf3f494f22b15db8e}} 
+uninitialized&indicating the scanner is uninitialized \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_true@{literal\_true}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_true@{literal\_true}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a85cc1a37b0aaa52de40e72f0ed4e0c0d}} 
+literal\+\_\+true&the {\ttfamily true} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_false@{literal\_false}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_false@{literal\_false}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7afab1694b1b3937a079f4625fe0b6108b}} 
+literal\+\_\+false&the {\ttfamily false} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{literal\_null@{literal\_null}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!literal\_null@{literal\_null}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7ab7ae4c0e46d86f884677768160b26e9e}} 
+literal\+\_\+null&the {\ttfamily null} literal \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_string@{value\_string}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_string@{value\_string}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2b490e8bf366b4cbe3ebd99b26ce15ce}} 
+value\+\_\+string&a string -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}{get\+\_\+string()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_unsigned@{value\_unsigned}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_unsigned@{value\_unsigned}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aaf1f040fcd2f674d2e5893d7a731078f}} 
+value\+\_\+unsigned&an unsigned integer -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_integer@{value\_integer}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_integer@{value\_integer}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a5064b6655d88a50ae16665cf7751c0ee}} 
+value\+\_\+integer&a signed integer -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_float@{value\_float}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_float@{value\_float}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a0d2671a6f81efb91e77f6ac3bdb11443}} 
+value\+\_\+float&an floating point number -- use \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}{get\+\_\+number()}} for actual value \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{begin\_array@{begin\_array}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!begin\_array@{begin\_array}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a16c226b4425b68560fea322b46dabe01}} 
+begin\+\_\+array&the character for array begin {\ttfamily \mbox{[}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{begin\_object@{begin\_object}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!begin\_object@{begin\_object}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a9a9ffd53b6869d4eca271b1ed5b57fe8}} 
+begin\+\_\+object&the character for object begin {\ttfamily \{} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_array@{end\_array}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_array@{end\_array}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a2f3e68e7f111a1e5c7728742b3ca2b7f}} 
+end\+\_\+array&the character for array end {\ttfamily \mbox{]}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_object@{end\_object}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_object@{end\_object}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a7d5b4427866814de4d8f132721d59c87}} 
+end\+\_\+object&the character for object end {\ttfamily \}} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{name\_separator@{name\_separator}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!name\_separator@{name\_separator}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7acc3c64f8ae08c00de1b33f19a4d2913a}} 
+name\+\_\+separator&the name separator {\ttfamily \+:} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{value\_separator@{value\_separator}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!value\_separator@{value\_separator}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a745373036100d7392ad62c617cab59af}} 
+value\+\_\+separator&the value separator {\ttfamily ,} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{parse\_error@{parse\_error}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!parse\_error@{parse\_error}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7a456e19aeafa334241c7ff3f589547f9d}} 
+parse\+\_\+error&indicating a parse error \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end\_of\_input@{end\_of\_input}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!end\_of\_input@{end\_of\_input}}}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}\label{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7aca11f56dd477c09e06583dbdcda0985f}} 
+end\+\_\+of\+\_\+input&indicating the end of the input buffer \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a0b137b9457f558c4b2352259b12ed5ff}\label{classnlohmann_1_1basic__json_1_1lexer_a0b137b9457f558c4b2352259b12ed5ff}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!fill\_line\_buffer@{fill\_line\_buffer}}
+\index{fill\_line\_buffer@{fill\_line\_buffer}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{fill\_line\_buffer()}{fill\_line\_buffer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+void \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::fill\+\_\+line\+\_\+buffer (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+append data from the stream to the line buffer 
+
+This function is called by the \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aa2bf285bc6ee37e2af87dfd627224b41}{scan()}} function when the end of the buffer ({\ttfamily m\+\_\+limit}) is reached and the {\ttfamily m\+\_\+cursor} pointer cannot be incremented without leaving the limits of the line buffer. Note re2c decides when to call this function.
+
+If the lexer reads from contiguous storage, there is no trailing null byte. Therefore, this function must make sure to add these padding null bytes.
+
+If the lexer reads from an input stream, this function reads the next line of the input.
+
+\begin{DoxyPrecond}{Precondition}
+p p p p p p u u u u u x . . . . . . $^\wedge$ $^\wedge$ $^\wedge$ $^\wedge$ m\+\_\+content m\+\_\+start $\vert$ m\+\_\+limit m\+\_\+cursor
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+u u u u u x x x x x x x . . . . . . $^\wedge$ $^\wedge$ $^\wedge$ $\vert$ m\+\_\+cursor m\+\_\+limit m\+\_\+start m\+\_\+content 
+\end{DoxyPostcond}
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a0b137b9457f558c4b2352259b12ed5ff}\label{classnlohmann_1_1basic__json_1_1lexer_a0b137b9457f558c4b2352259b12ed5ff}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!fill\_line\_buffer@{fill\_line\_buffer}}
+\index{fill\_line\_buffer@{fill\_line\_buffer}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{fill\_line\_buffer()}{fill\_line\_buffer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+void \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::fill\+\_\+line\+\_\+buffer (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+append data from the stream to the line buffer 
+
+This function is called by the \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_aa2bf285bc6ee37e2af87dfd627224b41}{scan()}} function when the end of the buffer ({\ttfamily m\+\_\+limit}) is reached and the {\ttfamily m\+\_\+cursor} pointer cannot be incremented without leaving the limits of the line buffer. Note re2c decides when to call this function.
+
+If the lexer reads from contiguous storage, there is no trailing null byte. Therefore, this function must make sure to add these padding null bytes.
+
+If the lexer reads from an input stream, this function reads the next line of the input.
+
+\begin{DoxyPrecond}{Precondition}
+p p p p p p u u u u u x . . . . . . $^\wedge$ $^\wedge$ $^\wedge$ $^\wedge$ m\+\_\+content m\+\_\+start $\vert$ m\+\_\+limit m\+\_\+cursor
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondition}
+u u u u u x x x x x x x . . . . . . $^\wedge$ $^\wedge$ $^\wedge$ $\vert$ m\+\_\+cursor m\+\_\+limit m\+\_\+start m\+\_\+content 
+\end{DoxyPostcond}
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}\label{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!get\_number@{get\_number}}
+\index{get\_number@{get\_number}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{get\_number()}{get\_number()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+bool \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::get\+\_\+number (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classnlohmann_1_1basic__json}{basic\+\_\+json}} \&}]{result,  }\item[{const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}}}]{token }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return number value for number tokens 
+
+This function translates the last token into the most appropriate number type (either integer, unsigned integer or floating point), which is passed back to the caller via the result parameter.
+
+integral numbers that don\textquotesingle{}t fit into the the range of the respective type are parsed as number\+\_\+float\+\_\+t
+
+floating-\/point values do not satisfy std\+::isfinite predicate are converted to value\+\_\+t\+::null
+
+throws if the entire string \mbox{[}m\+\_\+start .. m\+\_\+cursor) cannot be interpreted as a number
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em result} & \mbox{\hyperlink{classnlohmann_1_1basic__json}{basic\+\_\+json}} object to receive the number. \\
+\hline
+\mbox{\texttt{ in}}  & {\em token} & the type of the number token \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}\label{classnlohmann_1_1basic__json_1_1lexer_a53a951162c3efbb881b4a31e1f4d6f67}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!get\_number@{get\_number}}
+\index{get\_number@{get\_number}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{get\_number()}{get\_number()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+bool \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::get\+\_\+number (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classnlohmann_1_1basic__json}{basic\+\_\+json}} \&}]{result,  }\item[{const \mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}}}]{token }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return number value for number tokens 
+
+This function translates the last token into the most appropriate number type (either integer, unsigned integer or floating point), which is passed back to the caller via the result parameter.
+
+integral numbers that don\textquotesingle{}t fit into the the range of the respective type are parsed as number\+\_\+float\+\_\+t
+
+floating-\/point values do not satisfy std\+::isfinite predicate are converted to value\+\_\+t\+::null
+
+throws if the entire string \mbox{[}m\+\_\+start .. m\+\_\+cursor) cannot be interpreted as a number
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em result} & \mbox{\hyperlink{classnlohmann_1_1basic__json}{basic\+\_\+json}} object to receive the number. \\
+\hline
+\mbox{\texttt{ in}}  & {\em token} & the type of the number token \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}\label{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!get\_string@{get\_string}}
+\index{get\_string@{get\_string}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{get\_string()}{get\_string()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+\mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::get\+\_\+string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return string value for string tokens 
+
+The function iterates the characters between the opening and closing quotes of the string value. The complete string is the range \mbox{[}m\+\_\+start,m\+\_\+cursor). Consequently, we iterate from m\+\_\+start+1 to m\+\_\+cursor-\/1.
+
+We differentiate two cases\+:
+
+
+\begin{DoxyEnumerate}
+\item Escaped characters. In this case, a new character is constructed according to the nature of the escape. Some escapes create new characters (e.\+g., {\ttfamily \char`\"{}\textbackslash{}\textbackslash{}n\char`\"{}} is replaced by {\ttfamily \char`\"{}\textbackslash{}n\char`\"{}}), some are copied as is (e.\+g., {\ttfamily \char`\"{}\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}\char`\"{}$<$/tt$>$). Furthermore, Unicode escapes of the shape    $<$tt$>$\char`\"{}\textbackslash{}uxxxx\char`\"{}$<$/tt$>$ need special care. In this case, to\+\_\+unicode takes care    of the construction of the values. 2. Unescaped characters are copied as is.  @pre $<$tt$>$m\+\_\+cursor -\/ m\+\_\+start \textbackslash{}$>$= 2$<$/tt$>$, meaning the length of the last token is at least 2 bytes which is trivially true for any string (which consists of at least two quotes). @iverbatim  \char`\"{} c1 c2 c3 ... "{} $^\wedge$ $^\wedge$ m\+\_\+start m\+\_\+cursor  @complexity Linear in the length of the string.~\newline
+ Lemma\+: The loop body will always terminate.~\newline
+ Proof (by contradiction)\+: Assume the loop body does not terminate. As the loop body does not contain another loop, one of the called functions must never return. The called functions are {\ttfamily std\+::strtoul} and to\+\_\+unicode. Neither function can loop forever, so the loop body will never loop forever which contradicts the assumption that the loop body does not terminate, q.\+e.\+d.~\newline
+ Lemma\+: The loop condition for the for loop is eventually false.~\newline
+ Proof (by contradiction)\+: Assume the loop does not terminate. Due to the above lemma, this can only be due to a tautological loop condition; that is, the loop condition i \texorpdfstring{$<$}{<} m\+\_\+cursor -\/ 1 must always be true. Let x be the change of i for any loop iteration. Then m\+\_\+start + 1 + x \texorpdfstring{$<$}{<} m\+\_\+cursor -\/ 1 must hold to loop indefinitely. This can be rephrased to m\+\_\+cursor -\/ m\+\_\+start -\/ 2 \texorpdfstring{$>$}{>} x. With the precondition, we x \texorpdfstring{$<$}{<}= 0, meaning that the loop condition holds indefinitely if i is always decreased. However, observe that the value of i is strictly increasing with each iteration, as it is incremented by 1 in the iteration expression and never decremented inside the loop body. Hence, the loop condition will eventually be false which contradicts the assumption that the loop condition is a tautology, q.\+e.\+d.}
+\end{DoxyEnumerate}
+
+{\ttfamily \begin{DoxyReturn}{Returns}
+string value of current token without opening and closing quotes 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::out\+\_\+of\+\_\+range} & if to\+\_\+unicode fails \\
+\hline
+\end{DoxyExceptions}
+}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}\label{classnlohmann_1_1basic__json_1_1lexer_aec16b20aa92501da285967296204f32a}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!get\_string@{get\_string}}
+\index{get\_string@{get\_string}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{get\_string()}{get\_string()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+\mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::get\+\_\+string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return string value for string tokens 
+
+The function iterates the characters between the opening and closing quotes of the string value. The complete string is the range \mbox{[}m\+\_\+start,m\+\_\+cursor). Consequently, we iterate from m\+\_\+start+1 to m\+\_\+cursor-\/1.
+
+We differentiate two cases\+:
+
+
+\begin{DoxyEnumerate}
+\item Escaped characters. In this case, a new character is constructed according to the nature of the escape. Some escapes create new characters (e.\+g., {\ttfamily \char`\"{}\textbackslash{}\textbackslash{}n\char`\"{}} is replaced by {\ttfamily \char`\"{}\textbackslash{}n\char`\"{}}), some are copied as is (e.\+g., {\ttfamily \char`\"{}\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}\char`\"{}$<$/tt$>$). Furthermore, Unicode escapes of the shape    $<$tt$>$\char`\"{}\textbackslash{}uxxxx\char`\"{}$<$/tt$>$ need special care. In this case, to\+\_\+unicode takes care    of the construction of the values. 2. Unescaped characters are copied as is.  @pre $<$tt$>$m\+\_\+cursor -\/ m\+\_\+start \textbackslash{}$>$= 2$<$/tt$>$, meaning the length of the last token is at least 2 bytes which is trivially true for any string (which consists of at least two quotes). @iverbatim  \char`\"{} c1 c2 c3 ... "{} $^\wedge$ $^\wedge$ m\+\_\+start m\+\_\+cursor  @complexity Linear in the length of the string.~\newline
+ Lemma\+: The loop body will always terminate.~\newline
+ Proof (by contradiction)\+: Assume the loop body does not terminate. As the loop body does not contain another loop, one of the called functions must never return. The called functions are {\ttfamily std\+::strtoul} and to\+\_\+unicode. Neither function can loop forever, so the loop body will never loop forever which contradicts the assumption that the loop body does not terminate, q.\+e.\+d.~\newline
+ Lemma\+: The loop condition for the for loop is eventually false.~\newline
+ Proof (by contradiction)\+: Assume the loop does not terminate. Due to the above lemma, this can only be due to a tautological loop condition; that is, the loop condition i \texorpdfstring{$<$}{<} m\+\_\+cursor -\/ 1 must always be true. Let x be the change of i for any loop iteration. Then m\+\_\+start + 1 + x \texorpdfstring{$<$}{<} m\+\_\+cursor -\/ 1 must hold to loop indefinitely. This can be rephrased to m\+\_\+cursor -\/ m\+\_\+start -\/ 2 \texorpdfstring{$>$}{>} x. With the precondition, we x \texorpdfstring{$<$}{<}= 0, meaning that the loop condition holds indefinitely if i is always decreased. However, observe that the value of i is strictly increasing with each iteration, as it is incremented by 1 in the iteration expression and never decremented inside the loop body. Hence, the loop condition will eventually be false which contradicts the assumption that the loop condition is a tautology, q.\+e.\+d.}
+\end{DoxyEnumerate}
+
+{\ttfamily \begin{DoxyReturn}{Returns}
+string value of current token without opening and closing quotes 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::out\+\_\+of\+\_\+range} & if to\+\_\+unicode fails \\
+\hline
+\end{DoxyExceptions}
+}\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_aa2bf285bc6ee37e2af87dfd627224b41}\label{classnlohmann_1_1basic__json_1_1lexer_aa2bf285bc6ee37e2af87dfd627224b41}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!scan@{scan}}
+\index{scan@{scan}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{scan()}{scan()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::scan (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This function implements a scanner for JSON. It is specified using regular expressions that try to follow RFC 7159 as close as possible. These regular expressions are then translated into a minimized deterministic finite automaton (DFA) by the tool \href{http://re2c.org}{\texttt{ re2c}}. As a result, the translated code for this function consists of a large block of code with {\ttfamily goto} jumps.
+
+\begin{DoxyReturn}{Returns}
+the class of the next token read from the buffer
+\end{DoxyReturn}
+@complexity Linear in the length of the input.~\newline
+ Proposition\+: The loop below will always terminate for finite input.~\newline
+ Proof (by contradiction)\+: Assume a finite input. To loop forever, the loop must never hit code with a {\ttfamily break} statement. The only code snippets without a {\ttfamily break} statement are the continue statements for whitespace and byte-\/order-\/marks. To loop forever, the input must be an infinite sequence of whitespace or byte-\/order-\/marks. This contradicts the assumption of finite input, q.\+e.\+d. \mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_aa2bf285bc6ee37e2af87dfd627224b41}\label{classnlohmann_1_1basic__json_1_1lexer_aa2bf285bc6ee37e2af87dfd627224b41}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!scan@{scan}}
+\index{scan@{scan}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{scan()}{scan()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+\mbox{\hyperlink{classnlohmann_1_1basic__json_1_1lexer_a96887d6cd131e3d3a85a9d71fbdbcdf7}{token\+\_\+type}} \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::scan (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This function implements a scanner for JSON. It is specified using regular expressions that try to follow RFC 7159 as close as possible. These regular expressions are then translated into a minimized deterministic finite automaton (DFA) by the tool \href{http://re2c.org}{\texttt{ re2c}}. As a result, the translated code for this function consists of a large block of code with {\ttfamily goto} jumps.
+
+\begin{DoxyReturn}{Returns}
+the class of the next token read from the buffer
+\end{DoxyReturn}
+@complexity Linear in the length of the input.~\newline
+ Proposition\+: The loop below will always terminate for finite input.~\newline
+ Proof (by contradiction)\+: Assume a finite input. To loop forever, the loop must never hit code with a {\ttfamily break} statement. The only code snippets without a {\ttfamily break} statement are the continue statements for whitespace and byte-\/order-\/marks. To loop forever, the input must be an infinite sequence of whitespace or byte-\/order-\/marks. This contradicts the assumption of finite input, q.\+e.\+d. \mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_acdda4a686d6b4fdd4fd995d0ff62b27e}\label{classnlohmann_1_1basic__json_1_1lexer_acdda4a686d6b4fdd4fd995d0ff62b27e}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!to\_unicode@{to\_unicode}}
+\index{to\_unicode@{to\_unicode}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{to\_unicode()}{to\_unicode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+static \mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::to\+\_\+unicode (\begin{DoxyParamCaption}\item[{const std\+::size\+\_\+t}]{codepoint1,  }\item[{const std\+::size\+\_\+t}]{codepoint2 = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+create a string from one or two Unicode code points 
+
+There are two cases\+: (1) {\itshape codepoint1} is in the Basic Multilingual Plane (U+0000 through U+\+FFFF) and {\itshape codepoint2} is 0, or (2) {\itshape codepoint1} and {\itshape codepoint2} are a UTF-\/16 surrogate pair to represent a code point above U+\+FFFF.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em codepoint1} & the code point (can be high surrogate) \\
+\hline
+\mbox{\texttt{ in}}  & {\em codepoint2} & the code point (can be low surrogate or 0)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string representation of the code point; the length of the result string is between 1 and 4 characters.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::out\+\_\+of\+\_\+range} & if code point is \texorpdfstring{$>$}{>} 0x10ffff; example\+: {\ttfamily \char`\"{}code points above 0x10\+FFFF are invalid\char`\"{}} \\
+\hline
+{\em std\+::invalid\+\_\+argument} & if the low surrogate is invalid; example\+: {\ttfamily \char`\"{}\char`\"{}missing or wrong low surrogate\char`\"{}\char`\"{}}\\
+\hline
+\end{DoxyExceptions}
+@complexity Constant.
+
+\begin{DoxySeeAlso}{See also}
+\href{http://en.wikipedia.org/wiki/UTF-8\#Sample_code}{\texttt{ http\+://en.\+wikipedia.\+org/wiki/\+UTF-\/8\#\+Sample\+\_\+code}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classnlohmann_1_1basic__json_1_1lexer_acdda4a686d6b4fdd4fd995d0ff62b27e}\label{classnlohmann_1_1basic__json_1_1lexer_acdda4a686d6b4fdd4fd995d0ff62b27e}} 
+\index{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}!to\_unicode@{to\_unicode}}
+\index{to\_unicode@{to\_unicode}!nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer@{nlohmann::basic\_json$<$ ObjectType, ArrayType, StringType, BooleanType, NumberIntegerType, NumberUnsignedType, NumberFloatType, AllocatorType, JSONSerializer $>$::lexer}}
+\doxysubsubsection{\texorpdfstring{to\_unicode()}{to\_unicode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename U, typename V, typename... Args $>$ class Object\+Type = std\+::map, template$<$ typename U, typename... Args $>$ class Array\+Type = std\+::vector, class String\+Type  = std\+::string, class Boolean\+Type  = bool, class Number\+Integer\+Type  = std\+::int64\+\_\+t, class Number\+Unsigned\+Type  = std\+::uint64\+\_\+t, class Number\+Float\+Type  = double, template$<$ typename U $>$ class Allocator\+Type = std\+::allocator, template$<$ typename T, typename SFINAE=void $>$ class JSONSerializer = adl\+\_\+serializer$>$ \\
+static \mbox{\hyperlink{classnlohmann_1_1basic__json_a61f8566a1a85a424c7266fb531dca005}{string\+\_\+t}} \mbox{\hyperlink{classnlohmann_1_1basic__json}{nlohmann\+::basic\+\_\+json}}$<$ Object\+Type, Array\+Type, String\+Type, Boolean\+Type, Number\+Integer\+Type, Number\+Unsigned\+Type, Number\+Float\+Type, Allocator\+Type, JSONSerializer $>$\+::lexer\+::to\+\_\+unicode (\begin{DoxyParamCaption}\item[{const std\+::size\+\_\+t}]{codepoint1,  }\item[{const std\+::size\+\_\+t}]{codepoint2 = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+create a string from one or two Unicode code points 
+
+There are two cases\+: (1) {\itshape codepoint1} is in the Basic Multilingual Plane (U+0000 through U+\+FFFF) and {\itshape codepoint2} is 0, or (2) {\itshape codepoint1} and {\itshape codepoint2} are a UTF-\/16 surrogate pair to represent a code point above U+\+FFFF.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em codepoint1} & the code point (can be high surrogate) \\
+\hline
+\mbox{\texttt{ in}}  & {\em codepoint2} & the code point (can be low surrogate or 0)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string representation of the code point; the length of the result string is between 1 and 4 characters.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::out\+\_\+of\+\_\+range} & if code point is \texorpdfstring{$>$}{>} 0x10ffff; example\+: {\ttfamily \char`\"{}code points above 0x10\+FFFF are invalid\char`\"{}} \\
+\hline
+{\em std\+::invalid\+\_\+argument} & if the low surrogate is invalid; example\+: {\ttfamily \char`\"{}\char`\"{}missing or wrong low surrogate\char`\"{}\char`\"{}}\\
+\hline
+\end{DoxyExceptions}
+@complexity Constant.
+
+\begin{DoxySeeAlso}{See also}
+\href{http://en.wikipedia.org/wiki/UTF-8\#Sample_code}{\texttt{ http\+://en.\+wikipedia.\+org/wiki/\+UTF-\/8\#\+Sample\+\_\+code}} 
+\end{DoxySeeAlso}
