@@ -58,6 +58,10 @@ class ShelfinoHWNode : public rclcpp::Node
     }
 
   private:
+    /**
+     * @brief Method callback that retrieves the lidar scan data from ZMQ and publishes to ROS
+     * 
+     */
     void lidar_callback()
     {
       RobotStatus::LidarData lidarData; 
@@ -85,6 +89,10 @@ class ShelfinoHWNode : public rclcpp::Node
       lidar_publisher_->publish(msg);
     }
 
+    /**
+     * @brief Method callback that retrieves the RealSense odometry data from ZMQ and publishes to ROS
+     * 
+     */
     void t265_callback()
     {
       RobotStatus::OdometryData odomData; 
@@ -119,6 +127,11 @@ class ShelfinoHWNode : public rclcpp::Node
       t265_publisher_->publish(msg);
     }
 
+    /**
+     * @brief Method callback that retrieves odometry data from ZMQ and publishes to ROS
+     * 
+     * The odometry is calculated from the sensor fusion of encoders and RealSense data
+     */
     void odom_callback()
     {
       RobotStatus::OdometryData odomData; 
@@ -154,6 +167,10 @@ class ShelfinoHWNode : public rclcpp::Node
       handle_shelfino_pose(msg);
     }
 
+    /**
+     * @brief Method callback that retrieves the encoders data from ZMQ and publishes to ROS
+     * 
+     */
     void enc_callback()
     {
       RobotStatus::HardwareData hwData; 
@@ -174,6 +191,11 @@ class ShelfinoHWNode : public rclcpp::Node
       encoders_publisher_->publish(msg);
     }
 
+    /**
+     * @brief Method that handles the velocities commands from ROS to ZMQ.
+     * 
+     * @param msg The velocity mesasge used as control action for the robot.
+     */
     void handle_shelfino_cmd_vel(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
     {
       double v = 0., omega = 0.;
