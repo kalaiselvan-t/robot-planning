@@ -242,10 +242,11 @@ class ShelfinoHWNode : public rclcpp::Node
       // Send the transformation
       tf_broadcaster_->sendTransform(t);
     }
-
-    // Variable for definition of the shelfino ID number
+    
+    /// @brief Variable for definition of the shelfino ID number
     const auto R_ID_DEFAULT = 2;
-    // Pointer to a Hardware Parameters instance which contains all the information on the IP addresses and ports of the specific shelfino robot
+    
+    /// @brief Pointer to a Hardware Parameters instance which contains all the information on the IP addresses and ports of the specific shelfino robot
     std::unique_ptr<HardwareParameters> hp;
 
     bool robot_state = false;
@@ -267,7 +268,6 @@ class ShelfinoHWNode : public rclcpp::Node
  * 
  * @param argc Number of arguments passed from the command line
  * @param argv Array of arguments passed from the command line
- * @return int 
  */
 int main(int argc, char * argv[])
 {

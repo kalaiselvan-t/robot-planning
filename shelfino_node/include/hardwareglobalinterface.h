@@ -31,30 +31,54 @@ static const double RIGHT_B_D = 4* WHEEL_BASE / (2.*RIGHT_RADIUS);
 static const double ENCODER_PPR = 36*4*2048;
 static const double RATIO_LEFT_RIGHT = RIGHT_B_D/LEFT_B_D;
 
-
+/**
+ * @brief Interface that handles all the communication with ZMQ for the hardware of the robot.
+ * 
+ */
 class HardwareGlobalInterface
 {
 public:
 
+  /**
+   * @brief Get the Instance object
+   * 
+   * @return HardwareGlobalInterface& 
+   */
   static HardwareGlobalInterface & getInstance() {
 
     if(instances.size()<1) throw std::runtime_error("Robot not initialized");
     return *instances.at(0);
   }
 
+  /**
+   * @brief Get a specific Instance object
+   * 
+   * @param i the index of the wanted initialized robot
+   * @return HardwareGlobalInterface& 
+   */
   static HardwareGlobalInterface & getInstance(unsigned long i) {
 
     if(instances.size()<i) throw std::runtime_error("Robot not initialized");
     return *instances.at(i);
   }
 
+  /**
+   * @brief Initialize a robot istance.
+   * 
+   * @return HardwareGlobalInterface& 
+   */
   static HardwareGlobalInterface & initialize() {
 
     instances.push_back(new HardwareGlobalInterface(new HardwareParameters()));
     return *instances.back();
   }
 
-
+  /**
+   * @brief Initialize a robot istance defining its parameters.
+   * 
+   * @param hp object containing the list of the robot IP addresses and ports used by ZMQ in the robot.
+   * @return HardwareGlobalInterface& 
+   */
   static HardwareGlobalInterface &initialize(HardwareParameters* hp){
 
 
@@ -112,6 +136,13 @@ public:
     return *instances.back();
   }
 
+  /**
+   * @brief Get the Localization Data object
+   * 
+   * @param locData the localization data object.
+   * @return true the localization data is available.
+   * @return false the localization data has expired.
+   */
   bool getLocalizationData(RobotStatus::LocalizationData &locData){
     std::unique_lock<std::mutex> lock(locDataMTX);
     double currTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -123,6 +154,11 @@ public:
     }
   }
 
+  /**
+   * @brief Get the Params object containing the list of IP addresses and ports used by ZMQ in the robot.
+   * 
+   * @return HardwareParameters object containing the list of IP addresses and ports used by ZMQ in the robot.
+   */
   HardwareParameters getParams() {
     HardwareParameters res;
     if (params)
@@ -140,6 +176,7 @@ public:
       return false;
     }
   }
+
 
   bool getLocalizationDataRealSense(RobotStatus::LocalizationData &locDataRealSense){
     std::unique_lock<std::mutex> lock(locDataRealSenseMTX);
@@ -185,6 +222,13 @@ public:
   //        }
   //    }// subTracker_callback(const char *topic, const char *buf, size_t size, void *data)
 
+  /**
+   * @brief Get the Front Lidar Data object.
+   * 
+   * @param lidarData 
+   * @return true the lidar data is available.
+   * @return false the lidar data has expired.
+   */
   bool getFrontLidarData(RobotStatus::LidarData &lidarData){
     std::unique_lock<std::mutex> lock(frontLidarMTX);
     double currTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -229,6 +273,13 @@ public:
     }
   }
 
+  /**
+   * @brief Get the Real Sense Odometry Data object
+   * 
+   * @param odomData 
+   * @return true the real sense odometry data is available.
+   * @return false the real sense odometry data has expired.
+   */
   bool getRealSenseOdomData(RobotStatus::OdometryData &odomData){
     std::unique_lock<std::mutex> lock(realSenseOdomMTX);
     double currTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();

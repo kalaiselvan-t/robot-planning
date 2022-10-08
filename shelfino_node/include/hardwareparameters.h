@@ -3,6 +3,10 @@
 
 #include <string>
 
+/**
+ * @brief Structure that contains all the IP addresses and ports information used by ZMQ in the robot.
+ * 
+ */
 struct HardwareParameters{
 public:
 
@@ -26,6 +30,7 @@ public:
   double cameraOffsetX = 0.25;
   double cameraOffsetY = 0.0;
 
+  /// @brief Contruct a new Hardware Parameters structure with the default values
   HardwareParameters(){
     hardwareServer = "tcp://192.168.3.2:5601";
     hardwarePublisher = "tcp://192.168.3.2:6000";
@@ -43,6 +48,11 @@ public:
     autnavServer = "tcp://192.168.3.5:1991";
   }
 
+  /**
+   * @brief Construct a new Hardware Parameters structure using localhost
+   * 
+   * @param val string 
+   */
   HardwareParameters(std::string val){
     if(val.compare("localhost")==0){
       hardwareServer = "tcp://localhost:5601";
@@ -62,6 +72,15 @@ public:
     }
   }
 
+  /**
+   * @brief Construct a new Hardware Parameters structure using an integer value for the initialization of the IP addresses.
+   * 
+   * @param i integer value used to set the NUC and BeagleBone addresses.
+   * ~~~~~~~~~~{.cpp}
+   * BeagleBone IP = 100 + i*10 + 2;
+   * NUC IP = 100 + i*10 + 5;
+   * ~~~~~~~~~~
+   */
   HardwareParameters(int i){
     int bbIP = 100 + i*10 + 2;
     int nucIP = 100 + i*10 + 5;
