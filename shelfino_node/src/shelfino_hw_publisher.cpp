@@ -262,6 +262,13 @@ class ShelfinoHWNode : public rclcpp::Node
     rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_subscription_;
 };
 
+/**
+ * @brief Main function that initialize the ROS node
+ * 
+ * @param argc Number of arguments passed from the command line
+ * @param argv Array of arguments passed from the command line
+ * @return int 
+ */
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);

@@ -22,9 +22,17 @@ double DEC_OMEGA = 0.3;
 double STEP = 0.01;
 double A_LAT = 2.0;
 
+/**
+ * @brief ROS2 node to send velocities commands to the **cmd_vel** topic using the keyboard
+ * 
+ */
 class CMDPublisher : public rclcpp::Node
 {
   public:
+    /**
+     * @brief Construct a new CMDPublisher object
+     * 
+     */
     CMDPublisher()
     : Node("remote_control")
     {
@@ -37,6 +45,7 @@ class CMDPublisher : public rclcpp::Node
     }
 
     private:
+    /// @brief Method callback to publish the velocities command from the keyboard input.
     void timer_callback()
     {
       geometry_msgs::msg::Twist msg;
@@ -138,6 +147,7 @@ class CMDPublisher : public rclcpp::Node
     std::chrono::system_clock::time_point last;
 };
 
+/// @brief Function that checks if there is new data available from the keyboard without having to wait for the return key.
 void kbhit()
 {
   int ch = 0;
@@ -157,12 +167,25 @@ void kbhit()
   }
 }
 
+/**
+ * @brief Function to initialize the ROS node.
+ * 
+ * @param argc Number of arguments passed from the command line.
+ * @param argv Array of arguments passed from the command line.
+ */
 void start_ros_node(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<CMDPublisher>());
 }
 
+
+/**
+ * @brief Main function that start two separete threads for the ROS node and the keyboard listener.
+ * 
+ * @param argc Number of arguments passed from the command line.
+ * @param argv Array of arguments passed from the command line.
+ */
 int main(int argc, char * argv[])
 {
   pressed = std::make_unique<char>();
