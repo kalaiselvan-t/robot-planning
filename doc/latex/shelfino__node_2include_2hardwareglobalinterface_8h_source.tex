@@ -1,0 +1,380 @@
+\hypertarget{shelfino__node_2include_2hardwareglobalinterface_8h_source}{}\doxysection{hardwareglobalinterface.\+h}
+\label{shelfino__node_2include_2hardwareglobalinterface_8h_source}\index{X:/shelfino\_node/include/hardwareglobalinterface.h@{X:/shelfino\_node/include/hardwareglobalinterface.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef HARDWAREGLOBALINTERFACE\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define HARDWAREGLOBALINTERFACE\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#define LOC\_REALSENSE}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <single\_thread.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <mutex>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}hardwareparameters.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}robotstatus.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}personitem.h"{}}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <Subscriber.hpp>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <RequesterSimple.hpp>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define LOC\_TIMEOUT 50}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#define HW\_TIMEOUT 50}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define LIDAR\_TIMEOUT 200}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define TRACKING\_TIMEOUT 200}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} LEFT\_INCREMENTS\_PER\_TOUR = 294912.;}
+\DoxyCodeLine{25 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} RIGHT\_INCREMENTS\_PER\_TOUR = 294912.;}
+\DoxyCodeLine{26 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} LEFT\_RADIUS = 0.99 * 0.125 ; \textcolor{comment}{//0.9907*0.125; //0.125186;}}
+\DoxyCodeLine{27 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} RIGHT\_RADIUS = 0.99 * 0.125 ; \textcolor{comment}{//0.99*0.125; //0.125138;}}
+\DoxyCodeLine{28 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} WHEEL\_BASE = 0.383;}
+\DoxyCodeLine{29 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} LEFT\_B\_D = 4* WHEEL\_BASE / (2.*LEFT\_RADIUS); }
+\DoxyCodeLine{30 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} RIGHT\_B\_D = 4* WHEEL\_BASE / (2.*RIGHT\_RADIUS); }
+\DoxyCodeLine{31 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} ENCODER\_PPR = 36*4*2048;}
+\DoxyCodeLine{32 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} RATIO\_LEFT\_RIGHT = RIGHT\_B\_D/LEFT\_B\_D;}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{class }\mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}}}
+\DoxyCodeLine{36 \{}
+\DoxyCodeLine{37 \textcolor{keyword}{public}:}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keyword}{static} \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}} \& getInstance() \{}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     \textcolor{keywordflow}{if}(instances.size()<1) \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Robot not initialized"{}});}
+\DoxyCodeLine{42     \textcolor{keywordflow}{return} *instances.at(0);}
+\DoxyCodeLine{43   \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keyword}{static} \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}} \& getInstance(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} i) \{}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47     \textcolor{keywordflow}{if}(instances.size()<i) \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Robot not initialized"{}});}
+\DoxyCodeLine{48     \textcolor{keywordflow}{return} *instances.at(i);}
+\DoxyCodeLine{49   \}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keyword}{static} \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}} \& initialize() \{}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     instances.push\_back(\textcolor{keyword}{new} \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}}(\textcolor{keyword}{new} \mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}}()));}
+\DoxyCodeLine{54     \textcolor{keywordflow}{return} *instances.back();}
+\DoxyCodeLine{55   \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58   \textcolor{keyword}{static} \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}} \&initialize(\mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}}* hp)\{}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     instances.push\_back(\textcolor{keyword}{new} \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}}(hp));}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     instances.back()-\/>params = hp;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     instances.back()-\/>frontLidar.setMountingPosition(0,0);}
+\DoxyCodeLine{66     instances.back()-\/>rearLidar.setMountingPosition(-\/0.7,0);}
+\DoxyCodeLine{67     instances.back()-\/>realSenseLidar.setMountingPosition(hp-\/>cameraOffsetX,hp-\/>cameraOffsetY);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     instances.back()-\/>subLoc.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{70     instances.back()-\/>subLoc-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>sub\_locSubscriber(topic,buf,size,data);\});}
+\DoxyCodeLine{71     instances.back()-\/>subLoc-\/>start(hp-\/>localizationPublisher,\textcolor{stringliteral}{"{}LOC"{}});}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     instances.back()-\/>subLocKarto.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{74     instances.back()-\/>subLocKarto-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>sub\_locSubscriberKarto(topic,buf,size,data);\});}
+\DoxyCodeLine{75     instances.back()-\/>subLocKarto-\/>start(hp-\/>kartoPosePublisher,\textcolor{stringliteral}{"{}POS"{}});}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     instances.back()-\/>subLocRealSense.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{78     instances.back()-\/>subLocRealSense-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>sub\_locSubscriberRealSense(topic,buf,size,data);\});}
+\DoxyCodeLine{79     instances.back()-\/>subLocRealSense-\/>start(hp-\/>realSensePosePublisher,\textcolor{stringliteral}{"{}POS"{}});}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81     instances.back()-\/>subHW.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{82     instances.back()-\/>subHW-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>subHW\_callback(topic,buf,size,data);\});}
+\DoxyCodeLine{83     instances.back()-\/>subHW-\/>start(hp-\/>hardwarePublisher,\textcolor{stringliteral}{"{}PUB\_HW"{}});}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85     instances.back()-\/>subHWTrolley.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{86     instances.back()-\/>subHWTrolley-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>subHW\_trolley(topic,buf,size,data);\});}
+\DoxyCodeLine{87     instances.back()-\/>subHWTrolley-\/>start(hp-\/>trolleyPublisher,\textcolor{stringliteral}{"{}PUB\_HW"{}});}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89     instances.back()-\/>subFrontLidar.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{90     instances.back()-\/>subFrontLidar-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>sub\_frontLidar(topic,buf,size,data);\});}
+\DoxyCodeLine{91     instances.back()-\/>subFrontLidar-\/>start(hp-\/>frontLidarPublisher,\textcolor{stringliteral}{"{}LIDAR"{}});}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     instances.back()-\/>subRealSense.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{94     instances.back()-\/>subRealSense-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>sub\_realSenseLidar(topic,buf,size,data);\});}
+\DoxyCodeLine{95     instances.back()-\/>subRealSense-\/>start(hp-\/>realSensePublisher,\textcolor{stringliteral}{"{}LIDAR"{}});}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97     instances.back()-\/>subRearLidar.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{98     instances.back()-\/>subRearLidar-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>sub\_rearLidar(topic,buf,size,data);\});}
+\DoxyCodeLine{99     instances.back()-\/>subRearLidar-\/>start(hp-\/>rearLidarPublisher,\textcolor{stringliteral}{"{}LIDAR"{}});}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101     instances.back()-\/>subTracking.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{102     instances.back()-\/>subTracking-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>sub\_tracking(topic,buf,size,data);\});}
+\DoxyCodeLine{103     instances.back()-\/>subTracking-\/>start(hp-\/>trackingPublisher,\textcolor{stringliteral}{"{}PUB\_TRACKER"{}});}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105     instances.back()-\/>subRealSenseOdom.reset(\textcolor{keyword}{new} ZMQCommon::Subscriber());}
+\DoxyCodeLine{106     instances.back()-\/>subRealSenseOdom-\/>register\_callback([\&](\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data)\{instances.back()-\/>sub\_realSenseOdom(topic,buf,size,data);\});}
+\DoxyCodeLine{107     instances.back()-\/>subRealSenseOdom-\/>start(hp-\/>realSenseOdom,\textcolor{stringliteral}{"{}ODOM"{}});}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109     instances.back()-\/>reqHW.reset(\textcolor{keyword}{new} ZMQCommon::RequesterSimple(hp-\/>hardwareServer));}
+\DoxyCodeLine{110     instances.back()-\/>reqLoc.reset(\textcolor{keyword}{new} ZMQCommon::RequesterSimple(hp-\/>localizationServer));}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112     \textcolor{keywordflow}{return} *instances.back();}
+\DoxyCodeLine{113   \}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115   \textcolor{keywordtype}{bool} getLocalizationData(RobotStatus::LocalizationData \&locData)\{}
+\DoxyCodeLine{116     std::unique\_lock<std::mutex> lock(locDataMTX);}
+\DoxyCodeLine{117     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{118     locData = this-\/>locData;}
+\DoxyCodeLine{119     \textcolor{keywordflow}{if}(currTime -\/ this-\/>locData.locTimer < LOC\_TIMEOUT)\{}
+\DoxyCodeLine{120       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{121     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{122       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124   \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126   \mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}} getParams() \{}
+\DoxyCodeLine{127     \mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}} res;}
+\DoxyCodeLine{128     \textcolor{keywordflow}{if} (params)}
+\DoxyCodeLine{129       res = *params;}
+\DoxyCodeLine{130     \textcolor{keywordflow}{return} res;}
+\DoxyCodeLine{131   \}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133   \textcolor{keywordtype}{bool} getLocalizationDataKarto(RobotStatus::LocalizationData \&locDataKarto)\{}
+\DoxyCodeLine{134     std::unique\_lock<std::mutex> lock(locDataKartoMTX);}
+\DoxyCodeLine{135     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{136     locDataKarto = this-\/>locDataKarto;}
+\DoxyCodeLine{137     \textcolor{keywordflow}{if}(currTime -\/ this-\/>locDataKarto.locTimer < LOC\_TIMEOUT)\{}
+\DoxyCodeLine{138       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{139     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{140       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{141     \}}
+\DoxyCodeLine{142   \}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144   \textcolor{keywordtype}{bool} getLocalizationDataRealSense(RobotStatus::LocalizationData \&locDataRealSense)\{}
+\DoxyCodeLine{145     std::unique\_lock<std::mutex> lock(locDataRealSenseMTX);}
+\DoxyCodeLine{146     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{147     locDataRealSense = this-\/>locDataRealSense;}
+\DoxyCodeLine{148     \textcolor{keywordflow}{if}(currTime -\/ this-\/>locDataRealSense.locTimer < LOC\_TIMEOUT)\{}
+\DoxyCodeLine{149       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{150     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{151       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{152     \}}
+\DoxyCodeLine{153   \}}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155   \textcolor{keywordtype}{bool} getHardwareData(RobotStatus::HardwareData \&hwData)\{}
+\DoxyCodeLine{156     std::unique\_lock<std::mutex> lock(hwDataMTX);}
+\DoxyCodeLine{157     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{158     hwData = this-\/>hwData;}
+\DoxyCodeLine{159     \textcolor{keywordflow}{if}(currTime -\/ this-\/>hwData.hardwareTimer < HW\_TIMEOUT)\{}
+\DoxyCodeLine{160       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{161     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{162       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{163     \}}
+\DoxyCodeLine{164   \}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166   \textcolor{keywordtype}{bool} getTrolleyData(RobotStatus::TrolleyData \&trolleyData)\{}
+\DoxyCodeLine{167     std::unique\_lock<std::mutex> lock(trolleyDataMTX);}
+\DoxyCodeLine{168     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{169     trolleyData = this-\/>trolleyData;}
+\DoxyCodeLine{170     \textcolor{keywordflow}{if}(currTime -\/ this-\/>trolleyData.trolleyTimer < HW\_TIMEOUT)\{}
+\DoxyCodeLine{171       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{172     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{173       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{174     \}}
+\DoxyCodeLine{175   \}}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177   \textcolor{comment}{//    bool subTracker\_callback(RobotStatus::TrackerData \&trackerData)\{}}
+\DoxyCodeLine{178   \textcolor{comment}{//        std::unique\_lock<std::mutex> lock(trackerDataMTX);}}
+\DoxyCodeLine{179   \textcolor{comment}{//        double currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}}
+\DoxyCodeLine{180   \textcolor{comment}{//        trackerData = this-\/>trackerData;}}
+\DoxyCodeLine{181   \textcolor{comment}{//        if(currTime -\/ this-\/>trackerData.trackerTimer < TRACKER\_TIMEOUT)\{}}
+\DoxyCodeLine{182   \textcolor{comment}{//            return true;}}
+\DoxyCodeLine{183   \textcolor{comment}{//        \}else\{}}
+\DoxyCodeLine{184   \textcolor{comment}{//            return false;}}
+\DoxyCodeLine{185   \textcolor{comment}{//        \}}}
+\DoxyCodeLine{186   \textcolor{comment}{//    \}// subTracker\_callback(const char *topic, const char *buf, size\_t size, void *data)}}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188   \textcolor{keywordtype}{bool} getFrontLidarData(RobotStatus::LidarData \&lidarData)\{}
+\DoxyCodeLine{189     std::unique\_lock<std::mutex> lock(frontLidarMTX);}
+\DoxyCodeLine{190     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{191     lidarData = this-\/>frontLidar;}
+\DoxyCodeLine{192     \textcolor{keywordflow}{if}(currTime -\/ this-\/>frontLidar.lidarTimer < LIDAR\_TIMEOUT)\{}
+\DoxyCodeLine{193       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{194     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{195       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{196     \}}
+\DoxyCodeLine{197   \}}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199   \textcolor{keywordtype}{bool} getRearLidarData(RobotStatus::LidarData \&lidarData)\{}
+\DoxyCodeLine{200     std::unique\_lock<std::mutex> lock(rearLidarMTX);}
+\DoxyCodeLine{201     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{202     lidarData = this-\/>rearLidar;}
+\DoxyCodeLine{203     \textcolor{keywordflow}{if}(currTime -\/ this-\/>rearLidar.lidarTimer < LIDAR\_TIMEOUT)\{}
+\DoxyCodeLine{204       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{205     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{206       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{207     \}}
+\DoxyCodeLine{208   \}}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210   \textcolor{keywordtype}{bool} getRealSenseLidarData(RobotStatus::LidarData \&lidarData)\{}
+\DoxyCodeLine{211     std::unique\_lock<std::mutex> lock(realSenseLidarMTX);}
+\DoxyCodeLine{212     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{213     lidarData = this-\/>realSenseLidar;}
+\DoxyCodeLine{214     \textcolor{keywordflow}{if}(currTime -\/ this-\/>realSenseLidar.lidarTimer < LIDAR\_TIMEOUT)\{}
+\DoxyCodeLine{215       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{216     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{217       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{218     \}}
+\DoxyCodeLine{219   \}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221   \textcolor{keywordtype}{bool} getTrackingData(std::vector<PersonItem> \&trackingData)\{}
+\DoxyCodeLine{222     std::unique\_lock<std::mutex> lock(trackingMTX);}
+\DoxyCodeLine{223     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{224     trackingData = this-\/>trackingData;}
+\DoxyCodeLine{225     \textcolor{keywordflow}{if}(currTime -\/ this-\/>trackingTimer < TRACKING\_TIMEOUT)\{}
+\DoxyCodeLine{226       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{227     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{228       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{229     \}}
+\DoxyCodeLine{230   \}}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232   \textcolor{keywordtype}{bool} getRealSenseOdomData(RobotStatus::OdometryData \&odomData)\{}
+\DoxyCodeLine{233     std::unique\_lock<std::mutex> lock(realSenseOdomMTX);}
+\DoxyCodeLine{234     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{235     odomData = this-\/>realSenseOdom;}
+\DoxyCodeLine{236     \textcolor{keywordflow}{if}(currTime -\/ this-\/>realSenseOdom.last\_odom\_update < LIDAR\_TIMEOUT)\{}
+\DoxyCodeLine{237       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{238     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{239       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{240     \}}
+\DoxyCodeLine{241   \}}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243   \textcolor{keywordtype}{bool} getOdomData(RobotStatus::OdometryData \&odomData)\{}
+\DoxyCodeLine{244     std::unique\_lock<std::mutex> lock(odomMTX);}
+\DoxyCodeLine{245     \textcolor{keywordtype}{double} currTime = std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::system\_clock::now().time\_since\_epoch()).count();}
+\DoxyCodeLine{246     odomData = this-\/>odomData;}
+\DoxyCodeLine{247     \textcolor{keywordflow}{if}(currTime -\/ this-\/>odomData.last\_odom\_update < LIDAR\_TIMEOUT)\{}
+\DoxyCodeLine{248       \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{249     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{250       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{251     \}}
+\DoxyCodeLine{252   \}}
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255   \mbox{\hyperlink{class_hardware_global_interface}{\string~HardwareGlobalInterface}}();}
+\DoxyCodeLine{256 }
+\DoxyCodeLine{257   \textcolor{keywordtype}{void} robotOnVelControl();}
+\DoxyCodeLine{258   \textcolor{keywordtype}{void} robotOnCurrControl();}
+\DoxyCodeLine{259   \textcolor{keywordtype}{void} robotOff();}
+\DoxyCodeLine{260   \textcolor{keywordtype}{void} vehicleMove(\textcolor{keywordtype}{float} vel, \textcolor{keywordtype}{float} omega);}
+\DoxyCodeLine{261   \textcolor{comment}{//Safely move the vehicle since it ckecks for possible collisions}}
+\DoxyCodeLine{262   \textcolor{keywordtype}{void} vehicleSafeMove(\textcolor{keywordtype}{float} vel, \textcolor{keywordtype}{float} omega);}
+\DoxyCodeLine{263   \textcolor{keywordtype}{void} setLocalization(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y, \textcolor{keywordtype}{double} theta);}
+\DoxyCodeLine{264   \textcolor{keywordtype}{void} setCurrent(\textcolor{keywordtype}{double} i\_r, \textcolor{keywordtype}{double} i\_l);}
+\DoxyCodeLine{265   \textcolor{keywordtype}{void} calibrateTrolley();}
+\DoxyCodeLine{266   \textcolor{keywordtype}{void} getLastInputs(\textcolor{keywordtype}{double} \&v, \textcolor{keywordtype}{double} \&omega);}
+\DoxyCodeLine{267   \textcolor{keywordtype}{void} getBrakingCoefficient(\textcolor{keywordtype}{double} \&bc);}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269 \textcolor{keyword}{private}:}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271   \textcolor{keyword}{static} std::vector<HardwareGlobalInterface *> instances;}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273   \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}}();}
+\DoxyCodeLine{274   \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}}(\mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}}* hp);}
+\DoxyCodeLine{275 }
+\DoxyCodeLine{276   \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}}(\textcolor{keyword}{const} \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}} \&rs) \{}
+\DoxyCodeLine{277     instances = rs.instances;}
+\DoxyCodeLine{278   \}}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280   \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}} \&operator=(\textcolor{keyword}{const} \mbox{\hyperlink{class_hardware_global_interface}{HardwareGlobalInterface}} \&rs) \{}
+\DoxyCodeLine{281     \textcolor{keywordflow}{if} (\textcolor{keyword}{this} != \&rs) \{}
+\DoxyCodeLine{282       instances = rs.instances;}
+\DoxyCodeLine{283     \}}
+\DoxyCodeLine{284 }
+\DoxyCodeLine{285     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{286   \}}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288   std::mutex locDataMTX;}
+\DoxyCodeLine{289   RobotStatus::LocalizationData locData;}
+\DoxyCodeLine{290   std::unique\_ptr<ZMQCommon::Subscriber> subLoc;}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292   std::mutex locDataKartoMTX;}
+\DoxyCodeLine{293   RobotStatus::LocalizationData locDataKarto;}
+\DoxyCodeLine{294   std::unique\_ptr<ZMQCommon::Subscriber> subLocKarto;}
+\DoxyCodeLine{295 }
+\DoxyCodeLine{296   std::mutex locDataRealSenseMTX;}
+\DoxyCodeLine{297   RobotStatus::LocalizationData locDataRealSense;}
+\DoxyCodeLine{298   std::unique\_ptr<ZMQCommon::Subscriber> subLocRealSense;}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300   std::mutex hwDataMTX;}
+\DoxyCodeLine{301   RobotStatus::HardwareData hwData;}
+\DoxyCodeLine{302   std::unique\_ptr<ZMQCommon::Subscriber> subHW;}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304   std::mutex trolleyDataMTX;}
+\DoxyCodeLine{305   RobotStatus::TrolleyData trolleyData;}
+\DoxyCodeLine{306   std::unique\_ptr<ZMQCommon::Subscriber> subHWTrolley;}
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308   \textcolor{comment}{//    std::mutex trackerDataMTX;}}
+\DoxyCodeLine{309   \textcolor{comment}{//    RobotStatus::TrackerData trackerData;}}
+\DoxyCodeLine{310   \textcolor{comment}{//    std::unique\_ptr<ZMQCommon::Subscriber> subTracker;}}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312   std::mutex frontLidarMTX;}
+\DoxyCodeLine{313   RobotStatus::LidarData frontLidar;}
+\DoxyCodeLine{314   std::unique\_ptr<ZMQCommon::Subscriber> subFrontLidar;}
+\DoxyCodeLine{315 }
+\DoxyCodeLine{316   std::mutex rearLidarMTX;}
+\DoxyCodeLine{317   RobotStatus::LidarData rearLidar;}
+\DoxyCodeLine{318   std::unique\_ptr<ZMQCommon::Subscriber> subRearLidar;}
+\DoxyCodeLine{319 }
+\DoxyCodeLine{320   std::mutex realSenseLidarMTX;}
+\DoxyCodeLine{321   RobotStatus::LidarData realSenseLidar;}
+\DoxyCodeLine{322   std::unique\_ptr<ZMQCommon::Subscriber> subRealSense;}
+\DoxyCodeLine{323 }
+\DoxyCodeLine{324   std::mutex trackingMTX;}
+\DoxyCodeLine{325   std::vector<PersonItem> trackingData;}
+\DoxyCodeLine{326   \textcolor{keywordtype}{double} trackingTimer;}
+\DoxyCodeLine{327   std::unique\_ptr<ZMQCommon::Subscriber> subTracking;}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{329   std::mutex realSenseOdomMTX;}
+\DoxyCodeLine{330   RobotStatus::OdometryData realSenseOdom;}
+\DoxyCodeLine{331   std::unique\_ptr<ZMQCommon::Subscriber> subRealSenseOdom;}
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333   std::mutex odomMTX;}
+\DoxyCodeLine{334   RobotStatus::OdometryData odomData;}
+\DoxyCodeLine{335   RobotStatus::WheelSpeed wsLeft, wsRight;}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337   std::unique\_ptr<ZMQCommon::RequesterSimple> reqHW;}
+\DoxyCodeLine{338   std::unique\_ptr<ZMQCommon::RequesterSimple> reqLoc;}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340   std::mutex dataMTX;}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342   \textcolor{keywordtype}{void} sub\_locSubscriber(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{343   \textcolor{keywordtype}{void} subHW\_callback(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{344   \textcolor{keywordtype}{void} subHW\_trolley(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{345   \textcolor{keywordtype}{void} sub\_frontLidar(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{346   \textcolor{keywordtype}{void} sub\_realSenseLidar(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{347   \textcolor{keywordtype}{void} sub\_rearLidar(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{348   \textcolor{keywordtype}{void} sub\_locSubscriberKarto(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{349   \textcolor{keywordtype}{void} sub\_locSubscriberRealSense(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{350   \textcolor{keywordtype}{void} sub\_tracking(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{351   \textcolor{keywordtype}{void} sub\_realSenseOdom(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *topic, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *buf, \textcolor{keywordtype}{size\_t} size, \textcolor{keywordtype}{void} *data);}
+\DoxyCodeLine{352   \textcolor{keywordtype}{void} updateOdometryV(\textcolor{keywordtype}{double} current\_time, \textcolor{keywordtype}{double} vl, \textcolor{keywordtype}{double} vr);}
+\DoxyCodeLine{353   \textcolor{keywordtype}{void} updateOdometryOmega(\textcolor{keywordtype}{double} current\_time, std::vector<double> \textcolor{keyword}{const} \& orientation, std::vector<double> \textcolor{keyword}{const} \& angular\_vel);}
+\DoxyCodeLine{354   std::vector<double> ToEulerAngles(std::vector<double> \textcolor{keyword}{const} \& q);}
+\DoxyCodeLine{355 }
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357   \mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}}* params = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{358   \textcolor{keywordtype}{double} safetyWidth = 0.3;}
+\DoxyCodeLine{359   \textcolor{keywordtype}{double} criticalDistance = 0.2;}
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361   \textcolor{keywordtype}{double} ha = 0.25; \textcolor{comment}{//0.1; //distanza x della punta del veicolo rispetto al suo sistema di riferimento}}
+\DoxyCodeLine{362   \textcolor{keywordtype}{double} hb = 0.25; \textcolor{comment}{//0.7; //distanza x della coda del veicolo rispetto al suo sistema di riferimento}}
+\DoxyCodeLine{363   \textcolor{keywordtype}{double} width = 0.5; \textcolor{comment}{//larghezza veicolo}}
+\DoxyCodeLine{364   \textcolor{keywordtype}{double} length = 0.5;}
+\DoxyCodeLine{365 }
+\DoxyCodeLine{366   \textcolor{keywordtype}{double} lastInputVel = 0;}
+\DoxyCodeLine{367   \textcolor{keywordtype}{double} lastInputOmega = 0;}
+\DoxyCodeLine{368   \textcolor{keywordtype}{double} brakingCoefficient = 1.0;}
+\DoxyCodeLine{369 }
+\DoxyCodeLine{370   \textcolor{keywordtype}{void} setDeviceMode(\textcolor{keywordtype}{int} deviceMode);}
+\DoxyCodeLine{371   \textcolor{keywordtype}{void} powerEnable(\textcolor{keywordtype}{bool} val);}
+\DoxyCodeLine{372 \};}
+\DoxyCodeLine{373 }
+\DoxyCodeLine{374 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// HARDWAREGLOBALINTERFACE\_H}}
+
+\end{DoxyCode}

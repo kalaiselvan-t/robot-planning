@@ -1,0 +1,131 @@
+\hypertarget{remote__control_8cpp}{}\doxysection{X\+:/remote\+\_\+control/src/remote\+\_\+control.cpp File Reference}
+\label{remote__control_8cpp}\index{X:/remote\_control/src/remote\_control.cpp@{X:/remote\_control/src/remote\_control.cpp}}
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$curses.\+h$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include \char`\"{}rclcpp/rclcpp.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/msg/twist.\+hpp\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_c_m_d_publisher}{CMDPublisher}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{remote__control_8cpp_a6070260ce0b828c6f49bdb3812cd8ff2}{kbhit}} ()
+\item 
+void \mbox{\hyperlink{remote__control_8cpp_a5be15cee50a25938f25eeb9fa67abad1}{start\+\_\+ros\+\_\+node}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\item 
+int \mbox{\hyperlink{remote__control_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::mutex \mbox{\hyperlink{remote__control_8cpp_a4e516ffd8506574c4c189594c347ee8f}{pressed\+MTX}}
+\item 
+std\+::unique\+\_\+ptr$<$ char $>$ \mbox{\hyperlink{remote__control_8cpp_a5258cb58ca5be29fa238dcb8459d8b2c}{pressed}}
+\item 
+double \mbox{\hyperlink{remote__control_8cpp_ad17f89eb1809f493cefc942408e6a08d}{V\+\_\+\+MAX\+\_\+\+LIMIT}} = 1
+\item 
+double \mbox{\hyperlink{remote__control_8cpp_aae0e2d6a845457144892d82fefdd82d9}{O\+\_\+\+MAX\+\_\+\+LIMIT}} = 1
+\item 
+double \mbox{\hyperlink{remote__control_8cpp_a4cb37a129542ff1f277f5cde58d49b0c}{ACC\+\_\+V}} = 0.\+1
+\item 
+double \mbox{\hyperlink{remote__control_8cpp_a6216fbe5a3d23e2123ccc65ab439d203}{DEC\+\_\+V}} = 0.\+2
+\item 
+double \mbox{\hyperlink{remote__control_8cpp_a8646b5ef0aa77b2094658a5f6040a035}{ACC\+\_\+\+OMEGA}} = 0.\+1
+\item 
+double \mbox{\hyperlink{remote__control_8cpp_a28ae38d7f458827eca83195eb50c9092}{DEC\+\_\+\+OMEGA}} = 0.\+3
+\item 
+double \mbox{\hyperlink{remote__control_8cpp_ad80dea79b42e9e121db89faf90541359}{STEP}} = 0.\+01
+\item 
+double \mbox{\hyperlink{remote__control_8cpp_a7a13216dba9c5cc7fe99d70e70a92508}{A\+\_\+\+LAT}} = 2.\+0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{remote__control_8cpp_a6070260ce0b828c6f49bdb3812cd8ff2}\label{remote__control_8cpp_a6070260ce0b828c6f49bdb3812cd8ff2}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!kbhit@{kbhit}}
+\index{kbhit@{kbhit}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{kbhit()}{kbhit()}}
+{\footnotesize\ttfamily void kbhit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{remote__control_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{remote__control_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!main@{main}}
+\index{main@{main}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{remote__control_8cpp_a5be15cee50a25938f25eeb9fa67abad1}\label{remote__control_8cpp_a5be15cee50a25938f25eeb9fa67abad1}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!start\_ros\_node@{start\_ros\_node}}
+\index{start\_ros\_node@{start\_ros\_node}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{start\_ros\_node()}{start\_ros\_node()}}
+{\footnotesize\ttfamily void start\+\_\+ros\+\_\+node (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{remote__control_8cpp_a7a13216dba9c5cc7fe99d70e70a92508}\label{remote__control_8cpp_a7a13216dba9c5cc7fe99d70e70a92508}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!A\_LAT@{A\_LAT}}
+\index{A\_LAT@{A\_LAT}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{A\_LAT}{A\_LAT}}
+{\footnotesize\ttfamily double A\+\_\+\+LAT = 2.\+0}
+
+\mbox{\Hypertarget{remote__control_8cpp_a8646b5ef0aa77b2094658a5f6040a035}\label{remote__control_8cpp_a8646b5ef0aa77b2094658a5f6040a035}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!ACC\_OMEGA@{ACC\_OMEGA}}
+\index{ACC\_OMEGA@{ACC\_OMEGA}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{ACC\_OMEGA}{ACC\_OMEGA}}
+{\footnotesize\ttfamily double ACC\+\_\+\+OMEGA = 0.\+1}
+
+\mbox{\Hypertarget{remote__control_8cpp_a4cb37a129542ff1f277f5cde58d49b0c}\label{remote__control_8cpp_a4cb37a129542ff1f277f5cde58d49b0c}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!ACC\_V@{ACC\_V}}
+\index{ACC\_V@{ACC\_V}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{ACC\_V}{ACC\_V}}
+{\footnotesize\ttfamily double ACC\+\_\+V = 0.\+1}
+
+\mbox{\Hypertarget{remote__control_8cpp_a28ae38d7f458827eca83195eb50c9092}\label{remote__control_8cpp_a28ae38d7f458827eca83195eb50c9092}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!DEC\_OMEGA@{DEC\_OMEGA}}
+\index{DEC\_OMEGA@{DEC\_OMEGA}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{DEC\_OMEGA}{DEC\_OMEGA}}
+{\footnotesize\ttfamily double DEC\+\_\+\+OMEGA = 0.\+3}
+
+\mbox{\Hypertarget{remote__control_8cpp_a6216fbe5a3d23e2123ccc65ab439d203}\label{remote__control_8cpp_a6216fbe5a3d23e2123ccc65ab439d203}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!DEC\_V@{DEC\_V}}
+\index{DEC\_V@{DEC\_V}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{DEC\_V}{DEC\_V}}
+{\footnotesize\ttfamily double DEC\+\_\+V = 0.\+2}
+
+\mbox{\Hypertarget{remote__control_8cpp_aae0e2d6a845457144892d82fefdd82d9}\label{remote__control_8cpp_aae0e2d6a845457144892d82fefdd82d9}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!O\_MAX\_LIMIT@{O\_MAX\_LIMIT}}
+\index{O\_MAX\_LIMIT@{O\_MAX\_LIMIT}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{O\_MAX\_LIMIT}{O\_MAX\_LIMIT}}
+{\footnotesize\ttfamily double O\+\_\+\+MAX\+\_\+\+LIMIT = 1}
+
+\mbox{\Hypertarget{remote__control_8cpp_a5258cb58ca5be29fa238dcb8459d8b2c}\label{remote__control_8cpp_a5258cb58ca5be29fa238dcb8459d8b2c}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!pressed@{pressed}}
+\index{pressed@{pressed}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{pressed}{pressed}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$char$>$ pressed}
+
+\mbox{\Hypertarget{remote__control_8cpp_a4e516ffd8506574c4c189594c347ee8f}\label{remote__control_8cpp_a4e516ffd8506574c4c189594c347ee8f}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!pressedMTX@{pressedMTX}}
+\index{pressedMTX@{pressedMTX}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{pressedMTX}{pressedMTX}}
+{\footnotesize\ttfamily std\+::mutex pressed\+MTX}
+
+\mbox{\Hypertarget{remote__control_8cpp_ad80dea79b42e9e121db89faf90541359}\label{remote__control_8cpp_ad80dea79b42e9e121db89faf90541359}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!STEP@{STEP}}
+\index{STEP@{STEP}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{STEP}{STEP}}
+{\footnotesize\ttfamily double STEP = 0.\+01}
+
+\mbox{\Hypertarget{remote__control_8cpp_ad17f89eb1809f493cefc942408e6a08d}\label{remote__control_8cpp_ad17f89eb1809f493cefc942408e6a08d}} 
+\index{remote\_control.cpp@{remote\_control.cpp}!V\_MAX\_LIMIT@{V\_MAX\_LIMIT}}
+\index{V\_MAX\_LIMIT@{V\_MAX\_LIMIT}!remote\_control.cpp@{remote\_control.cpp}}
+\doxysubsubsection{\texorpdfstring{V\_MAX\_LIMIT}{V\_MAX\_LIMIT}}
+{\footnotesize\ttfamily double V\+\_\+\+MAX\+\_\+\+LIMIT = 1}
+

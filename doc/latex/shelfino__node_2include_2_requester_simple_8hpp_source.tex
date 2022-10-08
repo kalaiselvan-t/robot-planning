@@ -1,0 +1,71 @@
+\hypertarget{shelfino__node_2include_2_requester_simple_8hpp_source}{}\doxysection{Requester\+Simple.\+hpp}
+\label{shelfino__node_2include_2_requester_simple_8hpp_source}\index{X:/shelfino\_node/include/RequesterSimple.hpp@{X:/shelfino\_node/include/RequesterSimple.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * RequesterSimple.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ *  Created on: Oct 9, 2014}}
+\DoxyCodeLine{5 \textcolor{comment}{ *      Author: "{}Alessio Colombo <colombo@disi.unitn.it>"{}}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef SRC\_ZMQ\_LAYER\_RequesterSimple\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define SRC\_ZMQ\_LAYER\_RequesterSimple\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}zmq.hpp"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <condition\_variable>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <mutex>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <single\_thread.hpp>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }ZMQCommon \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }RequesterSimple \{}
+\DoxyCodeLine{22   \textcolor{keyword}{public}:}
+\DoxyCodeLine{23         \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{24       STATUS\_OK,}
+\DoxyCodeLine{25       STATUS\_TIMEOUT,}
+\DoxyCodeLine{26       STATUS\_ERROR}
+\DoxyCodeLine{27     \} status\_t;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\_req\_ \{}
+\DoxyCodeLine{30       std::string rcvd;}
+\DoxyCodeLine{31       status\_t status;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33       \_req\_(): rcvd(\textcolor{stringliteral}{"{}"{}}), status(STATUS\_OK) \{\}}
+\DoxyCodeLine{34     \} request\_t;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     RequesterSimple(std::string address);}
+\DoxyCodeLine{37     \textcolor{keyword}{virtual} \string~RequesterSimple();}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     }
+\DoxyCodeLine{40     \textcolor{keywordtype}{bool} request(\textcolor{keyword}{const} std::string\& in, std::string\& out, status\_t\& status);}
+\DoxyCodeLine{41     std::string statusToStr(status\_t status);}
+\DoxyCodeLine{42     \textcolor{keywordtype}{bool} close();}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   \textcolor{keyword}{private}:}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     uint32\_t request\_uid;}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     uint32\_t timeout\_ms = 1000;}
+\DoxyCodeLine{49     uint32\_t retries = 3;}
+\DoxyCodeLine{50     std::unique\_ptr<zmq::context\_t> context;}
+\DoxyCodeLine{51     std::unique\_ptr<zmq::socket\_t> socket\_;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     std::string address\_;}
+\DoxyCodeLine{54     std::mutex mutex\_request;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{keywordtype}{bool} exception\_fired;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     zmq\_pollitem\_t item;}
+\DoxyCodeLine{59     }
+\DoxyCodeLine{60     \textcolor{keywordtype}{bool} resetSocket(zmq\_pollitem\_t\& pollitem);}
+\DoxyCodeLine{61 \};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SRC\_ZMQ\_LAYER\_RequesterSimple\_SAFE\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,52 @@
+\hypertarget{_replier_8hpp_source}{}\doxysection{Replier.\+hpp}
+\label{_replier_8hpp_source}\index{X:/shelfino\_node/include/Replier.hpp@{X:/shelfino\_node/include/Replier.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Replier.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ *  Created on: Jun 25, 2015}}
+\DoxyCodeLine{5 \textcolor{comment}{ *      Author: "{}Alessio Colombo <colombo@disi.unitn.it>"{}}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef ZMQ\_LAYER\_REPLIER\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define ZMQ\_LAYER\_REPLIER\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}zmq.hpp"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <single\_thread.hpp>}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }Common\{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{class }\mbox{\hyperlink{class_common_1_1_replier}{Replier}} : \mbox{\hyperlink{class_common_1_1single__thread}{single\_thread}} \{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19   \textcolor{keyword}{public}:}
+\DoxyCodeLine{20     \textcolor{keyword}{typedef} std::function< void (\textcolor{keyword}{const} std::string\& received, \textcolor{keywordtype}{void} *data, std::string\& tosend) > callback\_t;}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     \mbox{\hyperlink{class_common_1_1_replier}{Replier}}();}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{keyword}{using }single\_thread::start;}
+\DoxyCodeLine{25     \textcolor{keywordtype}{bool} start(std::string address);}
+\DoxyCodeLine{26     \textcolor{keywordtype}{bool} stop();}
+\DoxyCodeLine{27     \textcolor{keywordtype}{void} register\_callback(callback\_t callback, \textcolor{keywordtype}{void}* user\_data);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{keyword}{virtual} \mbox{\hyperlink{class_common_1_1_replier}{\string~Replier}}();}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \textcolor{keyword}{private}:}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     std::unique\_ptr<zmq::context\_t> context;}
+\DoxyCodeLine{34     uint32\_t timeout\_ms;}
+\DoxyCodeLine{35     std::string address;}
+\DoxyCodeLine{36     std::unique\_ptr<std::thread> innerThread;}
+\DoxyCodeLine{37     callback\_t recv\_callback;}
+\DoxyCodeLine{38     \textcolor{keywordtype}{void} * callback\_user\_data;}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \textcolor{keywordtype}{void} worker(\textcolor{keyword}{const} \textcolor{keywordtype}{bool}\& terminating);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* ZMQ\_LAYER\_REPLIER\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

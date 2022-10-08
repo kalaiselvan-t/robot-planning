@@ -1,0 +1,91 @@
+\hypertarget{remote__control_2include_2hardwareparameters_8h_source}{}\doxysection{hardwareparameters.\+h}
+\label{remote__control_2include_2hardwareparameters_8h_source}\index{X:/remote\_control/include/hardwareparameters.h@{X:/remote\_control/include/hardwareparameters.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef HARDWAREPARAMETERS\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define HARDWAREPARAMETERS\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}}\{}
+\DoxyCodeLine{7 \textcolor{keyword}{public}:}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9   std::string hardwareServer = \textcolor{stringliteral}{"{}tcp://192.168.3.2:5601"{}};}
+\DoxyCodeLine{10   std::string hardwarePublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.2:6000"{}};}
+\DoxyCodeLine{11   std::string trolleyPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.2:6001"{}};}
+\DoxyCodeLine{12   std::string localizationServer = \textcolor{stringliteral}{"{}tcp://192.168.3.5:5600"{}};}
+\DoxyCodeLine{13   std::string localizationPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:5563"{}};}
+\DoxyCodeLine{14   std::string frontLidarPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:7500"{}};}
+\DoxyCodeLine{15   std::string rearLidarPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:7501"{}};}
+\DoxyCodeLine{16   std::string realSensePublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:7502"{}};}
+\DoxyCodeLine{17   std::string kartoPosePublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.99:7001"{}};}
+\DoxyCodeLine{18   std::string realSenseOdom = \textcolor{stringliteral}{"{}tcp://192.168.3.5:9304"{}};}
+\DoxyCodeLine{19   std::string realSensePosePublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:9112"{}};}
+\DoxyCodeLine{20   std::string realSenseTagsPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:9114"{}};}
+\DoxyCodeLine{21   std::string trackingPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:7901"{}};}
+\DoxyCodeLine{22   std::string autnavServer = \textcolor{stringliteral}{"{}tcp://192.168.3.5:1991"{}};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24   \textcolor{keywordtype}{double} vehicleWidth = 0.5;}
+\DoxyCodeLine{25   \textcolor{keywordtype}{double} vehicleLength = 0.5;}
+\DoxyCodeLine{26   \textcolor{keywordtype}{double} cameraOffsetX = 0.25;}
+\DoxyCodeLine{27   \textcolor{keywordtype}{double} cameraOffsetY = 0.0;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29   \mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}}()\{}
+\DoxyCodeLine{30     hardwareServer = \textcolor{stringliteral}{"{}tcp://192.168.3.2:5601"{}};}
+\DoxyCodeLine{31     hardwarePublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.2:6000"{}};}
+\DoxyCodeLine{32     trolleyPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.2:6001"{}};}
+\DoxyCodeLine{33     localizationServer = \textcolor{stringliteral}{"{}tcp://192.168.3.5:5600"{}};}
+\DoxyCodeLine{34     localizationPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:5563"{}};}
+\DoxyCodeLine{35     frontLidarPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:7500"{}};}
+\DoxyCodeLine{36     rearLidarPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:7501"{}};}
+\DoxyCodeLine{37     realSensePublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:7502"{}};}
+\DoxyCodeLine{38     kartoPosePublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.99:7001"{}};}
+\DoxyCodeLine{39     realSenseOdom = \textcolor{stringliteral}{"{}tcp://192.168.3.5:9304"{}};}
+\DoxyCodeLine{40     realSensePosePublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:9112"{}};}
+\DoxyCodeLine{41     realSenseTagsPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:9114"{}};}
+\DoxyCodeLine{42     trackingPublisher = \textcolor{stringliteral}{"{}tcp://192.168.3.5:7901"{}};}
+\DoxyCodeLine{43     autnavServer = \textcolor{stringliteral}{"{}tcp://192.168.3.5:1991"{}};}
+\DoxyCodeLine{44   \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   \mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}}(std::string val)\{}
+\DoxyCodeLine{47     \textcolor{keywordflow}{if}(val.compare(\textcolor{stringliteral}{"{}localhost"{}})==0)\{}
+\DoxyCodeLine{48       hardwareServer = \textcolor{stringliteral}{"{}tcp://localhost:5601"{}};}
+\DoxyCodeLine{49       hardwarePublisher = \textcolor{stringliteral}{"{}tcp://localhost:6000"{}};}
+\DoxyCodeLine{50       trolleyPublisher = \textcolor{stringliteral}{"{}tcp://localhost:6001"{}};}
+\DoxyCodeLine{51       localizationServer = \textcolor{stringliteral}{"{}tcp://localhost:5600"{}};}
+\DoxyCodeLine{52       localizationPublisher = \textcolor{stringliteral}{"{}tcp://localhost:5563"{}}; \textcolor{comment}{// 5563}}
+\DoxyCodeLine{53       frontLidarPublisher = \textcolor{stringliteral}{"{}tcp://localhost:7500"{}};}
+\DoxyCodeLine{54       rearLidarPublisher = \textcolor{stringliteral}{"{}tcp://localhost:7501"{}};}
+\DoxyCodeLine{55       realSensePublisher = \textcolor{stringliteral}{"{}tcp://localhost:7502"{}};}
+\DoxyCodeLine{56       kartoPosePublisher = \textcolor{stringliteral}{"{}tcp://localhost:7001"{}};}
+\DoxyCodeLine{57       realSenseOdom = \textcolor{stringliteral}{"{}tcp://localhost:9304"{}};}
+\DoxyCodeLine{58       realSensePosePublisher = \textcolor{stringliteral}{"{}tcp://localhost:9112"{}};}
+\DoxyCodeLine{59       realSenseTagsPublisher = \textcolor{stringliteral}{"{}tcp://localhost:9114"{}};}
+\DoxyCodeLine{60       trackingPublisher = \textcolor{stringliteral}{"{}tcp://localhost:7901"{}};}
+\DoxyCodeLine{61       autnavServer = \textcolor{stringliteral}{"{}tcp://localhost:1991"{}};}
+\DoxyCodeLine{62     \}}
+\DoxyCodeLine{63   \}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \mbox{\hyperlink{struct_hardware_parameters}{HardwareParameters}}(\textcolor{keywordtype}{int} i)\{}
+\DoxyCodeLine{66     \textcolor{keywordtype}{int} bbIP = 100 + i*10 + 2;}
+\DoxyCodeLine{67     \textcolor{keywordtype}{int} nucIP = 100 + i*10 + 5;}
+\DoxyCodeLine{68     hardwareServer = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(bbIP) + \textcolor{stringliteral}{"{}:5601"{}};}
+\DoxyCodeLine{69     hardwarePublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(bbIP) + \textcolor{stringliteral}{"{}:6000"{}};}
+\DoxyCodeLine{70     trolleyPublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(bbIP) + \textcolor{stringliteral}{"{}:6001"{}};}
+\DoxyCodeLine{71     localizationServer = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:5600"{}};}
+\DoxyCodeLine{72     localizationPublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:5563"{}}; \textcolor{comment}{// 5563}}
+\DoxyCodeLine{73     frontLidarPublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:7500"{}};}
+\DoxyCodeLine{74     rearLidarPublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:7501"{}};}
+\DoxyCodeLine{75     realSensePublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:7502"{}};}
+\DoxyCodeLine{76     kartoPosePublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:7001"{}};}
+\DoxyCodeLine{77     realSenseOdom = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:9304"{}};}
+\DoxyCodeLine{78     realSensePosePublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:9112"{}};}
+\DoxyCodeLine{79     realSenseTagsPublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:9114"{}};}
+\DoxyCodeLine{80     trackingPublisher = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:7901"{}};}
+\DoxyCodeLine{81     autnavServer = \textcolor{stringliteral}{"{}tcp://10.196.80."{}} + std::to\_string(nucIP) + \textcolor{stringliteral}{"{}:1991"{}};}
+\DoxyCodeLine{82   \}}
+\DoxyCodeLine{83 \};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// HARDWAREPARAMETERS\_H}}
+
+\end{DoxyCode}

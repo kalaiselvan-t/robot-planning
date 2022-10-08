@@ -1,0 +1,75 @@
+\hypertarget{namespacezmq}{}\doxysection{zmq Namespace Reference}
+\label{namespacezmq}\index{zmq@{zmq}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classzmq_1_1context__t}{context\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classzmq_1_1error__t}{error\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classzmq_1_1message__t}{message\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classzmq_1_1monitor__t}{monitor\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classzmq_1_1socket__t}{socket\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef zmq\+\_\+free\+\_\+fn \mbox{\hyperlink{namespacezmq_a56e33ec21b30bfdd123653848e0ff6e9}{free\+\_\+fn}}
+\item 
+typedef zmq\+\_\+pollitem\+\_\+t \mbox{\hyperlink{namespacezmq_afae32df5376640a84a10f2fd3ba2fee9}{pollitem\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespacezmq_aa0a1cd89ebe7c4ca73a6e2aa0559fcee}{poll}} (zmq\+\_\+pollitem\+\_\+t $\ast$items\+\_\+, int nitems\+\_\+, long timeout\+\_\+=-\/1)
+\item 
+void \mbox{\hyperlink{namespacezmq_ab9ccd2f84995b585f715cab73ef48d37}{proxy}} (void $\ast$frontend, void $\ast$backend, void $\ast$capture)
+\item 
+void \mbox{\hyperlink{namespacezmq_a32f5cca844c8304cb6b466a93d3fc485}{proxy\+\_\+steerable}} (void $\ast$frontend, void $\ast$backend, void $\ast$capture, void $\ast$control)
+\item 
+void \mbox{\hyperlink{namespacezmq_af04cbb1885b768c4ce23615883367c20}{version}} (int $\ast$major\+\_\+, int $\ast$minor\+\_\+, int $\ast$patch\+\_\+)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacezmq_a56e33ec21b30bfdd123653848e0ff6e9}\label{namespacezmq_a56e33ec21b30bfdd123653848e0ff6e9}} 
+\index{zmq@{zmq}!free\_fn@{free\_fn}}
+\index{free\_fn@{free\_fn}!zmq@{zmq}}
+\doxysubsubsection{\texorpdfstring{free\_fn}{free\_fn}}
+{\footnotesize\ttfamily typedef zmq\+\_\+free\+\_\+fn \mbox{\hyperlink{namespacezmq_a56e33ec21b30bfdd123653848e0ff6e9}{zmq\+::free\+\_\+fn}}}
+
+\mbox{\Hypertarget{namespacezmq_afae32df5376640a84a10f2fd3ba2fee9}\label{namespacezmq_afae32df5376640a84a10f2fd3ba2fee9}} 
+\index{zmq@{zmq}!pollitem\_t@{pollitem\_t}}
+\index{pollitem\_t@{pollitem\_t}!zmq@{zmq}}
+\doxysubsubsection{\texorpdfstring{pollitem\_t}{pollitem\_t}}
+{\footnotesize\ttfamily typedef zmq\+\_\+pollitem\+\_\+t \mbox{\hyperlink{namespacezmq_afae32df5376640a84a10f2fd3ba2fee9}{zmq\+::pollitem\+\_\+t}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacezmq_aa0a1cd89ebe7c4ca73a6e2aa0559fcee}\label{namespacezmq_aa0a1cd89ebe7c4ca73a6e2aa0559fcee}} 
+\index{zmq@{zmq}!poll@{poll}}
+\index{poll@{poll}!zmq@{zmq}}
+\doxysubsubsection{\texorpdfstring{poll()}{poll()}}
+{\footnotesize\ttfamily int zmq\+::poll (\begin{DoxyParamCaption}\item[{zmq\+\_\+pollitem\+\_\+t $\ast$}]{items\+\_\+,  }\item[{int}]{nitems\+\_\+,  }\item[{long}]{timeout\+\_\+ = {\ttfamily -\/1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacezmq_ab9ccd2f84995b585f715cab73ef48d37}\label{namespacezmq_ab9ccd2f84995b585f715cab73ef48d37}} 
+\index{zmq@{zmq}!proxy@{proxy}}
+\index{proxy@{proxy}!zmq@{zmq}}
+\doxysubsubsection{\texorpdfstring{proxy()}{proxy()}}
+{\footnotesize\ttfamily void zmq\+::proxy (\begin{DoxyParamCaption}\item[{void $\ast$}]{frontend,  }\item[{void $\ast$}]{backend,  }\item[{void $\ast$}]{capture }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacezmq_a32f5cca844c8304cb6b466a93d3fc485}\label{namespacezmq_a32f5cca844c8304cb6b466a93d3fc485}} 
+\index{zmq@{zmq}!proxy\_steerable@{proxy\_steerable}}
+\index{proxy\_steerable@{proxy\_steerable}!zmq@{zmq}}
+\doxysubsubsection{\texorpdfstring{proxy\_steerable()}{proxy\_steerable()}}
+{\footnotesize\ttfamily void zmq\+::proxy\+\_\+steerable (\begin{DoxyParamCaption}\item[{void $\ast$}]{frontend,  }\item[{void $\ast$}]{backend,  }\item[{void $\ast$}]{capture,  }\item[{void $\ast$}]{control }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacezmq_af04cbb1885b768c4ce23615883367c20}\label{namespacezmq_af04cbb1885b768c4ce23615883367c20}} 
+\index{zmq@{zmq}!version@{version}}
+\index{version@{version}!zmq@{zmq}}
+\doxysubsubsection{\texorpdfstring{version()}{version()}}
+{\footnotesize\ttfamily void zmq\+::version (\begin{DoxyParamCaption}\item[{int $\ast$}]{major\+\_\+,  }\item[{int $\ast$}]{minor\+\_\+,  }\item[{int $\ast$}]{patch\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
