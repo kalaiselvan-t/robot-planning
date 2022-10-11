@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM amd64/ubuntu:jammy
 ARG DEBIAN_FRONTEND=noninteractive
 
 # copy all the files to the container
@@ -34,7 +34,8 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y libncurses5-dev && \
     apt-get install -y mesa-utils libgl1-mesa-glx && \
     apt-get install -y ros-humble-cartographer && \
-    apt-get install -y ros-humble-cartographer-ros
+    apt-get install -y ros-humble-cartographer-ros && \
+    apt-get install -y ros-humble-gazebo-ros
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
