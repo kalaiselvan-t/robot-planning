@@ -26,9 +26,10 @@ def generate_launch_description():
 
     launch_file_dir = os.path.join(get_package_share_directory('shelfino_description'), 'launch')
     rviz_config_dir = os.path.join(get_package_share_directory(
-        'shelfino_navigation'), 'rviz', 'shelfino_slam.rviz')
+        'shelfino_navigation'), 'rviz', 'shelfino_gazebo_slam.rviz')
 
-    sim = LaunchConfiguration('sim', default='false')
+    sim = LaunchConfiguration('sim', default='true')
+    robot_id = LaunchConfiguration('robot_id', default='shelfino2')
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -40,20 +41,8 @@ def generate_launch_description():
             default_value=configuration_basename,
             description='Name of lua file for cartographer'),
         
-        DeclareLaunchArgument(name='sim', default_value='false', choices=['true', 'false'],
+        DeclareLaunchArgument(name='sim', default_value='true', choices=['true', 'false'],
                         description='Flag to toggle between real robot and simulation'),
-
-        Node(
-	        package='shelfino_node',
-	        executable='shelfino_node',
-            name='shelfino_node',
-            condition=UnlessCondition(sim)
-        ),
-
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([launch_file_dir, '/robot_state_publisher.launch.py']),
-            launch_arguments={'use_sim_time': sim}.items(),
-        ),
 
         Node(
             package='cartographer_ros',
@@ -79,7 +68,7 @@ def generate_launch_description():
             package='cartographer_ros',
             executable='occupancy_grid_node',
             name='cartographer_occupancy_grid_node',
-            output='screen',
+            output='screen',          
             parameters=[{'use_sim_time': sim}],
             arguments=['-resolution', resolution,
                        '-publish_period_sec', publish_period_sec]
