@@ -20,6 +20,11 @@
 using namespace std::chrono_literals;
 using namespace nlohmann;
 
+/// @brief Variable for definition of the shelfino ID number
+const auto R_ID_DEFAULT = 2;
+
+/// @brief Pointer to a Hardware Parameters instance which contains all the information on the IP addresses and ports of the specific shelfino robot
+std::unique_ptr<HardwareParameters> hp;
 
 /**
  * @brief Shelfino ROS2 node to bridge the sensor data from ZMQ to ROS2.
@@ -243,12 +248,6 @@ class ShelfinoHWNode : public rclcpp::Node
       tf_broadcaster_->sendTransform(t);
     }
     
-    /// @brief Variable for definition of the shelfino ID number
-    const auto R_ID_DEFAULT = 2;
-    
-    /// @brief Pointer to a Hardware Parameters instance which contains all the information on the IP addresses and ports of the specific shelfino robot
-    std::unique_ptr<HardwareParameters> hp;
-
     bool robot_state = false;
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscription_;
     std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
