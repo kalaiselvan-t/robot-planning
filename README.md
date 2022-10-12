@@ -1,22 +1,15 @@
 # Shelfino ROS2
 
-<table>
-  <tr>
-    <td width="40%">
-    This repository contains the ROS2 interface developed for the mobile robot <b>Shelfino</b> of the Department of Information Engineering and Computer Science of the University of Trento, Italy. </br></br>
-    Both a bringup node for the physical robot and a simulation of the robot itself are present here. </br></br>
+<img src="./assets/images/shelfino.png" align="right" alt="shelfino robot" height="250px">
+
+This repository contains the ROS2 interface developed for the mobile robot **Shelfino** of the Department of Information Engineering and Computer Science of the University of Trento, Italy. </br>
+
+Both a bringup node for the physical robot and a simulation of the robot itself are present here. 
 
 - [Shelfino ROS2](#shelfino-ros2)
   - [Shelfino ROS2 topics](#shelfino-ros2-topics)
   - [Docker image](#docker-image)
   - [Complete documentation](#complete-documentation)
-
-    </td>
-    <td width="40%">
-![shelfino robot](./assets/images/shelfino.png)
-    </td>
-  </tr>
-</table>
 
 ## Shelfino ROS2 topics
 
