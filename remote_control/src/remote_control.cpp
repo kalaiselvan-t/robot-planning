@@ -22,6 +22,8 @@ double DEC_OMEGA = 0.3;
 double STEP = 0.01;
 double A_LAT = 2.0;
 
+std::string robot_id_topic;
+
 /**
  * @brief ROS2 node to send velocities commands to the **cmd_vel** topic using the keyboard
  * 
@@ -36,7 +38,7 @@ class CMDPublisher : public rclcpp::Node
     CMDPublisher()
     : Node("remote_control")
     {
-      publisher_ = rclcpp::Node::create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
+      publisher_ = rclcpp::Node::create_publisher<geometry_msgs::msg::Twist>(robot_id_topic, 10);
       initscr();
       noecho();
       last = std::chrono::system_clock::now();
@@ -175,6 +177,9 @@ void kbhit()
  */
 void start_ros_node(int argc, char * argv[])
 {
+  std::string append_topic = "/cmd_vel";
+  if(argc < 2)  robot_id_topic = append_topic;
+  else          robot_id_topic = argv[1] + append_topic;
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<CMDPublisher>());
 }

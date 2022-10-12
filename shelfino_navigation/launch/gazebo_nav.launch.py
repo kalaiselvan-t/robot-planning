@@ -15,7 +15,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     use_rviz = LaunchConfiguration('use_rviz', default='true')
-    sim = LaunchConfiguration('sim', default='false')
+    sim = LaunchConfiguration('sim', default='true')
 
     launch_file_dir = os.path.join(get_package_share_directory('shelfino_description'), 'launch')
     
@@ -26,7 +26,7 @@ def generate_launch_description():
             'map',
             'ufficio2.yaml'))
 
-    param_file_name = 'shelfino.yaml'
+    param_file_name = 'shelfino_gazebo.yaml'
     param_dir = LaunchConfiguration(
         'params_file',
         default=os.path.join(
@@ -52,20 +52,8 @@ def generate_launch_description():
             default_value=param_dir,
             description='Full path to param file to load'),
 
-        DeclareLaunchArgument(name='sim', default_value='false', choices=['true', 'false'],
+        DeclareLaunchArgument(name='sim', default_value='true', choices=['true', 'false'],
                         description='Flag to toggle between real robot and simulation'),
-
-        Node(
-	        package='shelfino_node',
-	        executable='shelfino_node',
-            name='shelfino_node',
-            condition=UnlessCondition(sim)
-        ),
-
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([launch_file_dir, '/robot_state_publisher.launch.py']),
-            launch_arguments={'use_sim_time': sim}.items(),
-        ),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
