@@ -1,8 +1,6 @@
 # Shelfino ROS2
 
-This repository contains the ROS 2 interface developed for the mobile robot Shelfino of the Department of Information Engineering and Computer Science of the University of Trento, Italy.
-
-## Shelfino topics
+This repository contains the ROS 2 interface developed for the mobile robot Shelfino of the Department of Information Engineering and Computer Science of the University of Trento, Italy. [^1]
 
 The topics provided by the interface are:
 
@@ -19,12 +17,10 @@ The topics provided by the interface are:
 
 
 ---
-## Docker image
 
 You can pull the docker image containing all the ROS2 nodes of this project with: <br/>
 `docker pull pla10/ros2_humble:amd64` 
 
 ---
-## Complete documentation
 
-Check the [complete documentation](https://pla10.github.io/Shelfino_ROS2) of this repository.
+[^1]: Check the [complete documentation](https://pla10.github.io/Shelfino_ROS2) of this repository.
