@@ -60,6 +60,9 @@ class ShelfinoHWNode : public rclcpp::Node
       // Creation of the CMD_VEL subscriber to move the shelfino
       cmd_subscription_ = this->create_subscription<geometry_msgs::msg::Twist>(
         "cmd_vel", 10, std::bind(&ShelfinoHWNode::handle_shelfino_cmd_vel, this, std::placeholders::_1));
+      // Retrieve node namespace to use as prefix of transforms
+      ns = this->get_namespace();
+      ns.erase(0,1);
     }
 
   private:
@@ -75,7 +78,7 @@ class ShelfinoHWNode : public rclcpp::Node
       sensor_msgs::msg::LaserScan msg;
       msg.header.stamp = this->get_clock()->now();
       
-      msg.header.frame_id = "base_laser";
+      msg.header.frame_id = ns+"/base_laser";
       msg.angle_increment = 0.00872664625;
       msg.angle_min = msg.angle_increment;
       msg.angle_max = 6.27445866092 + msg.angle_min;
@@ -106,8 +109,8 @@ class ShelfinoHWNode : public rclcpp::Node
       nav_msgs::msg::Odometry msg;
       msg.header.stamp = this->get_clock()->now();
       
-      msg.header.frame_id = "odom";
-      msg.child_frame_id = "base_link";
+      msg.header.frame_id = ns+"/odom";
+      msg.child_frame_id = ns+"/base_link";
 
       msg.pose.pose.position.x = odomData.pos_x; 
       msg.pose.pose.position.y = odomData.pos_y;
@@ -145,8 +148,8 @@ class ShelfinoHWNode : public rclcpp::Node
       nav_msgs::msg::Odometry msg;
       msg.header.stamp = this->get_clock()->now();
 
-      msg.header.frame_id = "odom";
-      msg.child_frame_id = "base_link";
+      msg.header.frame_id = ns+"/odom";
+      msg.child_frame_id = ns+"/base_link";
 
       msg.pose.pose.position.x = odomData.pos_x; 
       msg.pose.pose.position.y = odomData.pos_y;
@@ -233,8 +236,8 @@ class ShelfinoHWNode : public rclcpp::Node
 
       t.header.stamp = msg.header.stamp;
 
-      t.header.frame_id = "odom";
-      t.child_frame_id = "base_link";
+      t.header.frame_id = ns+"/odom";
+      t.child_frame_id = ns+"/base_link";
 
       t.transform.translation.x = msg.pose.pose.position.x;
       t.transform.translation.y = msg.pose.pose.position.y;
@@ -249,6 +252,7 @@ class ShelfinoHWNode : public rclcpp::Node
     }
     
     bool robot_state = false;
+    std::string ns;
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscription_;
     std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
     rclcpp::TimerBase::SharedPtr lidar_timer_;
