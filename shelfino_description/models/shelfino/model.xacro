@@ -19,7 +19,7 @@
 <!--
                                                       BODY OF SHELFINO 
 -->
-  <link name='base_link'>
+  <link name='shelfino2/base_link'>
     <visual name='body_visual'>
       <origin xyz='0 0 .25'/>
       <geometry>
@@ -56,8 +56,8 @@
                                                       LEFT WHEEL JOINT 
 -->
   <joint name="wheel_left_joint" type="continuous">
-    <parent link="base_link"/>
-    <child link="left_wheel"/>
+    <parent link="shelfino2/base_link"/>
+    <child link="shelfino2/left_wheel"/>
     <origin xyz="0 0.27 0.125" rpy="0 1.5707 1.5707"/>
     <axis xyz="0 0 1"/>
   </joint>
@@ -65,7 +65,7 @@
 <!--
                                                       LEFT WHEEL
 -->
-  <link name="left_wheel">
+  <link name="shelfino2/left_wheel">
     <visual name="visual">
       <geometry>
        <cylinder radius="0.125" length="0.03" />
@@ -91,8 +91,8 @@
                                                       RIGHT WHEEL JOINT 
 -->
   <joint name="wheel_right_joint" type="continuous">
-    <parent link="base_link"/>
-    <child link="right_wheel"/>
+    <parent link="shelfino2/base_link"/>
+    <child link="shelfino2/right_wheel"/>
     <origin xyz="0 -0.27 0.125" rpy="0 1.5707 1.5707"/> 
     <axis xyz="0 0 1"/>
   </joint>
@@ -100,7 +100,7 @@
 <!--
                                                       RIGHT WHEEL 
 -->
-  <link name="right_wheel">
+  <link name="shelfino2/right_wheel">
     <visual name="visual">
       <geometry>
         <cylinder radius="0.125" length="0.03" />
@@ -126,15 +126,15 @@
                                                       LIDAR FIXED JOINT 
 -->
   <joint name="lidar2d_joint" type="fixed">
-    <parent link="base_link"></parent>
-    <child link="base_laser"></child>
+    <parent link="shelfino2/base_link"></parent>
+    <child link="shelfino2/base_laser"></child>
     <origin xyz="0 0 0.45" rpy="0 0 0"/>
   </joint>
 
 <!--
                                                       LIDAR 
 -->
-  <link name="base_laser">
+  <link name="shelfino2/base_laser">
     <visual>
       <geometry>
         <mesh filename="package://shelfino_gazebo/models/lidar2d/meshes/hokuyo.dae" />
