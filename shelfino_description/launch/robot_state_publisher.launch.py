@@ -5,7 +5,7 @@
 import os
 
 from ament_index_python.packages import get_package_share_directory
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, Command
 from launch.actions import DeclareLaunchArgument
 from launch import LaunchDescription
 from launch_ros.actions import Node
@@ -15,7 +15,7 @@ def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     robot_id = LaunchConfiguration('robot_id', default='')
-    urdf_file_name = 'model.urdf'
+    urdf_file_name = 'model.xacro'
 
     print('urdf_file_name : {}'.format(urdf_file_name))
 
@@ -23,8 +23,7 @@ def generate_launch_description():
         get_package_share_directory('shelfino_description'),
         'models','shelfino',urdf_file_name)
     
-    with open(urdf, 'r') as infp:
-        robot_desc = infp.read()
+    robot_desc = Command(['xacro ',urdf,' robot_name:=',robot_id])
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -44,7 +43,6 @@ def generate_launch_description():
             namespace=robot_id,
             output='screen',
             parameters=[{'use_sim_time': use_sim_time},
-                        {'robot_description': robot_desc},
-                        {'frame_prefix': [LaunchConfiguration('robot_id'),'/']}],
+                        {'robot_description': robot_desc}],
             arguments=[urdf])
     ])
