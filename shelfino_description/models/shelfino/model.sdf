@@ -11,7 +11,7 @@
 <!--
                                                       BODY OF SHELFINO 
 -->
-    <link name='base_link'>
+    <link name='gazebo/base_link'>
       <visual name='body_visual'>
         <pose>0 0 .25 0 0 0</pose>
         <geometry>
@@ -67,8 +67,8 @@
                                                       LEFT WHEEL JOINT 
 -->
     <joint name="wheel_left_joint" type="revolute">
-      <parent>base_link</parent>
-      <child>left_wheel</child>
+      <parent>gazebo/base_link</parent>
+      <child>gazebo/left_wheel</child>
       <pose>0 0 0 0 0 0</pose>
       <axis>
         <xyz>0 1 0</xyz>
@@ -78,7 +78,7 @@
 <!--
                                                       LEFT WHEEL
 -->
-    <link name="left_wheel">
+    <link name="gazebo/left_wheel">
       <pose>0 0.27 0.125 0 1.5707 1.5707</pose>
       <visual name="visual">
         <geometry>
@@ -118,8 +118,8 @@
                                                       RIGHT WHEEL JOINT 
 -->
     <joint name="wheel_right_joint" type="revolute">
-      <parent>base_link</parent>
-      <child>right_wheel</child>
+      <parent>gazebo/base_link</parent>
+      <child>gazebo/right_wheel</child>
       <pose>0 0 0 0 0 0</pose>
       <axis>
         <xyz>0 1 0</xyz>
@@ -129,7 +129,7 @@
 <!--
                                                       RIGHT WHEEL 
 -->
-    <link name="right_wheel">
+    <link name="gazebo/right_wheel">
       <pose>0 -0.27 0.125 0 1.5707 1.5707</pose>
       <visual name="visual">
         <geometry>
@@ -168,7 +168,7 @@
                                                       LIDAR FIXED JOINT 
 -->
     <joint name="lidar2d_joint" type="fixed">
-      <parent>base_link</parent>
+      <parent>gazebo/base_link</parent>
       <child>lidar2d::lidar_link</child>
       <pose>0 0 0 0 0 0</pose>
     </joint>
@@ -187,7 +187,8 @@
     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
 
       <ros>
-        <!-- <namespace>/tb3</namespace> -->
+        <!-- Set namespace -->
+        <namespace>gazebo</namespace>
       </ros>
 
       <!-- <alwaysOn>true</alwaysOn> -->
@@ -214,9 +215,8 @@
       <publish_odom_tf>true</publish_odom_tf>
       <publish_wheel_tf>false</publish_wheel_tf>
 
-      <odometry_topic>odom</odometry_topic>
-      <odometry_frame>odom</odometry_frame>
-      <robot_base_frame>base_link</robot_base_frame>
+      <odometry_frame>gazebo/odom</odometry_frame>
+      <robot_base_frame>gazebo/base_link</robot_base_frame>
 
       <!-- <odometrySource>ENCODER</odometrySource> -->
       <!-- <odometrySource>WORLD</odometrySource> -->
@@ -227,7 +227,7 @@
 -->
     <plugin name="joint_state" filename="libgazebo_ros_joint_state_publisher.so">
       <ros>
-        <!-- <namespace>/tb3</namespace> -->
+        <namespace>gazebo</namespace>
         <remapping>~/out:=joint_states</remapping>
       </ros>
       <update_rate>30</update_rate>
