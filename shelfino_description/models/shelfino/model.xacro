@@ -141,7 +141,7 @@
     <link name="${robot_name}/base_laser">
       <visual>
         <geometry>
-          <mesh filename="package://shelfino_gazebo/models/lidar2d/meshes/hokuyo.dae" />
+          <mesh filename="package://shelfino_description/models/lidar2d/meshes/hokuyo.dae" />
         </geometry>
         <material name="black"/>
       </visual>

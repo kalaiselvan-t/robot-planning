@@ -153,7 +153,7 @@ Visualization Manager:
     - Alpha: 1
       Class: rviz_default_plugins/RobotModel
       Collision Enabled: false
-      Description File: /home/eecs/ros2_ws/src/shelfino_gazebo/models/shelfino/shelfino3.urdf
+      Description File: /home/eecs/ros2_ws/src/shelfino_description/models/shelfino/shelfino3.urdf
       Description Source: Topic
       Description Topic:
         Depth: 5

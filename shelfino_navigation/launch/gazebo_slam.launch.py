@@ -19,7 +19,7 @@ def generate_launch_description():
         'cartographer_config_dir',
         default=os.path.join(get_package_share_directory('shelfino_navigation'), 'config'))
     configuration_basename = LaunchConfiguration(
-        'configuration_basename', default='shelfino.lua')
+        'configuration_basename', default='gazebo.lua')
 
     resolution = LaunchConfiguration('resolution', default='0.05')
     publish_period_sec = LaunchConfiguration('publish_period_sec', default='1.0')
@@ -29,7 +29,7 @@ def generate_launch_description():
         'shelfino_navigation'), 'rviz', 'shelfino_gazebo_slam.rviz')
 
     sim = LaunchConfiguration('sim', default='true')
-    robot_id = LaunchConfiguration('robot_id', default='shelfino2')
+    robot_id = LaunchConfiguration('robot_id', default='gazebo')
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -49,6 +49,7 @@ def generate_launch_description():
             executable='cartographer_node',
             name='cartographer_node',
             output='screen',
+            namespace='gazebo',
             parameters=[{'use_sim_time': sim}],
             arguments=['-configuration_directory', cartographer_config_dir,
                        '-configuration_basename', configuration_basename]
@@ -68,7 +69,8 @@ def generate_launch_description():
             package='cartographer_ros',
             executable='occupancy_grid_node',
             name='cartographer_occupancy_grid_node',
-            output='screen',          
+            output='screen',
+            namespace='gazebo',          
             parameters=[{'use_sim_time': sim}],
             arguments=['-resolution', resolution,
                        '-publish_period_sec', publish_period_sec]
