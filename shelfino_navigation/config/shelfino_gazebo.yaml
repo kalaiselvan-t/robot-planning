@@ -6,7 +6,7 @@ amcl:
     alpha3: 0.2
     alpha4: 0.2
     alpha5: 0.2
-    base_frame_id: "base_link"
+    base_frame_id: "gazebo/base_link"
     beam_skip_distance: 0.5
     beam_skip_error_threshold: 0.9
     beam_skip_threshold: 0.3
@@ -20,7 +20,7 @@ amcl:
     max_beams: 60
     max_particles: 2000
     min_particles: 500
-    odom_frame_id: "odom"
+    odom_frame_id: "gazebo/odom"
     pf_err: 0.05
     pf_z: 0.99
     recovery_alpha_fast: 0.0
@@ -37,7 +37,7 @@ amcl:
     z_max: 0.05
     z_rand: 0.5
     z_short: 0.05
-    scan_topic: /scan
+    scan_topic: /gazebo/scan
 
 amcl_map_client:
   ros__parameters:
@@ -51,8 +51,8 @@ bt_navigator:
   ros__parameters:
     use_sim_time: True
     global_frame: map
-    robot_base_frame: base_link
-    odom_topic: /odom
+    robot_base_frame: gazebo/base_link
+    odom_topic: /gazebo/odom
     enable_groot_monitoring: True
     groot_zmq_publisher_port: 1666
     groot_zmq_server_port: 1667
@@ -157,14 +157,15 @@ local_costmap:
     ros__parameters:
       update_frequency: 5.0
       publish_frequency: 2.0
-      global_frame: odom
-      robot_base_frame: base_link
+      global_frame: gazebo/odom
+      robot_base_frame: gazebo/base_link
       use_sim_time: True
       rolling_window: true
       width: 3
       height: 3
       resolution: 0.05
       robot_radius: 0.22
+      footprint: "[ [0.21, 0.195], [0.21, -0.195], [-0.21, -0.195], [-0.21, 0.195] ]"
       plugins: ["voxel_layer", "inflation_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
@@ -179,9 +180,9 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
-        observation_sources: scan
+        observation_sources: gazebo/scan
         scan:
-          topic: /scan
+          topic: /gazebo/scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -202,7 +203,7 @@ global_costmap:
       update_frequency: 1.0
       publish_frequency: 1.0
       global_frame: map
-      robot_base_frame: base_link
+      robot_base_frame: gazebo/base_link
       use_sim_time: True
       robot_radius: 0.22
       resolution: 0.05
@@ -211,9 +212,9 @@ global_costmap:
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        observation_sources: scan
+        observation_sources: gazebo/scan
         scan:
-          topic: /scan
+          topic: /gazebo/scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -263,8 +264,8 @@ planner_server_rclcpp_node:
 
 recoveries_server:
   ros__parameters:
-    costmap_topic: local_costmap/costmap_raw
-    footprint_topic: local_costmap/published_footprint
+    costmap_topic: gazebo/local_costmap/costmap_raw
+    footprint_topic: gazebo/local_costmap/published_footprint
     cycle_frequency: 10.0
     recovery_plugins: ["spin", "back_up", "wait"]
     spin:
@@ -273,8 +274,8 @@ recoveries_server:
       plugin: "nav2_recoveries/BackUp"
     wait:
       plugin: "nav2_recoveries/Wait"
-    global_frame: odom
-    robot_base_frame: base_link
+    global_frame: gazebo/odom
+    robot_base_frame: gazebo/base_link
     transform_timeout: 0.1
     use_sim_time: true
     simulate_ahead_time: 2.0

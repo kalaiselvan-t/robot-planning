@@ -31,15 +31,15 @@ def generate_launch_description():
         'params_file',
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
-            'param',
+            'config',
             param_file_name))
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
     rviz_config_dir = os.path.join(
-        get_package_share_directory('nav2_bringup'),
+        get_package_share_directory('shelfino_navigation'),
         'rviz',
-        'nav2_default_view.rviz')
+        'shelfino_gazebo_nav.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -60,7 +60,9 @@ def generate_launch_description():
             launch_arguments={
                 'map': map_dir,
                 'use_sim_time': sim,
-                'params_file': param_dir}.items(),
+                'params_file': param_dir,
+                'use_namespace': 'true',
+                'namespace': 'gazebo'}.items(),
         ),
 
         Node(

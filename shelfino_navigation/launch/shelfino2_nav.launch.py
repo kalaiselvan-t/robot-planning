@@ -31,7 +31,7 @@ def generate_launch_description():
         'params_file',
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
-            'param',
+            'config',
             param_file_name))
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')

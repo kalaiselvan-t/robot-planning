@@ -36,7 +36,8 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y mesa-utils libgl1-mesa-glx && \
     apt-get install -y ros-humble-cartographer && \
     apt-get install -y ros-humble-cartographer-ros && \
-    apt-get install -y ros-humble-gazebo-ros
+    apt-get install -y ros-humble-gazebo-ros && \
+    apt-get install -y ros-humble-xacro
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
