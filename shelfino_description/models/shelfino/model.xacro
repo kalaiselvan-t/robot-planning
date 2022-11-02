@@ -25,9 +25,9 @@
   -->
     <link name='${robot_name}/base_link'>
       <visual name='body_visual'>
-        <origin xyz='0 0 .25'/>
+        <origin xyz='0 0 0.25'/>
         <geometry>
-          <box size=".5 .5 .4" />
+          <box size="0.5 0.5 0.4" />
         </geometry>
         <material name="grey" />
       </visual>
@@ -35,7 +35,7 @@
       <visual name='front_caster_visual'>
         <origin xyz='-0.2 0 0.05'/>
         <geometry>
-          <sphere radius=".05" />
+          <sphere radius="0.05" />
         </geometry>
         <material name="white" />
       </visual>
@@ -43,15 +43,15 @@
       <visual name='back_caster_visual'>
         <origin xyz='0.2 0 0.05'/>
         <geometry>
-          <sphere radius=".05" />
+          <sphere radius="0.05" />
         </geometry>
         <material name="white" />
       </visual>
 
       <collision name='collision'>
-        <origin xyz='0 0 .225'/>
+        <origin xyz='0 0 0.225'/>
         <geometry>
-          <box size=".5 .5 .45" />
+          <box size="0.5 0.5 0.45" />
         </geometry>
       </collision>
     </link>
