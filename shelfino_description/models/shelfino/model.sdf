@@ -11,12 +11,12 @@
 <!--
                                                       BODY OF SHELFINO 
 -->
-    <link name='gazebo/base_link'>
+    <link name='base_link'>
       <visual name='body_visual'>
-        <pose>0 0 .25 0 0 0</pose>
+        <pose>0 0 0.25 0 0 0</pose>
         <geometry>
           <box>
-            <size>.5 .5 .4</size>
+            <size>0.5 0.5 0.4</size>
           </box>
         </geometry>
         <material>
@@ -29,7 +29,7 @@
         <pose>-0.2 0 0.05 0 0 0</pose>
         <geometry>
           <sphere>
-            <radius> .05 </radius>
+            <radius> 0.05 </radius>
           </sphere>
         </geometry>
       </visual>
@@ -38,7 +38,7 @@
         <pose>0.2 0 0.05 0 0 0</pose>
         <geometry>
           <sphere>
-            <radius> .05 </radius>
+            <radius> 0.05 </radius>
           </sphere>
         </geometry>
       </visual>
@@ -47,7 +47,7 @@
         <pose>0 0 0.225 0 0 0</pose>
         <geometry>
           <box>
-            <size>.5 .5 .45</size>
+            <size>0.5 0.5 0.45</size>
           </box>
         </geometry>
         <surface>
@@ -67,8 +67,8 @@
                                                       LEFT WHEEL JOINT 
 -->
     <joint name="wheel_left_joint" type="revolute">
-      <parent>gazebo/base_link</parent>
-      <child>gazebo/left_wheel</child>
+      <parent>base_link</parent>
+      <child>left_wheel</child>
       <pose>0 0 0 0 0 0</pose>
       <axis>
         <xyz>0 1 0</xyz>
@@ -78,7 +78,7 @@
 <!--
                                                       LEFT WHEEL
 -->
-    <link name="gazebo/left_wheel">
+    <link name="left_wheel">
       <pose>0 0.27 0.125 0 1.5707 1.5707</pose>
       <visual name="visual">
         <geometry>
@@ -118,8 +118,8 @@
                                                       RIGHT WHEEL JOINT 
 -->
     <joint name="wheel_right_joint" type="revolute">
-      <parent>gazebo/base_link</parent>
-      <child>gazebo/right_wheel</child>
+      <parent>base_link</parent>
+      <child>right_wheel</child>
       <pose>0 0 0 0 0 0</pose>
       <axis>
         <xyz>0 1 0</xyz>
@@ -129,7 +129,7 @@
 <!--
                                                       RIGHT WHEEL 
 -->
-    <link name="gazebo/right_wheel">
+    <link name="right_wheel">
       <pose>0 -0.27 0.125 0 1.5707 1.5707</pose>
       <visual name="visual">
         <geometry>
@@ -168,7 +168,7 @@
                                                       LIDAR FIXED JOINT 
 -->
     <joint name="lidar2d_joint" type="fixed">
-      <parent>gazebo/base_link</parent>
+      <parent>base_link</parent>
       <child>lidar2d::lidar_link</child>
       <pose>0 0 0 0 0 0</pose>
     </joint>
