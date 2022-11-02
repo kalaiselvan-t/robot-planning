@@ -21,9 +21,9 @@
 -->
   <link name='base_link'>
     <visual name='body_visual'>
-      <origin xyz='0 0 .25'/>
+      <origin xyz='0 0 0.25'/>
       <geometry>
-        <box size=".5 .5 .4" />
+        <box size="0.5 0.5 0.4" />
       </geometry>
       <material name="grey" />
     </visual>
@@ -45,9 +45,9 @@
     </visual>
 
     <collision name='collision'>
-      <origin xyz='0 0 .225'/>
+      <origin xyz='0 0 0.225'/>
       <geometry>
-        <box size=".5 .5 .45" />
+        <box size="0.5 0.5 0.45" />
       </geometry>
     </collision>
   </link>
@@ -137,7 +137,7 @@
   <link name="base_laser">
     <visual>
       <geometry>
-        <mesh filename="package://shelfino_gazebo/models/lidar2d/meshes/hokuyo.dae" />
+        <mesh filename="package://shelfino_description/models/lidar2d/meshes/hokuyo.dae" />
       </geometry>
       <material name="black"/>
     </visual>
