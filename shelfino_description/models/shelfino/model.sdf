@@ -29,7 +29,7 @@
         <pose>-0.2 0 0.05 0 0 0</pose>
         <geometry>
           <sphere>
-            <radius> .05 </radius>
+            <radius> 0.05 </radius>
           </sphere>
         </geometry>
       </visual>
@@ -38,7 +38,7 @@
         <pose>0.2 0 0.05 0 0 0</pose>
         <geometry>
           <sphere>
-            <radius> .05 </radius>
+            <radius> 0.05 </radius>
           </sphere>
         </geometry>
       </visual>

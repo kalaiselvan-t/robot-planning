@@ -31,7 +31,7 @@
     <visual name='front_caster_visual'>
       <origin xyz='-0.2 0 0.05'/>
       <geometry>
-        <sphere radius=".05" />
+        <sphere radius="0.05" />
       </geometry>
       <material name="white" />
     </visual>
@@ -39,7 +39,7 @@
     <visual name='back_caster_visual'>
       <origin xyz='0.2 0 0.05'/>
       <geometry>
-        <sphere radius=".05" />
+        <sphere radius="0.05" />
       </geometry>
       <material name="white" />
     </visual>

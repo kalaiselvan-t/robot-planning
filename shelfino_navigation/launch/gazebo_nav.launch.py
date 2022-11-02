@@ -24,7 +24,7 @@ def generate_launch_description():
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'map',
-            'ufficio2.yaml'))
+            'turtlebot3_world.yaml'))
 
     param_file_name = 'shelfino_gazebo.yaml'
     param_dir = LaunchConfiguration(
