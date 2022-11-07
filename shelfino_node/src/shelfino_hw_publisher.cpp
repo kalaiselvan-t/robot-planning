@@ -13,6 +13,8 @@
 #include "sensor_msgs/msg/joint_state.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 
+#include "std_srvs/srv/set_bool.hpp"
+
 #include "hardwareparameters.h"
 #include "hardwareglobalinterface.h"
 #include "json.hpp"
@@ -63,6 +65,8 @@ class ShelfinoHWNode : public rclcpp::Node
       // Retrieve node namespace to use as prefix of transforms
       ns = this->get_namespace();
       ns.erase(0,1);
+      
+      service_ = this->create_service<std_srvs::srv::SetBool>("power", std::bind(&ShelfinoHWNode::handle_power_srv, this, std::placeholders::_1, std::placeholders::_2));
     }
 
   private:
@@ -209,16 +213,6 @@ class ShelfinoHWNode : public rclcpp::Node
       double v = 0., omega = 0.;
       v = msg->linear.x;
       omega = msg->angular.z;
-      if(v != 0 || omega != 0){
-        if(!robot_state){
-          robot_state = true;
-          HardwareGlobalInterface::getInstance().robotOnVelControl();
-        }
-      } else {
-        robot_state = false;
-        HardwareGlobalInterface::getInstance().robotOff();
-        return;
-      }
 
       HardwareGlobalInterface::getInstance().vehicleMove(v,omega);
 
@@ -250,8 +244,20 @@ class ShelfinoHWNode : public rclcpp::Node
       // Send the transformation
       tf_broadcaster_->sendTransform(t);
     }
+
+    void handle_power_srv(std_srvs::srv::SetBool::Request::SharedPtr request,
+                          std_srvs::srv::SetBool::Response::SharedPtr response)
+    {
+      if(request->data){
+        HardwareGlobalInterface::getInstance().robotOnVelControl();
+      response->message = ns+" motors powered on";
+      } else {
+        HardwareGlobalInterface::getInstance().robotOff();
+      response->message = ns+" motors powered off";
+      }
+      response->success = true;
+    }
     
-    bool robot_state = false;
     std::string ns;
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscription_;
     std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
@@ -264,6 +270,8 @@ class ShelfinoHWNode : public rclcpp::Node
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_publisher_;
     rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr encoders_publisher_;
     rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_subscription_;
+
+    rclcpp::Service<std_srvs::srv::SetBool>::SharedPtr service_;
 };
 
 /**

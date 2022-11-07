@@ -14,6 +14,7 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 
 include_directories(
   include
@@ -25,6 +26,7 @@ add_executable(remote_control_node
 ament_target_dependencies(remote_control_node 
   rclcpp
   geometry_msgs
+  std_srvs
 )
 
 target_link_libraries(remote_control_node
