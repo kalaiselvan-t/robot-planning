@@ -32,6 +32,8 @@ def generate_launch_description():
 
     rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfino.rviz')
 
+    remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
+
     return LaunchDescription([
         DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
                                 description='Flag to enable gazebo visualization'),
@@ -69,7 +71,9 @@ def generate_launch_description():
         Node(
             package='rviz2',
             executable='rviz2',
+            namespace='gazebo',
             arguments=['-d', rviz_config],
             condition=IfCondition(rviz)
+            # remappings=remappings
         )
     ])

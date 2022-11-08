@@ -9,6 +9,7 @@ from launch.substitutions import LaunchConfiguration, Command
 from launch.actions import DeclareLaunchArgument
 from launch import LaunchDescription
 from launch_ros.actions import Node
+import xacro
 
 
 def generate_launch_description():
@@ -24,6 +25,8 @@ def generate_launch_description():
         'models','shelfino',urdf_file_name)
     
     robot_desc = Command(['xacro ',urdf,' robot_name:=',robot_id])
+
+    remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -44,5 +47,7 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time},
                         {'robot_description': robot_desc}],
-            arguments=[urdf])
+            arguments=[urdf]
+            # remappings=remappings
+        )
     ])

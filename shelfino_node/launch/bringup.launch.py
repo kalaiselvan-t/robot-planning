@@ -26,7 +26,9 @@ def generate_launch_description():
         Node(
             package='shelfino_node',
             namespace=robot_id,
-            executable='shelfino_node'
+            executable='shelfino_node',
+            remappings=[
+            ('/shelfino2/cmd_vel', '/cmd_vel')]
         ),
 
         IncludeLaunchDescription(

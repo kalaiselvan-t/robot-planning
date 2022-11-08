@@ -24,22 +24,21 @@ def generate_launch_description():
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'map',
-            'ufficio2.yaml'))
+            'lab.yaml'))
 
-    param_file_name = 'shelfino2.yaml'
-    param_dir = LaunchConfiguration(
+    param_file_name = LaunchConfiguration(
         'params_file',
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'config',
-            param_file_name))
+            'controller.yaml'))
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
     rviz_config_dir = os.path.join(
-        get_package_share_directory('nav2_bringup'),
+        get_package_share_directory('shelfino_navigation'),
         'rviz',
-        'nav2_default_view.rviz')
+        'shelfino2_nav.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -49,7 +48,7 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             'params_file',
-            default_value=param_dir,
+            default_value=param_file_name,
             description='Full path to param file to load'),
 
         DeclareLaunchArgument(name='sim', default_value='false', choices=['true', 'false'],
@@ -60,7 +59,7 @@ def generate_launch_description():
             launch_arguments={
                 'map': map_dir,
                 'use_sim_time': sim,
-                'params_file': param_dir}.items(),
+                'params_file': param_file_name}.items(),
         ),
 
         Node(
@@ -72,3 +71,5 @@ def generate_launch_description():
             condition=IfCondition(use_rviz),
             output='screen'),
     ])
+
+    
