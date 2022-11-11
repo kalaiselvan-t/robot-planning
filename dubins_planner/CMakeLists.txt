@@ -7,6 +7,17 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+
+add_executable(dubin-traj-pub src/trajectory-publisher.cpp)
+ament_target_dependencies(dubin-traj-pub rclcpp std_msgs)
+
+install(TARGETS
+  dubin-traj-pub
+  DESTINATION lib/${PROJECT_NAME})
+
+
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
