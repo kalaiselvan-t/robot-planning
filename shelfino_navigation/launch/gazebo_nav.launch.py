@@ -24,15 +24,14 @@ def generate_launch_description():
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'map',
-            'turtlebot3_world.yaml'))
+            'turtle.yaml'))
 
-    param_file_name = 'shelfino_gazebo.yaml'
     param_dir = LaunchConfiguration(
         'params_file',
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'config',
-            param_file_name))
+            'shelfino_gazebo.yaml'))
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
@@ -60,9 +59,7 @@ def generate_launch_description():
             launch_arguments={
                 'map': map_dir,
                 'use_sim_time': sim,
-                'params_file': param_dir,
-                'use_namespace': 'true',
-                'namespace': 'gazebo'}.items(),
+                'params_file': param_dir}.items(),
         ),
 
         Node(
