@@ -36,7 +36,7 @@ class PathPublisher : public rclcpp::Node
     : Node("path_talker")
     {
 
-        std::string target_frame_ = this->declare_parameter<std::string>("target_frame", "shelfino2/base_link");
+        std::string target_frame_ = this->declare_parameter<std::string>("target_frame", "gazebo/base_link");
 
         std::shared_ptr<tf2_ros::TransformListener> tf_listener_{nullptr};
         std::unique_ptr<tf2_ros::Buffer> tf_buffer_;

@@ -40,21 +40,6 @@
               <size>112.09 54.12 0.1</size>
             </box>
           </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>100</mu>
-                <mu2>50</mu2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-          </surface>
           <max_contacts>10</max_contacts>
         </collision>
         <visual name='visual'>
