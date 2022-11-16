@@ -188,7 +188,7 @@
 
       <ros>
         <!-- Set namespace -->
-        <namespace>gazebo</namespace>
+        <!-- <namespace>gazebo</namespace> -->
       </ros>
 
       <!-- <alwaysOn>true</alwaysOn> -->

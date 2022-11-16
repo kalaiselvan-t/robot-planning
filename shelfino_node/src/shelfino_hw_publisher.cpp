@@ -250,10 +250,12 @@ class ShelfinoHWNode : public rclcpp::Node
     {
       if(request->data){
         HardwareGlobalInterface::getInstance().robotOnVelControl();
-      response->message = ns+" motors powered on";
+        response->message = ns+" motors powered on";
+        RCLCPP_INFO(this->get_logger(), "motors powered on");
       } else {
         HardwareGlobalInterface::getInstance().robotOff();
-      response->message = ns+" motors powered off";
+        response->message = ns+" motors powered off";
+        RCLCPP_INFO(this->get_logger(), "motors powered off");
       }
       response->success = true;
     }

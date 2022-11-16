@@ -71,7 +71,7 @@ class PathPublisher : public rclcpp::Node
         
         publisher_ = this->create_publisher<nav_msgs::msg::Path>("plan", 10);
         Dubins_curve curve;
-        curve = dubins_shortest_path(t.transform.translation.x, t.transform.translation.y, yaw,     -2, -2, M_PI+M_PI/4    ,2);
+        curve = dubins_shortest_path(t.transform.translation.x, t.transform.translation.y, yaw, 0, 0, M_PI+M_PI/4 ,5);
         nav_msgs::msg::Path path_msg = plot_dubins(curve);
 
         using FollowPath = nav2_msgs::action::FollowPath;
