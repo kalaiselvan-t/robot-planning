@@ -16,6 +16,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     use_rviz = LaunchConfiguration('use_rviz', default='true')
     sim = LaunchConfiguration('sim', default='false')
+    remote = LaunchConfiguration('remote', default='false')
 
     launch_file_dir = os.path.join(get_package_share_directory('shelfino_description'), 'launch')
     
@@ -54,12 +55,16 @@ def generate_launch_description():
         DeclareLaunchArgument(name='sim', default_value='false', choices=['true', 'false'],
                         description='Flag to toggle between real robot and simulation'),
 
+        DeclareLaunchArgument(name='remote', default_value='false', choices=['true', 'false'],
+                        description='Flag to toggle between navigation stack running on robot or locally'),
+
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
             launch_arguments={
                 'map': map_dir,
                 'use_sim_time': sim,
                 'params_file': param_file_name}.items(),
+            condition=UnlessCondition(remote),
         ),
 
         Node(
