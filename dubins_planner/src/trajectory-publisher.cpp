@@ -1,5 +1,26 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
+
+										//Data structures
+	void dubinsarc
+	(double x0, double y0, double th0, double k, double l)
+	{
+		double c_x0 = x0;
+		double c_y0 = y0;
+		double c_th0 = th0;
+		double c_k = k;
+		double c_l = l;
+	}
+
+										//Plot functions
+	std::vector<double> circline
+	(double s, double x0, double y0, double th0, double k)
+	{
+		std::vector<double> out;
+		//double x = x0 + s * std::sin()
+		return out;
+	}
 
 										//Helper Functions
 	double mod2pi
@@ -134,7 +155,8 @@
 		double temp1 = std::atan2(C, S);
 		double temp2 = 0.125 * (6.0 - 4.0 * std::pow(sc_Kmax,2) + 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf))); 
 		
-		if (std::abs(temp2) > 1)
+		if 
+		(std::abs(temp2) > 1)
 		{
 			ok = false;sc_s1 = 0.0; sc_s2 = 0.0; sc_s3 = 0.0;
 		}
@@ -159,6 +181,14 @@
 		sc_Kmax = Kmax * lambda;
 	}
 
+	void scale_from_standard
+	(double lambda, double sc_s1, double sc_s2, double sc_s3, double &s1, double &s2, double &s3)
+	{
+		s1 = sc_s1 * lambda;
+		s2 = sc_s2 * lambda;
+		s3 = sc_s3 * lambda;
+	}
+
 
 
 	void dubins_shortest_path
@@ -168,6 +198,63 @@
 		scale_to_standard(x0, y0, th0, xf, yf, thf, Kmax, sc_th0, sc_thf, sc_Kmax, lambda)	;
 		double sc_s1, sc_s2, sc_s3 = 0.0;
 		bool ok = false;
+										//Function pointers
+		void (*lsl)(double, double, double, double&, double&, double&, bool&);
+		void (*rsr)(double, double, double, double&, double&, double&, bool&);
+		void (*lsr)(double, double, double, double&, double&, double&, bool&);
+		void (*rsl)(double, double, double, double&, double&, double&, bool&);
+		void (*rlr)(double, double, double, double&, double&, double&, bool&);
+		void (*lrl)(double, double, double, double&, double&, double&, bool&);
+
+										//Functions vector
+		std::vector<void (*)(double, double, double, double&, double&, double&, bool&)> primitives;
+
+										//Initialization
+		lsl = &LSL;
+		rsr = &RSR;
+		lsr = &LSR;
+		rsl = &RSL;
+		rlr = &RLR;
+		lrl = &LRL;
+
+		primitives.push_back(lsl);
+		primitives.push_back(rsr);
+		primitives.push_back(lsr);
+		primitives.push_back(rsl);
+		primitives.push_back(rlr);
+		primitives.push_back(lrl);
+
+		int pidx = -1;
+		int L = std::numeric_limits<int>::max();
+
+		double sc_s1_c, sc_s2_c, sc_s3_c = 0.0;
+
+		for
+		(int i = 0; i < primitives.size(); i++)
+		{
+			primitives[i](sc_th0, sc_thf, sc_Kmax, sc_s1_c, sc_s2_c, sc_s3_c, ok);
+			double Lcur = sc_s1 + sc_s2 + sc_s3;
+
+			if
+			(ok && Lcur < L)
+			{
+				L = Lcur;
+				sc_s1 = sc_s1_c;
+				sc_s2 = sc_s2_c;
+				sc_s3 = sc_s3_c;
+				pidx = i;
+
+			}
+		}
+
+		//curve[];
+
+		if
+		(pidx > 0)
+		{
+			double s1, s2, s3 = 0.0;
+			scale_from_standard(lambda, sc_s1, sc_s2, sc_s3, s1, s2, s3);
+		}
 	}
 
 
@@ -179,5 +266,7 @@ int main(){
 	double Yf = 0.0;
 	double Th0 = -2.0/3.9 * M_PI;
 	double Kmax = 3.0;
+
+	
 
 }
