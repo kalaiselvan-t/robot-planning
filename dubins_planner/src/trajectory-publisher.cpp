@@ -19,14 +19,14 @@
 
 										//Main Functions
 	void LSL
-	(double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+	(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
 	{
 		double invK = 1.0 / sc_Kmax;
 		double C = std::cos(sc_thf) - std::cos(sc_th0);
 		double S = 2.0 * sc_Kmax + std::sin(sc_th0) - std::sin(sc_thf);
 		double temp1 = std::atan2(C, S);
 		sc_s1 = invK * mod2pi(temp1 - sc_th0);
-		double temp2 = 2.0 + 4.0 * std::pow(sc_kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
+		double temp2 = 2.0 + 4.0 * std::pow(sc_Kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
 		
 		if (temp2 < 0)
 		{
@@ -40,14 +40,14 @@
 
 		
 	void RSR
-	(double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+	(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
 	{
 		double invK = 1.0 / sc_Kmax;
 		double C = std::cos(sc_th0) - std::cos(sc_thf);
 		double S = 2.0 * sc_Kmax - std::sin(sc_th0) + std::sin(sc_thf);
 		double temp1 = std::atan2(C, S);
 		sc_s1 = invK * mod2pi(sc_th0 - temp1);
-		double temp2 = 2.0 + 4.0 * std::pow(sc_kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
+		double temp2 = 2.0 + 4.0 * std::pow(sc_Kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
 		
 		if (temp2 < 0)
 		{
@@ -61,13 +61,13 @@
 
 	
 	void LSR
-	(double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+	(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
 	{
 		double invK = 1.0 / sc_Kmax;
 		double C = std::cos(sc_th0) + std::cos(sc_thf);
 		double S = 2.0 * sc_Kmax + std::sin(sc_th0) + std::sin(sc_thf);
 		double temp1 = std::atan2(-C, S);
-		double temp3 = 4.0 * std::pow(sc_Kmax. 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
+		double temp3 = 4.0 * std::pow(sc_Kmax, 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
 		
 		if (temp3 < 0)
 		{
@@ -83,13 +83,13 @@
 	
 	
 	void RSL
-	(double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+	(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
 	{
 		double invK = 1.0 / sc_Kmax;
 		double C = std::cos(sc_th0) + std::cos(sc_thf);
 		double S = 2.0 * sc_Kmax - std::sin(sc_th0) - std::sin(sc_thf);
 		double temp1 = std::atan2(C, S);
-		double temp3 = 4.0 * std::pow(sc_Kmax. 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) + std::sin(sc_thf));
+		double temp3 = 4.0 * std::pow(sc_Kmax, 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) + std::sin(sc_thf));
 		
 		if (temp3 < 0)
 		{
@@ -105,13 +105,13 @@
 	
 		
 	void RLR
-	(double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+	(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
 	{
 		double invK = 1.0 / sc_Kmax;
 		double C = std::cos(sc_th0) - std::cos(sc_thf);
 		double S = 2.0 * sc_Kmax - std::sin(sc_th0) + std::sin(sc_thf);
 		double temp1 = std::atan2(C, S);
-		double temp2 = 0.125 * (6.0 - 4.0 * std::pow(sc_Kmax) + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf))); 
+		double temp2 = 0.125 * (6.0 - 4.0 * std::pow(sc_Kmax, 2) + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf))); 
 		
 		if (std::abs(temp2) > 1)
 		{
@@ -126,13 +126,13 @@
 
 	
 	void LRL
-	(double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+	(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
 	{
 		double invK = 1.0 / sc_Kmax;
 		double C = std::cos(sc_thf) - std::cos(sc_th0);
 		double S = 2.0 * sc_Kmax + std::sin(sc_th0) - std::sin(sc_thf);
 		double temp1 = std::atan2(C, S);
-		double temp2 = 0.125 * (6.0 - 4.0 * std::pow(sc_Kmax) + 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf))); 
+		double temp2 = 0.125 * (6.0 - 4.0 * std::pow(sc_Kmax,2) + 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf))); 
 		
 		if (std::abs(temp2) > 1)
 		{
@@ -154,9 +154,9 @@
 		double phi = std::atan2(dy, dx);
 		lambda = std::hypot(dx, dy) / 2.0;
 
-		double sc_th0 = mod2pi(th0 - phi);
-		double sc_thf = mod2pi(thf - phi);
-		double sc_Kmax = Kmax * lambda;
+		sc_th0 = mod2pi(th0 - phi);
+		sc_thf = mod2pi(thf - phi);
+		sc_Kmax = Kmax * lambda;
 	}
 
 
