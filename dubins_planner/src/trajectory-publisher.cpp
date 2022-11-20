@@ -3,26 +3,71 @@
 #include <vector>
 
 										//Data structures
-	void dubinsarc
-	(double x0, double y0, double th0, double k, double l)
+	void dubins_arc
+	(double x0, double y0, double th0, double k, double l, struct &c)
 	{
-		double c_x0 = x0;
-		double c_y0 = y0;
-		double c_th0 = th0;
-		double c_k = k;
-		double c_l = l;
+		struct
+		{
+			double c_x0;
+			double c_y0;
+			double c_th0;
+			double c_k;
+			double c_l;
+			double c_xf;
+			double c_yf;
+			double c_thf;
+		} out;
+
+		out.c_x0 = x0;
+		out.c_y0 = y0;
+		out.c_th0 = th0;
+		out.c_k = k;
+		out.c_l = l;
+
+		out.c_xf, out.c_yf, out.c_thf = 0.0;
+		circline(l, x0, y0, k, out.c_xf, out.c_yf, out.c_thf);
+		c = out;
+	}
+
+	void dubins_curve
+	(double x0, double yo, double th0, double s1, double s2, double s3, double k0, double k1, double k2)
+	{
+		struct
+		{
+			double a1;
+			double a2;
+			double a3;
+			double l;
+		} d;
 	}
 
 										//Plot functions
-	std::vector<double> circline
-	(double s, double x0, double y0, double th0, double k)
+	void circline
+	(double s, double x0, double y0, double th0, double k, double &x, double &y, double &th)
 	{
-		std::vector<double> out;
-		//double x = x0 + s * std::sin()
+		x = x0 + s * sinc(k * s/2.0) * std::cos(th0, k * s / 2.0);
+		y = y0 + s * sinc(k * s/2.0) * std::sin(th0, k * s / 2.0);
+		th = mod2pi(th0 + k * s);
+	
 		return out;
 	}
 
 										//Helper Functions
+	double sinc
+	(double t)
+	{
+		double out;
+		if
+		(std::abs(t) < 0.002)
+		{
+			out = 1 - std::pow(t,2.0/6.0) * (1 - std::pow(t,2.0/20.0));
+		}
+		else
+		{
+			out = std::sin(t) / t;
+		}
+	}
+
 	double mod2pi
 	(double ang)
 	{
