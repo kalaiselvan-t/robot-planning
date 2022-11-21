@@ -2,57 +2,26 @@
 #include <cmath>
 #include <vector>
 
-										//Data structures
-	void dubins_arc
-	(double x0, double y0, double th0, double k, double l, struct &c)
+	/*====================================================================
+	==========================Data structures=============================
+	====================================================================*/
+	struct dubinsarc_out
 	{
-		struct
-		{
-			double c_x0;
-			double c_y0;
-			double c_th0;
-			double c_k;
-			double c_l;
-			double c_xf;
-			double c_yf;
-			double c_thf;
-		} out;
+		double x0, y0, th0, k, l, xf, yf, thf;
+	};
 
-		out.c_x0 = x0;
-		out.c_y0 = y0;
-		out.c_th0 = th0;
-		out.c_k = k;
-		out.c_l = l;
-
-		out.c_xf, out.c_yf, out.c_thf = 0.0;
-		circline(l, x0, y0, k, out.c_xf, out.c_yf, out.c_thf);
-		c = out;
-	}
-
-	void dubins_curve
-	(double x0, double yo, double th0, double s1, double s2, double s3, double k0, double k1, double k2)
+	struct dubinscurve_out
 	{
-		struct
-		{
-			double a1;
-			double a2;
-			double a3;
-			double l;
-		} d;
-	}
+		dubinsarc_out a1;
+		dubinsarc_out a2;
+		dubinsarc_out a3;
+		double L;
+	};
 
-										//Plot functions
-	void circline
-	(double s, double x0, double y0, double th0, double k, double &x, double &y, double &th)
-	{
-		x = x0 + s * sinc(k * s/2.0) * std::cos(th0, k * s / 2.0);
-		y = y0 + s * sinc(k * s/2.0) * std::sin(th0, k * s / 2.0);
-		th = mod2pi(th0 + k * s);
-	
-		return out;
-	}
+	/*====================================================================
+	===========================Helper functions===========================
+	====================================================================*/
 
-										//Helper Functions
 	double sinc
 	(double t)
 	{
@@ -66,6 +35,8 @@
 		{
 			out = std::sin(t) / t;
 		}
+
+		return out;
 	}
 
 	double mod2pi
@@ -83,7 +54,44 @@
 		return out;
 	}
 
-										//Main Functions
+	void circline
+	(double s, double x0, double y0, double th0, double k, double &x, double &y, double &th)
+	{
+		x = x0 + s * sinc(k * s/2.0) * std::cos(th0 + k * s / 2.0);
+		y = y0 + s * sinc(k * s/2.0) * std::sin(th0 + k * s / 2.0);
+		th = mod2pi(th0 + k * s);
+	}
+
+	void dubins_arc
+	(double x0, double y0, double th0, double k, double l, dubinsarc_out *out)
+	{
+		out->x0 = x0;
+		out->y0 = y0;
+		out->th0 = th0;
+		out->k = k;
+		out->l = l;
+
+		out->xf, out->yf, out->thf = 0.0;
+		circline(x0, y0, th0, k, l, out->xf, out->yf, out->thf);
+	}
+
+	void dubins_curve
+	(double x0, double y0, double th0, double s1, double s2, double s3, double k0, double k1, double k2, dubinscurve_out *out)
+	{
+		dubinsarc_out a1, a2, a3;
+		dubins_arc(x0, y0, th0, k0, s1, &a1);
+		dubins_arc(x0, y0, th0, k0, s1, &a2);
+		dubins_arc(x0, y0, th0, k0, s1, &a3);
+		out->L = a1.l + a2.l + a3.l;
+		out->a1 = a1;
+		out->a2 = a2;
+		out->a3 = a3;
+	}
+
+	/*==================================================================
+	=============================Functions==============================
+	==================================================================*/
+
 	void LSL
 	(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
 	{
@@ -312,6 +320,6 @@ int main(){
 	double Th0 = -2.0/3.9 * M_PI;
 	double Kmax = 3.0;
 
-	
+	std::cout << Xf << " " << Kmax << "\n";
 
 }
