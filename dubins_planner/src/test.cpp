@@ -64,6 +64,14 @@ void test_struc
 	inp->c = 3.0;
 }
 
+void pointer_test
+(int &a, double &b, char &c)
+{
+	a = 10;
+	b = 3.0;
+	c = 'k';
+}
+
 int main
 ()
 {	
@@ -110,6 +118,20 @@ int main
 
 	double result = round_up(tt, 4);
 	std::cout << "round_up: " << result << std::endl;
+
+	int aa;
+	double bb;
+	char cc;
+
+	int jj = 9;
+
+	int *jj_add = &jj;
+
+	*jj_add = 10;
+
+	pointer_test(aa, bb, cc);
+
+	std::cout << jj_add << " " << *jj_add << " " << jj << std::endl;
 
 	return 0;
 }
