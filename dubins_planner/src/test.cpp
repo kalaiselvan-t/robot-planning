@@ -2,6 +2,11 @@
 #include <vector>
 #include <cmath>
 
+double round_up(double value, int decimal_places) {
+    const double multiplier = std::pow(10.0, decimal_places);
+    return std::ceil(value * multiplier) / multiplier;
+}
+
 void add
 (int a, int b)
 {
@@ -54,9 +59,9 @@ struct cat
 void test_struc
 (cat *inp)
 {
-	double inp->a = 1.0;
-	double inp->b = 2.0;
-	double inp->c = 3.0;
+	inp->a = 1.0;
+	inp->b = 2.0;
+	inp->c = 3.0;
 }
 
 int main
@@ -97,9 +102,14 @@ int main
 
 	test_struc(&c);
 
-	std::cout << "A: " << cat.a << "\n";
-	std::cout << "B: " << cat.b << "\n";
-	std::cout << "C: " << cat.c << "\n";
+	std::cout << "A: " << c.a << "\n";
+	std::cout << "B: " << c.b << "\n";
+	std::cout << "C: " << c.c << "\n";
+
+	double tt = 3.4987564;
+
+	double result = round_up(tt, 4);
+	std::cout << "round_up: " << result << std::endl;
 
 	return 0;
 }
