@@ -14,7 +14,6 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    use_rviz = LaunchConfiguration('use_rviz', default='true')
     sim = LaunchConfiguration('sim', default='false')
     remote = LaunchConfiguration('remote', default='false')
 
@@ -25,14 +24,14 @@ def generate_launch_description():
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'map',
-            'ufficio3.yaml'))
+            'demo.yaml'))
 
     param_file_name = LaunchConfiguration(
         'params_file',
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'config',
-            'controller.yaml'))
+            'shelfino2.yaml'))
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
@@ -73,7 +72,7 @@ def generate_launch_description():
             name='rviz2',
             arguments=['-d', rviz_config_dir],
             parameters=[{'use_sim_time': sim}],
-            condition=IfCondition(use_rviz),
+            condition=IfCondition(remote),
             output='screen'),
     ])
 

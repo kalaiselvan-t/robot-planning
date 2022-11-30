@@ -16,7 +16,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     launch_file_dir = os.path.join(get_package_share_directory('shelfino_description'), 'launch')
     robot_id = LaunchConfiguration('robot_id', default='shelfino404')
-    use_rviz = LaunchConfiguration('use_rviz', default='false')
+    remote = LaunchConfiguration('use_rviz', default='false')
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('shelfino_navigation'), 'launch')
 
@@ -47,6 +47,6 @@ def generate_launch_description():
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([nav2_launch_file_dir, '/shelfino2_nav.launch.py']),
-            launch_arguments={'use_rviz': use_rviz}.items()
+            launch_arguments={'remote': remote}.items()
         ),
     ])

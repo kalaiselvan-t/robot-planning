@@ -20,21 +20,38 @@ include_directories(
   include
 )
 
-add_executable(remote_control_node 
+add_executable(remote_control
   src/remote_control.cpp
 )
-ament_target_dependencies(remote_control_node 
+
+add_executable(joystick_control
+  src/joystick_control.cpp
+  src/joystick.cc
+)
+
+ament_target_dependencies(remote_control 
   rclcpp
   geometry_msgs
   std_srvs
 )
 
-target_link_libraries(remote_control_node
+ament_target_dependencies(joystick_control 
+  rclcpp
+  geometry_msgs
+  std_srvs
+)
+
+target_link_libraries(remote_control
   ${rclcpp_LIBRARIES} -lncurses -pthread
 )
 
+target_link_libraries(joystick_control
+  ${rclcpp_LIBRARIES} -pthread
+)
+
 install(TARGETS
-  remote_control_node
+  remote_control
+  joystick_control
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
