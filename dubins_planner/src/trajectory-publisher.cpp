@@ -594,9 +594,7 @@ int main(){
 	double Xf = 4.0;
 	double Yf = 0.0;
 	double Th0 = -2.0/3.0 * M_PI;
-	Th0 = Th0, 4;
 	double Thf = M_PI / 3.0;
-	Thf = Thf, 4;
 	double Kmax = 3.0;
 
 	// std::cout << "Main function x0: " << X0 << std::endl;
