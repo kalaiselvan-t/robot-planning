@@ -23,4 +23,4 @@ void divi(int, int);
 
 void test_struc(cat *);
 
-// void pointer_test(&int, &double, &char);
+void pointer_test(int &, double &, char &);

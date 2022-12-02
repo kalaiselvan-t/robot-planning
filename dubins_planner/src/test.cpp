@@ -61,10 +61,10 @@ void test_struc
 	inp->c = 3.0;
 }
 
-// void pointer_test
-// (int &a, double &b, char &c)
-// {
-// 	a = 10;
-// 	b = 3.0;
-// 	c = 'k';
-// }
+void pointer_test
+(int &a, double &b, char &c)
+{
+	a = 10;
+	b = 3.0;
+	c = 'k';
+}

@@ -80,5 +80,14 @@ int main()
 	// c.c = 3.0;
 	test_struc(&c);
 	std::cout << c.a << "," << c.b << "," << c.c << std::endl;
+
+	int a;
+	double b;
+	char c;
+
+	pointer_test(a,b,c);
+
+	std::cout << a << "," << b << "," << c << std::endl;
+
 	return 1;
 }
