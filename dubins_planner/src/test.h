@@ -2,6 +2,8 @@
 #include <vector>
 #include <cmath>
 
+/* Data Structures */
+
 struct cat
 {
 	double a;
@@ -10,6 +12,8 @@ struct cat
 };
 
 // double round_up(double, int);
+
+/* Functions */
 
 void add(int, int);
 
