@@ -34,10 +34,14 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y libzmq3-dev && \
     apt-get install -y libncurses5-dev && \
     apt-get install -y mesa-utils libgl1-mesa-glx && \
+    apt-get install -y ros-humble-nav2-bringup && \
     apt-get install -y ros-humble-cartographer && \
     apt-get install -y ros-humble-cartographer-ros && \
     apt-get install -y ros-humble-gazebo-ros && \
-    apt-get install -y ros-humble-xacro
+    apt-get install -y ros-humble-test-msgs && \
+    apt-get install -y ros-humble-xacro && \
+    apt-get install -y net-tools && \
+    apt-get install -y iproute2 
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
