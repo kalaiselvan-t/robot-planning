@@ -1,19 +1,12 @@
 cmake_minimum_required(VERSION 3.8)
-project(dubins_planner)
+project(test_library)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 # find dependencies
-  find_package(ament_cmake REQUIRED)
-  find_package(rclcpp REQUIRED)
-  find_package(std_msgs REQUIRED)
-  find_package(nav_msgs REQUIRED)
-  find_package(geometry_msgs REQUIRED)
-
-  include_directories(include)
-
+find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -30,18 +23,28 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-  #========================================================================
-  # Dubins Planner
-  #========================================================================
-  add_executable(dubins_planner src/dubins_planner.cpp src/dubins_trajectory.cpp src/dubins_trajectory_config.cpp)
-  #add_library(dubins_trajectory src/dubins_trajectory.cpp)
-  ament_target_dependencies(dubins_planner rclcpp std_msgs nav_msgs geometry_msgs)
-  
-  install(TARGETS
-  dubins_planner
-  DESTINATION lib/${PROJECT_NAME}/
+  # let the compiler search for headers in the include folder
+  include_directories(include)
+
+  # define a library target called my_value_converter_library
+  add_library(test_library src/test-lib.cpp)
+
+  # this line to exports the library
+  ament_export_targets(test_library HAS_LIBRARY_TARGET)
+
+  # install the include/my_cpp_library directory to the install/include/my_cpp_library
+  install(
+  DIRECTORY include/test_library
+  DESTINATION include
   )
 
-  #------------------------------------------------------------------------
+  install(
+  TARGETS test_library
+  EXPORT test_library
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+  )
 
 ament_package()

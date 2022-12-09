@@ -1,9 +1,6 @@
 #include <cmath>
 #include <vector>
 #include <assert.h>
-#include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
-#include "nav_msgs/msg/path.hpp"
 
 /*====================================================================
 ==========================Data structures=============================
@@ -20,6 +17,16 @@ struct dubinscurve_out
 	dubinsarc_out a3;
 	double L;
 };
+
+extern double X0;
+extern double Y0;
+extern double Xf;
+extern double Yf;
+extern double Th0;
+extern double Thf;
+extern double Kmax;
+extern int pidx;
+extern dubinscurve_out dubin_curve;
 
 /*====================================================================
 ============================Helper functions==========================
@@ -63,3 +70,4 @@ void scale_from_standard(double, double, double, double, double &, double &, dou
 
 void dubins_shortest_path(double, double, double, double, double, double, double, int &, dubinscurve_out *);
 
+int test();

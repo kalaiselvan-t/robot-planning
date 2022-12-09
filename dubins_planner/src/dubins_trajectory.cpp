@@ -1,11 +1,9 @@
 #include <iostream>
-#include <cmath>
-#include <vector>
-#include <assert.h>
-#include "dubins-trajectory.h"
-#include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
-#include "nav_msgs/msg/path.hpp"
+// #include <cmath>
+// #include <vector>
+// #include <assert.h>
+#include "dubins_planner/dubins_trajectory.h"
+
 
 /*====================================================================
 ===========================Helper functions===========================
@@ -67,7 +65,9 @@ void dubins_arc
 	out->k = k;
 	out->l = l;
 
-	out->xf, out->yf, out->thf = 0.0;
+	out->xf = 0.0;
+	out->yf = 0.0;
+	out->thf = 0.0;
 	circline(l, x0, y0, th0, k, out->xf, out->yf, out->thf);
 
 }
@@ -334,7 +334,7 @@ void dubins_shortest_path
 	double Lcur = 0.0;
 
 	for
-	(int i = 0; i < primitives.size(); i++)
+	(size_t i = 0; i < primitives.size(); i++)
 	{
 		primitives[i](sc_th0, sc_thf, sc_Kmax, sc_s1_c, sc_s2_c, sc_s3_c, ok);
 		Lcur = sc_s1_c + sc_s2_c + sc_s3_c;
@@ -360,4 +360,10 @@ void dubins_shortest_path
 		assert(check(sc_s1, ksigns[pidx-1][0] * sc_Kmax, sc_s2, ksigns[pidx-1][1] * sc_Kmax, sc_s3, ksigns[pidx-1][2] * sc_Kmax, sc_th0, sc_thf));
 
 	}
+}
+
+int test
+()
+{
+	return 6;
 }
