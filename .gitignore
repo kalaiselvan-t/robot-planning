@@ -1,0 +1,7 @@
+remote_control/
+shelfino_description/
+shelfino_gazebo/
+shelfino_navigation/
+shelfino_node/
+dubins_planner/src/*.tar.bz2
+dubins_planner/src/*.out
