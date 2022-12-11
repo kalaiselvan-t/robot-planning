@@ -57,10 +57,10 @@ private:
 		temp.pose.orientation.w = 1;
 		path_msg.poses.push_back(temp);
 
-		RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path");
-		std::cout << "Test var: " << pidx << std::endl;
+		// RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path");
+		// std::cout << "Test var: " << pidx << std::endl;
 
-		publisher_->publish(path_msg);
+		// publisher_->publish(path_msg);
 	}
 	rclcpp::TimerBase::SharedPtr timer_;
 	rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr publisher_;
@@ -76,6 +76,85 @@ private:
 
 int main(int argc, char * argv[])
 {
+		// double x1, y1, Kmax, step, angle_step;
+		// point initial, final;
+		// int no_of_wpts = 3;
+
+		// point best_path[no_of_wpts-1];
+
+		// initial.x = 2.0;
+		// initial.y = 0.0;
+		// initial.th = -2.0 / 3.0 * M_PI;
+
+		// x1 = 5.0; 
+		// y1 = 3.0;
+
+		// final.x = 8.0;
+		// final.y = 3.0;
+		// final.th = -M_PI / 2.0;
+
+		// Kmax = 3.0;
+
+		// no_of_wpts = 3;
+		// step = 6.0;
+		// angle_step = M_PI / step;
+
+		// best_path[0] = initial;
+		// best_path[no_of_wpts-1] = final;
+
+
+
+
+		// dubinsarc_out arc1;
+		// arc1.x0 = 1.0;
+		// arc1.y0 = 1.0;
+		// arc1.th0 = 0.5;
+		// arc1.xf = 2.0;
+		// arc1.yf = 2.0;
+		// arc1.thf = 0.8;
+		// arc1.k = 2.0;
+		// arc1.l = 2.0;
+
+		// dubinsarc_out arc2;
+		// arc2.x0 = 2.0;
+		// arc2.y0 = 2.0;
+		// arc2.th0 = 0.0;
+		// arc2.xf = 5.0;
+		// arc2.yf = 5.0;
+		// arc2.thf = 0.0;
+		// arc2.k = 2.0;
+		// arc2.l = 2.0;
+
+		// dubinsarc_out arc3;
+		// arc3.x0 = 5.0;
+		// arc3.y0 = 5.0;
+		// arc3.th0 = 0.5;
+		// arc3.xf = 6.0;
+		// arc3.yf = 6.0;
+		// arc3.thf = 0.8;
+		// arc3.k = 2.0;
+		// arc3.l = 2.0;
+
+		// dubinscurve_out curve;
+
+		// point initial;
+
+		// curve.a1 = arc1;
+		// curve.a2 = arc2;
+		// curve.a3 = arc3;
+		// curve.L = 5.0;
+
+		// int c1[101][2];
+		// int c2[101][2];
+		// int c3[101][2];
+
+		// // plotarc(&arc1, c1);
+		// plot_dubins(&curve, true, c1, c2, c3);
+
+		// std::cout << c1[10][0] << ", " << c1[10][1] << std::endl;
+		// std::cout << c2[10][0] << ", " << c2[10][1] << std::endl;
+		// std::cout << c3[10][0] << ", " << c3[10][1]<< std::endl;
+
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<DubinsPathPublisher>());
   rclcpp::shutdown();

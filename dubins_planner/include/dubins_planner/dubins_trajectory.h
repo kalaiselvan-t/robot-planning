@@ -18,6 +18,11 @@ struct dubinscurve_out
 	double L;
 };
 
+struct point
+{
+	double x, y, th;
+};
+
 extern double X0;
 extern double Y0;
 extern double Xf;
@@ -26,7 +31,7 @@ extern double Th0;
 extern double Thf;
 extern double Kmax;
 extern int pidx;
-extern dubinscurve_out dubin_curve;
+extern dubinscurve_out dubin_curve, point;
 
 /*====================================================================
 ============================Helper functions==========================
@@ -71,3 +76,11 @@ void scale_from_standard(double, double, double, double, double &, double &, dou
 void dubins_shortest_path(double, double, double, double, double, double, double, int &, dubinscurve_out *);
 
 int test();
+
+/*====================================================================
+=============================Plot Functions===========================
+====================================================================*/
+
+void plotarc(dubinsarc_out *, int (&)[101][2]);
+
+void plot_dubins(dubinscurve_out *, bool, int (&)[101][2], int (&)[101][2], int (&)[101][2]);

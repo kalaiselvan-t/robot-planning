@@ -362,8 +362,41 @@ void dubins_shortest_path
 	}
 }
 
-int test
-()
+/*====================================================================
+=============================Plot Functions===========================
+====================================================================*/
+
+void plotarc
+(dubinsarc_out *arc, int (&points)[101][2])
 {
-	return 6;
+	double npts = 100.0;
+	points[0][0] = arc->x0;
+	points[0][1] = arc->y0;
+
+	for 
+	(int i = 0; i < npts; ++i)
+	{
+		double s = arc->l / npts * i;
+
+		double x,y,th = 0.0;
+
+		circline(s, arc->x0, arc->y0, arc->th0, arc->k, x, y, th);
+
+		points[i+1][0] = x;
+		points[i+1][1] = y;
+	}
+
+	// for (int i = 0; i < 100; ++i)
+	// {
+	// 	std::cout << points[i][0] << ", " << points[i][1] << std::endl; 
+	// }
+}
+
+void plot_dubins
+(dubinscurve_out *curve, bool declaration, int (&c1)[101][2], int (&c2)[101][2], int (&c3)[101][2])
+{
+	plotarc(&curve->a1, c1);
+	plotarc(&curve->a2, c2);
+	plotarc(&curve->a3, c3);
+
 }
