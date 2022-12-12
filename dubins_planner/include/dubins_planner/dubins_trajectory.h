@@ -20,7 +20,7 @@ struct dubinscurve_out
 
 struct point
 {
-	double x, y, th;
+	double x,y,th;
 };
 
 extern double X0;
@@ -31,7 +31,15 @@ extern double Th0;
 extern double Thf;
 extern double Kmax;
 extern int pidx;
-extern dubinscurve_out dubin_curve, point;
+
+extern int no_waypts;
+extern int step;
+extern double angle_step;
+
+extern dubinscurve_out dubin_curve;
+extern point init, final;
+
+extern std::vector<point> best_path;
 
 /*====================================================================
 ============================Helper functions==========================

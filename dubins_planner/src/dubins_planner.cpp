@@ -76,7 +76,23 @@ private:
 
 int main(int argc, char * argv[])
 {
-		// double x1, y1, Kmax, step, angle_step;
+	point mm;
+	mm.x = 4.0;
+	mm.y = 5.0;
+	mm.th = 8.0;
+
+	best_path[0] = mm;
+
+	std::cout << best_path[0].x << std::endl;
+
+	rclcpp::init(argc, argv);
+  	rclcpp::spin(std::make_shared<DubinsPathPublisher>());
+  	rclcpp::shutdown();
+  	return 0;
+
+}
+
+// double x1, y1, Kmax, step, angle_step;
 		// point initial, final;
 		// int no_of_wpts = 3;
 
@@ -154,9 +170,3 @@ int main(int argc, char * argv[])
 		// std::cout << c1[10][0] << ", " << c1[10][1] << std::endl;
 		// std::cout << c2[10][0] << ", " << c2[10][1] << std::endl;
 		// std::cout << c3[10][0] << ", " << c3[10][1]<< std::endl;
-
-  rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<DubinsPathPublisher>());
-  rclcpp::shutdown();
-  return 0;
-}

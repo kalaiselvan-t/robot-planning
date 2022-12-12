@@ -395,8 +395,12 @@ void plotarc
 void plot_dubins
 (dubinscurve_out *curve, bool declaration, int (&c1)[101][2], int (&c2)[101][2], int (&c3)[101][2])
 {
-	plotarc(&curve->a1, c1);
-	plotarc(&curve->a2, c2);
-	plotarc(&curve->a3, c3);
+	if 
+	(declaration)
+	{
+		plotarc(&curve->a1, c1);
+		plotarc(&curve->a2, c2);
+		plotarc(&curve->a3, c3);
+	}
 
 }
