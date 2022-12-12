@@ -36,6 +36,8 @@ extern int no_waypts;
 extern int step;
 extern double angle_step;
 
+extern int no_of_samples;
+
 extern dubinscurve_out dubin_curve;
 extern point init, final;
 
@@ -89,6 +91,9 @@ int test();
 =============================Plot Functions===========================
 ====================================================================*/
 
-void plotarc(dubinsarc_out *, int (&)[101][2]);
+// void plotarc(dubinsarc_out *, int (&)[101][2]);
+void plotarc(dubinsarc_out *, std::vector<std::vector<int>> &points);
 
-void plot_dubins(dubinscurve_out *, bool, int (&)[101][2], int (&)[101][2], int (&)[101][2]);
+// void plot_dubins(dubinscurve_out *, int (&)[101][2], int (&)[101][2], int (&)[101][2]);
+
+void plot_dubins(dubinscurve_out *, std::vector<std::vector<int>> &c1, std::vector<std::vector<int>> &c2, std::vector<std::vector<int>> &c3);

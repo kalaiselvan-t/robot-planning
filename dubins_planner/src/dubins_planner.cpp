@@ -12,6 +12,7 @@
 #include "dubins_planner/dubins_trajectory.h"
 
 using namespace std::chrono_literals;
+using namespace std;
 
 class DubinsPathPublisher: public rclcpp::Node
 {
@@ -76,14 +77,53 @@ private:
 
 int main(int argc, char * argv[])
 {
-	point mm;
-	mm.x = 4.0;
-	mm.y = 5.0;
-	mm.th = 8.0;
+	// Initialization
 
-	best_path[0] = mm;
+	init.x = X0;
+	init.y = Y0;
+	init.th = Th0;
 
-	std::cout << best_path[0].x << std::endl;
+	final.x = Xf;
+	final.y = Yf;
+	final.th = Thf;
+
+	best_path.push_back(init);
+	best_path.push_back(final);
+
+	std::cout << best_path[0].y << std::endl;
+	std::cout << best_path[1].y << std::endl;
+
+	double best_path_len = std::numeric_limits<double>::max();
+
+	if 
+	(no_waypts > 2)
+	{
+		dubins_shortest_path(init.x, init.y, init.th, final.x, final.y, final.th, Kmax, pidx, dubin_curve);
+
+		if
+		(pidx > 0)
+		{
+			// int arc1_pts[no_of_samples][2];
+			// int arc2_pts[no_of_samples][2];
+			// int arc3_pts[no_of_samples][2];
+
+			vector<vector<int>> arc1_pts(no_of_samples);
+			vector<vector<int>> arc2_pts(no_of_samples);
+			vector<vector<int>> arc2_pts(no_of_samples);
+
+			dubinsarc_out arc1;
+			dubinsarc_out arc2;
+			dubinsarc_out arc3;
+
+			arc1.x0 = init.x;
+			arc1.y0 = init.y;
+
+			plot_dubins(&dubin_curve, arc1_pts, arc2_pts, arc3_pts);
+		}
+
+	// std::cout << arc1_pts[0][0]
+
+	}
 
 	rclcpp::init(argc, argv);
   	rclcpp::spin(std::make_shared<DubinsPathPublisher>());

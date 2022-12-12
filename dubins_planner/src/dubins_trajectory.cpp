@@ -366,24 +366,65 @@ void dubins_shortest_path
 =============================Plot Functions===========================
 ====================================================================*/
 
+// void plotarc
+// (dubinsarc_out *arc, int (&points)[][])
+// {
+// 	double npts = 100.0;
+// 	points[0][0] = arc->x0;
+// 	points[0][1] = arc->y0;
+
+// 	for 
+// 	(int i = 0; i < npts; ++i)
+// 	{
+// 		double s = arc->l / npts * i;
+
+// 		double x,y,th = 0.0;
+
+// 		circline(s, arc->x0, arc->y0, arc->th0, arc->k, x, y, th);
+
+// 		points[i+1][0] = x;
+// 		points[i+1][1] = y;
+// 	}
+
+	// for (int i = 0; i < 100; ++i)
+	// {
+	// 	std::cout << points[i][0] << ", " << points[i][1] << std::endl; 
+	// }
+// }
+
 void plotarc
-(dubinsarc_out *arc, int (&points)[101][2])
+(dubinsarc_out *arc, std::vector<std::vector<int>> &points)
 {
-	double npts = 100.0;
-	points[0][0] = arc->x0;
-	points[0][1] = arc->y0;
+	std::vector<int> temp;
+	temp.push_back(arc->x0);
+	temp.push_back(arc->x0);
+	points.insert(points.begin(),temp);
+
+	std::vector<std::vector<int>>::iterator row;
+	std::vector<int>::iterator col;
+
+	int index = 0;
 
 	for 
-	(int i = 0; i < npts; ++i)
+	(row = points.end(); row != points.end(); row++)
 	{
-		double s = arc->l / npts * i;
+		double s = arc->l / points.size() * index;
 
 		double x,y,th = 0.0;
 
 		circline(s, arc->x0, arc->y0, arc->th0, arc->k, x, y, th);
 
-		points[i+1][0] = x;
-		points[i+1][1] = y;
+		points[index+1][0] = x;
+		points[index+1][1] = y;
+
+		std::vector<int> temp2;
+
+		temp2.push_back(x);
+		temp2.push_back(y);
+
+		points.insert(points.begin() + index + 1, temp2);
+
+		index++;
 	}
 
 	// for (int i = 0; i < 100; ++i)
@@ -392,15 +433,21 @@ void plotarc
 	// }
 }
 
+
+// void plot_dubins
+// (dubinscurve_out *curve, int (&c1)[][], int (&c2)[][], int (&c3)[][])
+// {
+// 	plotarc(&curve->a1, c1);
+// 	plotarc(&curve->a2, c2);
+// 	plotarc(&curve->a3, c3);
+
+// }
+
 void plot_dubins
-(dubinscurve_out *curve, bool declaration, int (&c1)[101][2], int (&c2)[101][2], int (&c3)[101][2])
+(dubinscurve_out *curve, std::vector<std::vector<int>> &c1, std::vector<std::vector<int>> &c2, std::vector<std::vector<int>> &c3)
 {
-	if 
-	(declaration)
-	{
-		plotarc(&curve->a1, c1);
-		plotarc(&curve->a2, c2);
-		plotarc(&curve->a3, c3);
-	}
+	plotarc(&curve->a1, c1);
+	plotarc(&curve->a2, c2);
+	plotarc(&curve->a3, c3);
 
 }
