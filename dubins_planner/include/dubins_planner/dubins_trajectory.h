@@ -92,7 +92,7 @@ int test();
 ====================================================================*/
 
 // void plotarc(dubinsarc_out *, int (&)[101][2]);
-void plotarc(dubinsarc_out *, std::vector<std::vector<int>> &points);
+void plotarc(dubinsarc_out *, std::vector<std::vector<double>> &points);
 
 // void plot_dubins(dubinscurve_out *, int (&)[101][2], int (&)[101][2], int (&)[101][2]);
 

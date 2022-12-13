@@ -14,6 +14,10 @@
 using namespace std::chrono_literals;
 using namespace std;
 
+vector<vector<double>> arc1_pts;
+vector<vector<double>> arc2_pts;
+vector<vector<double>> arc3_pts;
+
 class DubinsPathPublisher: public rclcpp::Node
 {
 
@@ -37,31 +41,139 @@ private:
 
 		temp.header.stamp = this->get_clock()->now();
 		temp.header.frame_id = ' ';
+
+		plotarc(&dubin_curve.a1, arc1_pts);
+
+		for 
+		(int i = 0; i <= no_of_samples-1; ++i)
+		{
+			for
+			(int j = 0; j < 2; ++j)
+			{
+				temp.pose.position.x = arc1_pts[i][0];
+				temp.pose.position.y = arc1_pts[i][1];
+				// temp.pose.position.x = 1;
+				// temp.pose.position.y = 1;
+				// temp.pose.position.z = 0;
+
+				// temp.pose.orientation.x = 0;
+				// temp.pose.orientation.y = 0;
+				// temp.pose.orientation.z = 0;
+				// temp.pose.orientation.w = 1;
+				path_msg.poses.push_back(temp);
+
+				// temp.pose.position.x = 3;
+				// temp.pose.position.y = 4;
+				// temp.pose.position.z = 0;
+
+				// temp.pose.orientation.x = 0;
+				// temp.pose.orientation.y = 0;
+				// temp.pose.orientation.z = 0;
+				// temp.pose.orientation.w = 1;
+				// path_msg.poses.push_back(temp);
+
+				// temp.pose.position.x = 9;
+				// temp.pose.position.y = 3;
+				// temp.pose.position.z = 0;
+
+				// temp.pose.orientation.x = 0;
+				// temp.pose.orientation.y = 0;
+				// temp.pose.orientation.z = 0;
+				// temp.pose.orientation.w = 1;
+				// path_msg.poses.push_back(temp);
+			}
+		}
+
+		plotarc(&dubin_curve.a2, arc2_pts);
+
+		for 
+		(int i = 0; i <= no_of_samples; ++i)
+		{
+			for
+			(int j = 0; j < 2; ++j)
+			{
+				temp.pose.position.x = arc2_pts[i][0];
+				temp.pose.position.y = arc2_pts[i][1];
+				// temp.pose.position.x = 1;
+				// temp.pose.position.y = 1;
+				// temp.pose.position.z = 0;
+
+				// temp.pose.orientation.x = 0;
+				// temp.pose.orientation.y = 0;
+				// temp.pose.orientation.z = 0;
+				// temp.pose.orientation.w = 1;
+				path_msg.poses.push_back(temp);
+
+				// temp.pose.position.x = 3;
+				// temp.pose.position.y = 4;
+				// temp.pose.position.z = 0;
+
+				// temp.pose.orientation.x = 0;
+				// temp.pose.orientation.y = 0;
+				// temp.pose.orientation.z = 0;
+				// temp.pose.orientation.w = 1;
+				// path_msg.poses.push_back(temp);
+
+				// temp.pose.position.x = 9;
+				// temp.pose.position.y = 3;
+				// temp.pose.position.z = 0;
+
+				// temp.pose.orientation.x = 0;
+				// temp.pose.orientation.y = 0;
+				// temp.pose.orientation.z = 0;
+				// temp.pose.orientation.w = 1;
+				// path_msg.poses.push_back(temp);
+			}
+		}
+
+		plotarc(&dubin_curve.a3, arc3_pts);
+
+		for 
+		(int i = 0; i <= no_of_samples; ++i)
+		{
+			for
+			(int j = 0; j < 2; ++j)
+			{
+				temp.pose.position.x = arc3_pts[i][0];
+				temp.pose.position.y = arc3_pts[i][1];
+				// temp.pose.position.x = 1;
+				// temp.pose.position.y = 1;
+				// temp.pose.position.z = 0;
+
+				// temp.pose.orientation.x = 0;
+				// temp.pose.orientation.y = 0;
+				// temp.pose.orientation.z = 0;
+				// temp.pose.orientation.w = 1;
+				path_msg.poses.push_back(temp);
+
+				// temp.pose.position.x = 3;
+				// temp.pose.position.y = 4;
+				// temp.pose.position.z = 0;
+
+				// temp.pose.orientation.x = 0;
+				// temp.pose.orientation.y = 0;
+				// temp.pose.orientation.z = 0;
+				// temp.pose.orientation.w = 1;
+				// path_msg.poses.push_back(temp);
+
+				// temp.pose.position.x = 9;
+				// temp.pose.position.y = 3;
+				// temp.pose.position.z = 0;
+
+				// temp.pose.orientation.x = 0;
+				// temp.pose.orientation.y = 0;
+				// temp.pose.orientation.z = 0;
+				// temp.pose.orientation.w = 1;
+				// path_msg.poses.push_back(temp);
+			}
+		}
 		
-		temp.pose.position.x = 0;
-		temp.pose.position.y = 0;
-		temp.pose.position.z = 0;
+		
 
-		temp.pose.orientation.x = 0;
-		temp.pose.orientation.y = 0;
-		temp.pose.orientation.z = 0;
-		temp.pose.orientation.w = 1;
-		path_msg.poses.push_back(temp);
-
-		temp.pose.position.x = 4;
-		temp.pose.position.y = 6;
-		temp.pose.position.z = 0;
-
-		temp.pose.orientation.x = 0;
-		temp.pose.orientation.y = 0;
-		temp.pose.orientation.z = 0;
-		temp.pose.orientation.w = 1;
-		path_msg.poses.push_back(temp);
-
-		// RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path");
+		RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path");
 		// std::cout << "Test var: " << pidx << std::endl;
 
-		// publisher_->publish(path_msg);
+		publisher_->publish(path_msg);
 	}
 	rclcpp::TimerBase::SharedPtr timer_;
 	rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr publisher_;
@@ -90,40 +202,78 @@ int main(int argc, char * argv[])
 	best_path.push_back(init);
 	best_path.push_back(final);
 
-	std::cout << best_path[0].y << std::endl;
-	std::cout << best_path[1].y << std::endl;
+	// std::cout << best_path[0].y << std::endl;
+	// std::cout << best_path[1].y << std::endl;
 
-	double best_path_len = std::numeric_limits<double>::max();
+	// vector<vector<double>> arc1_pts;
 
-	if 
-	(no_waypts > 2)
-	{
-		dubins_shortest_path(init.x, init.y, init.th, final.x, final.y, final.th, Kmax, pidx, dubin_curve);
+	// dubinsarc_out arc1;
+	// dubinsarc_out arc2;
+	// dubinsarc_out arc3;
 
-		if
-		(pidx > 0)
-		{
-			// int arc1_pts[no_of_samples][2];
-			// int arc2_pts[no_of_samples][2];
-			// int arc3_pts[no_of_samples][2];
+	dubins_shortest_path(init.x, init.y, init.th, final.x, final.y, final.th, Kmax, pidx, &dubin_curve);
 
-			vector<vector<int>> arc1_pts(no_of_samples);
-			vector<vector<int>> arc2_pts(no_of_samples);
-			vector<vector<int>> arc2_pts(no_of_samples);
+	// plotarc(&dubin_curve.a1, arc1_pts);
+	// plotarc(&dubin_curve.a2, arc2_pts);
+	// plotarc(&dubin_curve.a3, arc3_pts);
 
-			dubinsarc_out arc1;
-			dubinsarc_out arc2;
-			dubinsarc_out arc3;
+	cout << "a1: " << dubin_curve.a1.x0 << ", " << dubin_curve.a1.y0 << endl;
+	// cout << "a1.start: " << arc1_pts[0][0] << ", " << arc1_pts[0][1] << endl;
+	// cout << "a1.final: " << arc1_pts[100][0] << ", " << arc1_pts[100][1] << endl;
+	cout << "a1.l: " << dubin_curve.a1.l << endl;
+	cout << "a2: " << dubin_curve.a2.x0 << ", " << dubin_curve.a2.y0 << endl;
+	// cout << "a2.start: " << arc2_pts[0][0] << ", " << arc2_pts[0][1] << endl;
+	// cout << "a2.final: " << arc2_pts[100][0] << ", " << arc2_pts[100][1] << endl;
+	cout << "a2.l: " << dubin_curve.a2.l << endl;
+	cout << "a3: " << dubin_curve.a3.x0 << ", " << dubin_curve.a3.y0 << endl;
+	// cout << "a3.start: " << arc3_pts[0][0] << ", " << arc3_pts[0][1] << endl;
+	// cout << "a3.final: " << arc3_pts[100][0] << ", " << arc3_pts[100][1] << endl;
+	cout << "a3.l: " << dubin_curve.a3.l << endl;
+	// cout << "a1.y0: " << dubin_curve.a1.y0 << endl;
+	// cout << "a2.x: " << dubin_curve.a2.x0 << endl;
+	// cout << "a2.y: " << dubin_curve.a2.y0 << endl;
+	// cout << "a3.x: " << dubin_curve.a3.x0 << endl;
+	// cout << "a3.y: " << dubin_curve.a3.y0 << endl;
 
-			arc1.x0 = init.x;
-			arc1.y0 = init.y;
+	// cout << "pidx: " << pidx << endl;
+	// cout<< "L: " << dubin_curve.a1.l << endl;
 
-			plot_dubins(&dubin_curve, arc1_pts, arc2_pts, arc3_pts);
-		}
+	// plotarc(&dubin_curve.a1, arc1_pts);
 
-	// std::cout << arc1_pts[0][0]
+	// cout<< "arc1 size: " << arc1_pts.size() << endl;
 
-	}
+	// double best_path_len = std::numeric_limits<double>::max();
+
+	// if 
+	// (no_waypts < 3)
+	// {
+	// 	dubins_shortest_path(init.x, init.y, init.th, final.x, final.y, final.th, Kmax, pidx, &dubin_curve);
+
+	// 	if
+	// 	(pidx > 0)
+	// 	{
+	// 		// int arc1_pts[no_of_samples][2];
+	// 		// int arc2_pts[no_of_samples][2];
+	// 		// int arc3_pts[no_of_samples][2];
+
+	// 		// dubinsarc_out arc1;
+	// 		// dubinsarc_out arc2;
+	// 		// dubinsarc_out arc3;
+
+	// 		// arc1.x0 = init.x;
+	// 		// arc1.y0 = init.y;
+
+	// 		plot_dubins(&dubin_curve, arc1_pts, arc2_pts, arc3_pts);
+	// 		// std::cout << "arc1: " << arc1_pts[1][0] << ", " << arc1_pts[1][1] << std::endl;
+	// 		std::cout << "arc2: " << arc2_pts[0][0] << ", " << arc2_pts[0][1] << std::endl;
+	// 		std::cout << "arc3: " << arc3_pts[0][0] << ", " << arc3_pts[0][1] << std::endl;
+	// 		// std::cout << arc2_pts[0][0] << std::endl;
+	// 		// std::cout << arc3_pts[0][0] << std::endl;
+	// 	}
+
+
+
+	// }
 
 	rclcpp::init(argc, argv);
   	rclcpp::spin(std::make_shared<DubinsPathPublisher>());

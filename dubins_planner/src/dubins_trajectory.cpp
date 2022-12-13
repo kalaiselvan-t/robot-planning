@@ -3,6 +3,7 @@
 // #include <vector>
 // #include <assert.h>
 #include "dubins_planner/dubins_trajectory.h"
+// #include "dubins_trajectory.h"
 
 
 /*====================================================================
@@ -117,17 +118,27 @@ bool check
        + s2 * sinc((1.0/2.0) * k1 * s2) * std::cos(th0 + k0 * s1 + (1.0/2.0) * k1 * s2)
        + s3 * sinc((1.0/2.0) * k2 * s3) * std::cos(th0 + k0 * s1 + k1 * s2 + (1.0/2.0) * k2 * s3) - xf;
 
+    // 	double eq1 = round_up((x0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::cos(th0 + (1.0/2.0) * k0 * s1)
+       // + s2 * sinc((1.0/2.0) * k1 * s2) * std::cos(th0 + k0 * s1 + (1.0/2.0) * k1 * s2)
+       // + s3 * sinc((1.0/2.0) * k2 * s3) * std::cos(th0 + k0 * s1 + k1 * s2 + (1.0/2.0) * k2 * s3) - xf),4);
+
   	double eq2 = y0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::sin(th0 + (1.0/2.0) * k0 * s1)
        + s2 * sinc((1.0/2.0) * k1 * s2) * std::sin(th0 + k0 * s1 + (1.0/2.0) * k1 * s2)
        + s3 * sinc((1.0/2.0) * k2 * s3) * std::sin(th0 + k0 * s1 + k1 * s2 + (1.0/2.0) * k2 * s3) - yf;
 
-		double eq3 = rangeSymm(k0 * s1 + k1 * s2 + k2 * s3 + th0 - thf);
+    // 	  	double eq2 = round_up((y0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::sin(th0 + (1.0/2.0) * k0 * s1)
+       // + s2 * sinc((1.0/2.0) * k1 * s2) * std::sin(th0 + k0 * s1 + (1.0/2.0) * k1 * s2)
+       // + s3 * sinc((1.0/2.0) * k2 * s3) * std::sin(th0 + k0 * s1 + k1 * s2 + (1.0/2.0) * k2 * s3) - yf),4);
 
-		bool Lpos = (s1 > 0) || (s2 > 0) || (s3 > 0);
+	double eq3 = rangeSymm(k0 * s1 + k1 * s2 + k2 * s3 + th0 - thf);
+    	  	// double eq3 = round_up((rangeSymm(k0 * s1 + k1 * s2 + k2 * s3 + th0 - thf)),4);
 
-		bool out = (std::sqrt(eq1 * eq1 + eq2 * eq2 + eq3 * eq3) < 1E-10) && Lpos;
+	bool Lpos = (s1 > 0) || (s2 > 0) || (s3 > 0);
 
-		return out;
+	bool out = (std::sqrt(eq1 * eq1 + eq2 * eq2 + eq3 * eq3) < 1E-10) && Lpos;
+	// bool out = (std::sqrt(eq1 * eq1 + eq2 * eq2 + eq3 * eq3) < 1E-10) && Lpos;
+
+	return out;
 }
 
 /*==================================================================
@@ -142,6 +153,7 @@ void LSL
 	double S = 2.0 * sc_Kmax + std::sin(sc_th0) - std::sin(sc_thf);
 	double temp1 = std::atan2(C, S);
 	sc_s1 = invK * mod2pi(temp1 - sc_th0);
+	// sc_s1 = round_up((invK * mod2pi(temp1 - sc_th0)),4);
 	double temp2 = 2.0 + 4.0 * std::pow(sc_Kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
 	
 	if (temp2 < 0)
@@ -150,7 +162,9 @@ void LSL
 	}
 	
 	sc_s2 = invK * std::sqrt(temp2);
+	// sc_s2 = round_up((invK * std::sqrt(temp2)),4);
 	sc_s3 = invK * mod2pi(sc_thf - temp1);
+	// sc_s3 = round_up((invK * mod2pi(sc_thf - temp1)),4);
 	ok = true;
 
 }
@@ -164,6 +178,7 @@ void RSR
 	double S = 2.0 * sc_Kmax - std::sin(sc_th0) + std::sin(sc_thf);
 	double temp1 = std::atan2(C, S);
 	sc_s1 = invK * mod2pi(sc_th0 - temp1);
+	// sc_s1 = round_up((invK * mod2pi(sc_th0 - temp1)),4);
 	double temp2 = 2.0 + 4.0 * std::pow(sc_Kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
 	
 	if (temp2 < 0)
@@ -172,7 +187,9 @@ void RSR
 	}
 	
 	sc_s2 = invK * std::sqrt(temp2);
+	// sc_s2 = round_up((invK * std::sqrt(temp2)),4);
 	sc_s3 = invK * mod2pi(temp1 - sc_thf);
+	// sc_s3 = round_up((invK * mod2pi(temp1 - sc_thf)),4);
 	ok = true;
 }	
 
@@ -192,9 +209,12 @@ void LSR
 	}
 	
 	sc_s2 = invK * std::sqrt(temp3);
+	// sc_s2 = round_up((invK * std::sqrt(temp3)),4);
 	double temp2 = -std::atan2(-2.0, sc_s2 * sc_Kmax);
 	sc_s1 = invK * mod2pi(temp1 + temp2 - sc_th0);
+	// sc_s1 = round_up((invK * mod2pi(temp1 + temp2 - sc_th0)),4);
 	sc_s3 = invK * mod2pi(temp1 + temp2 - sc_thf);
+	// sc_s3 = round_up((invK * mod2pi(temp1 + temp2 - sc_thf)),4);
 	ok = true;
 }	
 
@@ -214,9 +234,12 @@ void RSL
 	}
 	
 	sc_s2 = invK * std::sqrt(temp3);
+	// sc_s2 = round_up((invK * std::sqrt(temp3)),4);
 	double temp2 = std::atan2(2.0, sc_s2 * sc_Kmax);
 	sc_s1 = invK * mod2pi(sc_th0 - temp1 + temp2);
+	// sc_s1 = round_up((invK * mod2pi(sc_th0 - temp1 + temp2)),4);
 	sc_s3 = invK * mod2pi(sc_thf - temp1 + temp2);
+	// sc_s3 = round_up((invK * mod2pi(sc_thf - temp1 + temp2)),4);
 	ok = true;
 }	
 
@@ -237,8 +260,11 @@ void RLR
 	}
 	
 	sc_s2 = invK * mod2pi(2.0 * M_PI - std::acos(temp2));
+	// sc_s2 = round_up((invK * mod2pi(2.0 * M_PI - std::acos(temp2))),4);
 	sc_s1 = invK * mod2pi(sc_th0 - temp1 + 0.5 * sc_s2 * sc_Kmax);
+	// sc_s1 = round_up((invK * mod2pi(sc_th0 - temp1 + 0.5 * sc_s2 * sc_Kmax)),4);
 	sc_s3 = invK * mod2pi(sc_th0 - sc_thf + sc_Kmax * (sc_s2 - sc_s1));
+	// sc_s3 = round_up((invK * mod2pi(sc_th0 - sc_thf + sc_Kmax * (sc_s2 - sc_s1))),4);
 	ok = true;
 }
 
@@ -260,8 +286,11 @@ void LRL
 	}
 	
 	sc_s2 = invK * mod2pi(2.0 * M_PI - std::acos(temp2));
+	// sc_s2 = round_up((invK * mod2pi(2.0 * M_PI - std::acos(temp2))),4);
 	sc_s1 = invK * mod2pi(temp1 - sc_th0 + 0.5 * sc_s2 * sc_Kmax);
+	// sc_s1 = round_up((invK * mod2pi(temp1 - sc_th0 + 0.5 * sc_s2 * sc_Kmax)),4);
 	sc_s3 = invK * mod2pi(sc_thf - sc_th0 + sc_Kmax * (sc_s2 - sc_s1));
+	// sc_s3 = round_up((invK * mod2pi(sc_thf - sc_th0 + sc_Kmax * (sc_s2 - sc_s1))),4);
 	ok = true;
 }
 
@@ -393,44 +422,51 @@ void dubins_shortest_path
 // }
 
 void plotarc
-(dubinsarc_out *arc, std::vector<std::vector<int>> &points)
+(dubinsarc_out *arc, std::vector<std::vector<double>> &points)
 {
-	std::vector<int> temp;
+	std::vector<double> temp;
 	temp.push_back(arc->x0);
 	temp.push_back(arc->x0);
 	points.insert(points.begin(),temp);
 
-	std::vector<std::vector<int>>::iterator row;
-	std::vector<int>::iterator col;
+	std::vector<std::vector<double>>::iterator row;
+	std::vector<double>::iterator col;
 
-	int index = 0;
+	// std::cout << points.size() << std::endl;
+	// std::cout << points[0][0] << std::endl;
+	// std::cout << points[0][1] << std::endl;
+
+	// int index = 0;
 
 	for 
-	(row = points.end(); row != points.end(); row++)
+	(int i = 1; i <= no_of_samples; i++)
 	{
-		double s = arc->l / points.size() * index;
+		double s = arc->l / no_of_samples * i;
 
 		double x,y,th = 0.0;
 
 		circline(s, arc->x0, arc->y0, arc->th0, arc->k, x, y, th);
 
-		points[index+1][0] = x;
-		points[index+1][1] = y;
+		// points[index+1][0] = x;
+		// points[index+1][1] = y;
 
-		std::vector<int> temp2;
+		std::vector<double> temp2;
 
 		temp2.push_back(x);
 		temp2.push_back(y);
 
-		points.insert(points.begin() + index + 1, temp2);
+		points.insert(points.begin() + i, temp2);
 
-		index++;
+		temp2.clear();
+		// index++;
 	}
 
-	// for (int i = 0; i < 100; ++i)
+	// for 
+	// (int i = 0; i < no_of_samples; ++i)
 	// {
 	// 	std::cout << points[i][0] << ", " << points[i][1] << std::endl; 
 	// }
+
 }
 
 
@@ -444,7 +480,7 @@ void plotarc
 // }
 
 void plot_dubins
-(dubinscurve_out *curve, std::vector<std::vector<int>> &c1, std::vector<std::vector<int>> &c2, std::vector<std::vector<int>> &c3)
+(dubinscurve_out *curve, std::vector<std::vector<double>> &c1, std::vector<std::vector<double>> &c2, std::vector<std::vector<double>> &c3)
 {
 	plotarc(&curve->a1, c1);
 	plotarc(&curve->a2, c2);

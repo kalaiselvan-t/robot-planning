@@ -6,13 +6,17 @@ double X0 = 5.0;
 
 double Y0 = 5.0;
 
-double Xf = 4.0;
+double Xf = 8.0;
 
-double Yf = 0.0;
+double Yf = 8.0;
 
-double Th0 = -2.0/3.0 * M_PI;
+// double Th0 = round_up((-2.0/3.0 * M_PI),4);
 
-double Thf = M_PI / 3.0;
+double Th0 = -2.0944;
+
+// double Thf = round_up((-M_PI / 3.0),4);
+
+double Thf = -1.0472;
 
 double Kmax = 3.0;
 
