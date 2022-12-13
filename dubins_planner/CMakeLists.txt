@@ -11,6 +11,7 @@ endif()
   find_package(std_msgs REQUIRED)
   find_package(nav_msgs REQUIRED)
   find_package(geometry_msgs REQUIRED)
+  find_package(tf2 REQUIRED)
 
   include_directories(include)
 
@@ -35,7 +36,7 @@ endif()
   #========================================================================
   add_executable(dubins_planner src/dubins_planner.cpp src/dubins_trajectory.cpp src/dubins_trajectory_config.cpp)
   #add_library(dubins_trajectory src/dubins_trajectory.cpp)
-  ament_target_dependencies(dubins_planner rclcpp std_msgs nav_msgs geometry_msgs)
+  ament_target_dependencies(dubins_planner rclcpp std_msgs nav_msgs geometry_msgs tf2)
   
   install(TARGETS
   dubins_planner

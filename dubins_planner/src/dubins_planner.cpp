@@ -8,11 +8,14 @@
 #include "std_msgs/msg/string.hpp"
 #include "nav_msgs/msg/path.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
+#include "tf2/LinearMath/Quaternion.h"
 
 #include "dubins_planner/dubins_trajectory.h"
 
 using namespace std::chrono_literals;
 using namespace std;
+
+//Initialize data structures
 
 vector<vector<double>> arc1_pts;
 vector<vector<double>> arc2_pts;
@@ -34,7 +37,8 @@ private:
 	void timer_callback()
 	{
 		nav_msgs::msg::Path path_msg;
-		geometry_msgs::msg::PoseStamped temp; 
+		geometry_msgs::msg::PoseStamped temp;
+		tf2::Quaternion q; 
 
 		path_msg.header.stamp = this->get_clock()->now();
 		path_msg.header.frame_id = "map";
@@ -50,128 +54,98 @@ private:
 			for
 			(int j = 0; j < 2; ++j)
 			{
-				temp.pose.position.x = arc1_pts[i][0];
-				temp.pose.position.y = arc1_pts[i][1];
-				// temp.pose.position.x = 1;
-				// temp.pose.position.y = 1;
-				// temp.pose.position.z = 0;
+				temp.pose.position.x = round_up((arc1_pts[i][0]),2);
+				temp.pose.position.y = round_up((arc1_pts[i][1]),2);
+				temp.pose.position.z = 0;
 
-				// temp.pose.orientation.x = 0;
-				// temp.pose.orientation.y = 0;
-				// temp.pose.orientation.z = 0;
-				// temp.pose.orientation.w = 1;
+				if
+				(DEBUG)
+				{
+					temp.pose.position.x = 1;
+					temp.pose.position.y = 1;
+				}
+				
+
+            	q.setRPY(0, 0, arc1_pts[i][2]);
+
+				temp.pose.orientation.x = q.x();
+				temp.pose.orientation.y = q.y();
+				temp.pose.orientation.z = q.z();
+				temp.pose.orientation.w = q.w();
 				path_msg.poses.push_back(temp);
 
-				// temp.pose.position.x = 3;
-				// temp.pose.position.y = 4;
-				// temp.pose.position.z = 0;
-
-				// temp.pose.orientation.x = 0;
-				// temp.pose.orientation.y = 0;
-				// temp.pose.orientation.z = 0;
-				// temp.pose.orientation.w = 1;
-				// path_msg.poses.push_back(temp);
-
-				// temp.pose.position.x = 9;
-				// temp.pose.position.y = 3;
-				// temp.pose.position.z = 0;
-
-				// temp.pose.orientation.x = 0;
-				// temp.pose.orientation.y = 0;
-				// temp.pose.orientation.z = 0;
-				// temp.pose.orientation.w = 1;
-				// path_msg.poses.push_back(temp);
+				if
+				(DEBUG)
+				{// temp.pose.position.x = 3;
+					temp.pose.position.y = 4;
+					temp.pose.position.z = 0;
+	
+					temp.pose.orientation.x = 0;
+					temp.pose.orientation.y = 0;
+					temp.pose.orientation.z = 0;
+					temp.pose.orientation.w = 1;
+					path_msg.poses.push_back(temp);
+	
+					temp.pose.position.x = 9;
+					temp.pose.position.y = 3;
+					temp.pose.position.z = 0;
+	
+					temp.pose.orientation.x = 0;
+					temp.pose.orientation.y = 0;
+					temp.pose.orientation.z = 0;
+					temp.pose.orientation.w = 1;
+					path_msg.poses.push_back(temp);
+				}
 			}
 		}
 
 		plotarc(&dubin_curve.a2, arc2_pts);
 
 		for 
-		(int i = 0; i <= no_of_samples; ++i)
+		(int i = 1; i <= no_of_samples; ++i)
 		{
 			for
 			(int j = 0; j < 2; ++j)
 			{
-				temp.pose.position.x = arc2_pts[i][0];
-				temp.pose.position.y = arc2_pts[i][1];
-				// temp.pose.position.x = 1;
-				// temp.pose.position.y = 1;
-				// temp.pose.position.z = 0;
+				temp.pose.position.x = round_up((arc2_pts[i][0]),2);
+				temp.pose.position.y = round_up((arc2_pts[i][1]),2);
+				temp.pose.position.z = 0;
 
-				// temp.pose.orientation.x = 0;
-				// temp.pose.orientation.y = 0;
-				// temp.pose.orientation.z = 0;
-				// temp.pose.orientation.w = 1;
+				q.setRPY(0, 0, arc2_pts[i][2]);
+
+				temp.pose.orientation.x = q.x();
+				temp.pose.orientation.y = q.y();
+				temp.pose.orientation.z = q.z();
+				temp.pose.orientation.w = q.w();
 				path_msg.poses.push_back(temp);
-
-				// temp.pose.position.x = 3;
-				// temp.pose.position.y = 4;
-				// temp.pose.position.z = 0;
-
-				// temp.pose.orientation.x = 0;
-				// temp.pose.orientation.y = 0;
-				// temp.pose.orientation.z = 0;
-				// temp.pose.orientation.w = 1;
-				// path_msg.poses.push_back(temp);
-
-				// temp.pose.position.x = 9;
-				// temp.pose.position.y = 3;
-				// temp.pose.position.z = 0;
-
-				// temp.pose.orientation.x = 0;
-				// temp.pose.orientation.y = 0;
-				// temp.pose.orientation.z = 0;
-				// temp.pose.orientation.w = 1;
-				// path_msg.poses.push_back(temp);
 			}
 		}
 
 		plotarc(&dubin_curve.a3, arc3_pts);
 
 		for 
-		(int i = 0; i <= no_of_samples; ++i)
+		(int i = 1; i <= no_of_samples; ++i)
 		{
 			for
 			(int j = 0; j < 2; ++j)
 			{
-				temp.pose.position.x = arc3_pts[i][0];
-				temp.pose.position.y = arc3_pts[i][1];
+				temp.pose.position.x = round_up((arc3_pts[i][0]),2);
+				temp.pose.position.y = round_up((arc3_pts[i][1]),2);
 				// temp.pose.position.x = 1;
 				// temp.pose.position.y = 1;
-				// temp.pose.position.z = 0;
+				temp.pose.position.z = 0;
 
-				// temp.pose.orientation.x = 0;
-				// temp.pose.orientation.y = 0;
-				// temp.pose.orientation.z = 0;
-				// temp.pose.orientation.w = 1;
+				q.setRPY(0, 0, arc3_pts[i][2]);
+
+				temp.pose.orientation.x = q.x();
+				temp.pose.orientation.y = q.y();
+				temp.pose.orientation.z = q.z();
+				temp.pose.orientation.w = q.w();
 				path_msg.poses.push_back(temp);
-
-				// temp.pose.position.x = 3;
-				// temp.pose.position.y = 4;
-				// temp.pose.position.z = 0;
-
-				// temp.pose.orientation.x = 0;
-				// temp.pose.orientation.y = 0;
-				// temp.pose.orientation.z = 0;
-				// temp.pose.orientation.w = 1;
-				// path_msg.poses.push_back(temp);
-
-				// temp.pose.position.x = 9;
-				// temp.pose.position.y = 3;
-				// temp.pose.position.z = 0;
-
-				// temp.pose.orientation.x = 0;
-				// temp.pose.orientation.y = 0;
-				// temp.pose.orientation.z = 0;
-				// temp.pose.orientation.w = 1;
-				// path_msg.poses.push_back(temp);
 			}
 		}
-		
-		
 
 		RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path");
-		// std::cout << "Test var: " << pidx << std::endl;
 
 		publisher_->publish(path_msg);
 	}
@@ -180,12 +154,6 @@ private:
 	size_t count_;
 
 };
-
-// 	// dubinscurve_out dubin_curve;
-
-// 	// dubins_shortest_path(X0, Y0, Th0, Xf, Yf, Thf, Kmax, pidx, &dubin_curve);
-
-// 	// std::cout << "Pidx: " << pidx << std::endl;
 
 int main(int argc, char * argv[])
 {
@@ -202,78 +170,45 @@ int main(int argc, char * argv[])
 	best_path.push_back(init);
 	best_path.push_back(final);
 
-	// std::cout << best_path[0].y << std::endl;
-	// std::cout << best_path[1].y << std::endl;
+	if
+	(DEBUG)
+	{
+		std::cout << best_path[0].y << std::endl;
+		std::cout << best_path[1].y << std::endl;
 
-	// vector<vector<double>> arc1_pts;
-
-	// dubinsarc_out arc1;
-	// dubinsarc_out arc2;
-	// dubinsarc_out arc3;
+		vector<vector<double>> arc1_pts;
+	}
 
 	dubins_shortest_path(init.x, init.y, init.th, final.x, final.y, final.th, Kmax, pidx, &dubin_curve);
 
-	// plotarc(&dubin_curve.a1, arc1_pts);
-	// plotarc(&dubin_curve.a2, arc2_pts);
-	// plotarc(&dubin_curve.a3, arc3_pts);
+	if
+	(DEBUG)
+	{
+		plotarc(&dubin_curve.a1, arc1_pts);
+		plotarc(&dubin_curve.a2, arc2_pts);
+		plotarc(&dubin_curve.a3, arc3_pts);
 
-	cout << "a1: " << dubin_curve.a1.x0 << ", " << dubin_curve.a1.y0 << endl;
-	// cout << "a1.start: " << arc1_pts[0][0] << ", " << arc1_pts[0][1] << endl;
-	// cout << "a1.final: " << arc1_pts[100][0] << ", " << arc1_pts[100][1] << endl;
-	cout << "a1.l: " << dubin_curve.a1.l << endl;
-	cout << "a2: " << dubin_curve.a2.x0 << ", " << dubin_curve.a2.y0 << endl;
-	// cout << "a2.start: " << arc2_pts[0][0] << ", " << arc2_pts[0][1] << endl;
-	// cout << "a2.final: " << arc2_pts[100][0] << ", " << arc2_pts[100][1] << endl;
-	cout << "a2.l: " << dubin_curve.a2.l << endl;
-	cout << "a3: " << dubin_curve.a3.x0 << ", " << dubin_curve.a3.y0 << endl;
-	// cout << "a3.start: " << arc3_pts[0][0] << ", " << arc3_pts[0][1] << endl;
-	// cout << "a3.final: " << arc3_pts[100][0] << ", " << arc3_pts[100][1] << endl;
-	cout << "a3.l: " << dubin_curve.a3.l << endl;
-	// cout << "a1.y0: " << dubin_curve.a1.y0 << endl;
-	// cout << "a2.x: " << dubin_curve.a2.x0 << endl;
-	// cout << "a2.y: " << dubin_curve.a2.y0 << endl;
-	// cout << "a3.x: " << dubin_curve.a3.x0 << endl;
-	// cout << "a3.y: " << dubin_curve.a3.y0 << endl;
+		cout << "a1: " << dubin_curve.a1.x0 << ", " << dubin_curve.a1.y0 << endl;
+		cout << "a1.start: " << arc1_pts[0][0] << ", " << arc1_pts[0][1] << endl;
+		cout << "a1.final: " << arc1_pts[100][0] << ", " << arc1_pts[100][1] << endl;
+		cout << "a1.l: " << dubin_curve.a1.l << endl;
+		cout << "a2: " << dubin_curve.a2.x0 << ", " << dubin_curve.a2.y0 << endl;
+		cout << "a2.start: " << arc2_pts[0][0] << ", " << arc2_pts[0][1] << endl;
+		cout << "a2.final: " << arc2_pts[100][0] << ", " << arc2_pts[100][1] << endl;
+		cout << "a2.l: " << dubin_curve.a2.l << endl;
+		cout << "a3: " << dubin_curve.a3.x0 << ", " << dubin_curve.a3.y0 << endl;
+		cout << "a3.start: " << arc3_pts[0][0] << ", " << arc3_pts[0][1] << endl;
+		cout << "a3.final: " << arc3_pts[100][0] << ", " << arc3_pts[100][1] << endl;
+		cout << "a3.l: " << dubin_curve.a3.l << endl;
+		cout << "a1.y0: " << dubin_curve.a1.y0 << endl;
+		cout << "a2.x: " << dubin_curve.a2.x0 << endl;
+		cout << "a2.y: " << dubin_curve.a2.y0 << endl;
+		cout << "a3.x: " << dubin_curve.a3.x0 << endl;
+		cout << "a3.y: " << dubin_curve.a3.y0 << endl;
 
-	// cout << "pidx: " << pidx << endl;
-	// cout<< "L: " << dubin_curve.a1.l << endl;
-
-	// plotarc(&dubin_curve.a1, arc1_pts);
-
-	// cout<< "arc1 size: " << arc1_pts.size() << endl;
-
-	// double best_path_len = std::numeric_limits<double>::max();
-
-	// if 
-	// (no_waypts < 3)
-	// {
-	// 	dubins_shortest_path(init.x, init.y, init.th, final.x, final.y, final.th, Kmax, pidx, &dubin_curve);
-
-	// 	if
-	// 	(pidx > 0)
-	// 	{
-	// 		// int arc1_pts[no_of_samples][2];
-	// 		// int arc2_pts[no_of_samples][2];
-	// 		// int arc3_pts[no_of_samples][2];
-
-	// 		// dubinsarc_out arc1;
-	// 		// dubinsarc_out arc2;
-	// 		// dubinsarc_out arc3;
-
-	// 		// arc1.x0 = init.x;
-	// 		// arc1.y0 = init.y;
-
-	// 		plot_dubins(&dubin_curve, arc1_pts, arc2_pts, arc3_pts);
-	// 		// std::cout << "arc1: " << arc1_pts[1][0] << ", " << arc1_pts[1][1] << std::endl;
-	// 		std::cout << "arc2: " << arc2_pts[0][0] << ", " << arc2_pts[0][1] << std::endl;
-	// 		std::cout << "arc3: " << arc3_pts[0][0] << ", " << arc3_pts[0][1] << std::endl;
-	// 		// std::cout << arc2_pts[0][0] << std::endl;
-	// 		// std::cout << arc3_pts[0][0] << std::endl;
-	// 	}
-
-
-
-	// }
+		cout << "pidx: " << pidx << endl;
+		cout<< "L: " << dubin_curve.a1.l << endl;
+	}
 
 	rclcpp::init(argc, argv);
   	rclcpp::spin(std::make_shared<DubinsPathPublisher>());
@@ -281,82 +216,3 @@ int main(int argc, char * argv[])
   	return 0;
 
 }
-
-// double x1, y1, Kmax, step, angle_step;
-		// point initial, final;
-		// int no_of_wpts = 3;
-
-		// point best_path[no_of_wpts-1];
-
-		// initial.x = 2.0;
-		// initial.y = 0.0;
-		// initial.th = -2.0 / 3.0 * M_PI;
-
-		// x1 = 5.0; 
-		// y1 = 3.0;
-
-		// final.x = 8.0;
-		// final.y = 3.0;
-		// final.th = -M_PI / 2.0;
-
-		// Kmax = 3.0;
-
-		// no_of_wpts = 3;
-		// step = 6.0;
-		// angle_step = M_PI / step;
-
-		// best_path[0] = initial;
-		// best_path[no_of_wpts-1] = final;
-
-
-
-
-		// dubinsarc_out arc1;
-		// arc1.x0 = 1.0;
-		// arc1.y0 = 1.0;
-		// arc1.th0 = 0.5;
-		// arc1.xf = 2.0;
-		// arc1.yf = 2.0;
-		// arc1.thf = 0.8;
-		// arc1.k = 2.0;
-		// arc1.l = 2.0;
-
-		// dubinsarc_out arc2;
-		// arc2.x0 = 2.0;
-		// arc2.y0 = 2.0;
-		// arc2.th0 = 0.0;
-		// arc2.xf = 5.0;
-		// arc2.yf = 5.0;
-		// arc2.thf = 0.0;
-		// arc2.k = 2.0;
-		// arc2.l = 2.0;
-
-		// dubinsarc_out arc3;
-		// arc3.x0 = 5.0;
-		// arc3.y0 = 5.0;
-		// arc3.th0 = 0.5;
-		// arc3.xf = 6.0;
-		// arc3.yf = 6.0;
-		// arc3.thf = 0.8;
-		// arc3.k = 2.0;
-		// arc3.l = 2.0;
-
-		// dubinscurve_out curve;
-
-		// point initial;
-
-		// curve.a1 = arc1;
-		// curve.a2 = arc2;
-		// curve.a3 = arc3;
-		// curve.L = 5.0;
-
-		// int c1[101][2];
-		// int c2[101][2];
-		// int c3[101][2];
-
-		// // plotarc(&arc1, c1);
-		// plot_dubins(&curve, true, c1, c2, c3);
-
-		// std::cout << c1[10][0] << ", " << c1[10][1] << std::endl;
-		// std::cout << c2[10][0] << ", " << c2[10][1] << std::endl;
-		// std::cout << c3[10][0] << ", " << c3[10][1]<< std::endl;

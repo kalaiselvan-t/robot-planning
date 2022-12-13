@@ -23,6 +23,12 @@ struct point
 	double x,y,th;
 };
 
+/*====================================================================
+================================Data==================================
+====================================================================*/
+
+extern bool DEBUG;
+
 extern double X0;
 extern double Y0;
 extern double Xf;
@@ -85,15 +91,10 @@ void scale_from_standard(double, double, double, double, double &, double &, dou
 
 void dubins_shortest_path(double, double, double, double, double, double, double, int &, dubinscurve_out *);
 
-int test();
-
 /*====================================================================
 =============================Plot Functions===========================
 ====================================================================*/
 
-// void plotarc(dubinsarc_out *, int (&)[101][2]);
 void plotarc(dubinsarc_out *, std::vector<std::vector<double>> &points);
-
-// void plot_dubins(dubinscurve_out *, int (&)[101][2], int (&)[101][2], int (&)[101][2]);
 
 void plot_dubins(dubinscurve_out *, std::vector<std::vector<int>> &c1, std::vector<std::vector<int>> &c2, std::vector<std::vector<int>> &c3);
