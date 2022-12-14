@@ -7,7 +7,7 @@
 ====================================================================*/
 struct dubinsarc_out
 {
-	double x0, y0, th0, k, l, xf, yf, thf;
+	long double x0, y0, th0, k, l, xf, yf, thf;
 };
 
 struct dubinscurve_out
@@ -15,12 +15,12 @@ struct dubinscurve_out
 	dubinsarc_out a1;
 	dubinsarc_out a2;
 	dubinsarc_out a3;
-	double L;
+	long double L;
 };
 
 struct point
 {
-	double x,y,th;
+	long double x,y,th;
 };
 
 /*====================================================================
@@ -29,18 +29,18 @@ struct point
 
 extern bool DEBUG;
 
-extern double X0;
-extern double Y0;
-extern double Xf;
-extern double Yf;
-extern double Th0;
-extern double Thf;
-extern double Kmax;
+extern long double X0;
+extern long double Y0;
+extern long double Xf;
+extern long double Yf;
+extern long double Th0;
+extern long double Thf;
+extern long double Kmax;
 extern int pidx;
 
 extern int no_waypts;
 extern int step;
-extern double angle_step;
+extern long double angle_step;
 
 extern int no_of_samples;
 
@@ -53,48 +53,48 @@ extern std::vector<point> best_path;
 ============================Helper functions==========================
 ====================================================================*/
 
-double round_up(double, int);
+long double round_up(long double, int);
 
-double sinc(double);
+long double sinc(long double);
 
-double mod2pi(double);
+long double mod2pi(long double);
 
-void circline(double, double, double, double, double, double &, double &, double &);
+void circline(long double, long double, long double, long double, long double, long double &, long double &, long double &);
 
-void dubins_arc(double, double, double, double, double, dubinsarc_out *);
+void dubins_arc(long double, long double, long double, long double, long double, dubinsarc_out *);
 
-void dubins_curve(double, double, double, double, double, double, double, double, double, dubinscurve_out *);
+void dubins_curve(long double, long double, long double, long double, long double, long double, long double, long double, long double, dubinscurve_out *);
 
-double rangeSymm(double);
+long double rangeSymm(long double);
 
-bool check(double, double, double, double, double, double, double, double);
+bool check(long double, long double, long double, long double, long double, long double, long double, long double);
 
 /*====================================================================
 =========================Function Declarations========================
 ====================================================================*/
 
-void LSL(double, double, double, double &, double &, double &, bool &);
+void LSL(long double, long double, long double, long double &, long double &, long double &, bool &);
 
-void RSR(double, double, double, double &, double &, double &, bool &);	
+void RSR(long double, long double, long double, long double &, long double &, long double &, bool &);	
 
-void LSR(double, double, double, double &, double &, double &, bool &);
+void LSR(long double, long double, long double, long double &, long double &, long double &, bool &);
 
-void RSL(double, double, double, double &, double &, double &, bool &);
+void RSL(long double, long double, long double, long double &, long double &, long double &, bool &);
 	
-void RLR(double, double, double, double &, double &, double &, bool &);
+void RLR(long double, long double, long double, long double &, long double &, long double &, bool &);
 
-void LRL(double, double, double, double &, double &, double &, bool &);
+void LRL(long double, long double, long double, long double &, long double &, long double &, bool &);
 
-void scale_to_standard(double, double, double, double, double, double, double, double &, double &, double &, double &);
+void scale_to_standard(long double, long double, long double, long double, long double, long double, long double, long double &, long double &, long double &, long double &);
 
-void scale_from_standard(double, double, double, double, double &, double &, double &);
+void scale_from_standard(long double, long double, long double, long double, long double &, long double &, long double &);
 
-void dubins_shortest_path(double, double, double, double, double, double, double, int &, dubinscurve_out *);
+void dubins_shortest_path(long double, long double, long double, long double, long double, long double, long double, int &, dubinscurve_out *);
 
 /*====================================================================
 =============================Plot Functions===========================
 ====================================================================*/
 
-void plotarc(dubinsarc_out *, std::vector<std::vector<double>> &points);
+void plotarc(dubinsarc_out *, std::vector<std::vector<long double>> &points);
 
 void plot_dubins(dubinscurve_out *, std::vector<std::vector<int>> &c1, std::vector<std::vector<int>> &c2, std::vector<std::vector<int>> &c3);

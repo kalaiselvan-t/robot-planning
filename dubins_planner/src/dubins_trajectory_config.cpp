@@ -2,22 +2,22 @@
 
 // Initial Configuration
 
-bool DEBUG = false;
+bool DEBUG = true;
 
-double X0 = 2.0;
-double Y0 = 2.0;
-double Th0 = round_up((-2.0/3.0 * M_PI),4);
+long double X0 = 0.0;
+long double Y0 = 0.0;
+long double Th0 = -2.0/3.0 * M_PI;
 
-double Xf = 18.0;
-double Yf = 18.0;
-double Thf = round_up((-M_PI / 3.0),4);
+long double Xf = 3.0;
+long double Yf = 0.0;
+long double Thf = -M_PI / 3.0;
 
-double Kmax = 3.0;
-int no_of_samples = 75;
+long double Kmax = 3.0;
+int no_of_samples = 100;
 
 int no_waypts = 2;
 int step = 6;
-double angle_step = M_PI/step;
+long double angle_step = M_PI/step;
 
 // Initialize data structures
 

@@ -17,9 +17,9 @@ using namespace std;
 
 //Initialize data structures
 
-vector<vector<double>> arc1_pts;
-vector<vector<double>> arc2_pts;
-vector<vector<double>> arc3_pts;
+vector<vector<long double>> arc1_pts;
+vector<vector<long double>> arc2_pts;
+vector<vector<long double>> arc3_pts;
 
 class DubinsPathPublisher: public rclcpp::Node
 {
@@ -170,14 +170,14 @@ int main(int argc, char * argv[])
 	best_path.push_back(init);
 	best_path.push_back(final);
 
-	if
-	(DEBUG)
-	{
-		std::cout << best_path[0].y << std::endl;
-		std::cout << best_path[1].y << std::endl;
+	// if
+	// (DEBUG)
+	// {
+	// 	std::cout << best_path[0].y << std::endl;
+	// 	std::cout << best_path[1].y << std::endl;
 
-		vector<vector<double>> arc1_pts;
-	}
+	// 	vector<vector<long double>> arc1_pts;
+	// }
 
 	dubins_shortest_path(init.x, init.y, init.th, final.x, final.y, final.th, Kmax, pidx, &dubin_curve);
 
@@ -190,15 +190,17 @@ int main(int argc, char * argv[])
 
 		cout << "a1: " << dubin_curve.a1.x0 << ", " << dubin_curve.a1.y0 << endl;
 		cout << "a1.start: " << arc1_pts[0][0] << ", " << arc1_pts[0][1] << endl;
-		cout << "a1.final: " << arc1_pts[100][0] << ", " << arc1_pts[100][1] << endl;
+		cout << "a1.final: " << arc1_pts[no_of_samples-1][0] << ", " << arc1_pts[no_of_samples-1][1] << endl;
 		cout << "a1.l: " << dubin_curve.a1.l << endl;
+
 		cout << "a2: " << dubin_curve.a2.x0 << ", " << dubin_curve.a2.y0 << endl;
 		cout << "a2.start: " << arc2_pts[0][0] << ", " << arc2_pts[0][1] << endl;
-		cout << "a2.final: " << arc2_pts[100][0] << ", " << arc2_pts[100][1] << endl;
+		cout << "a2.final: " << arc2_pts[no_of_samples-1][0] << ", " << arc2_pts[no_of_samples-1][1] << endl;
 		cout << "a2.l: " << dubin_curve.a2.l << endl;
+		
 		cout << "a3: " << dubin_curve.a3.x0 << ", " << dubin_curve.a3.y0 << endl;
 		cout << "a3.start: " << arc3_pts[0][0] << ", " << arc3_pts[0][1] << endl;
-		cout << "a3.final: " << arc3_pts[100][0] << ", " << arc3_pts[100][1] << endl;
+		cout << "a3.final: " << arc3_pts[no_of_samples-1][0] << ", " << arc3_pts[no_of_samples-1][1] << endl;
 		cout << "a3.l: " << dubin_curve.a3.l << endl;
 		cout << "a1.y0: " << dubin_curve.a1.y0 << endl;
 		cout << "a2.x: " << dubin_curve.a2.x0 << endl;
