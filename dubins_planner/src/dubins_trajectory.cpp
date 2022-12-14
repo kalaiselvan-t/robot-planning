@@ -361,7 +361,7 @@ void dubins_shortest_path
 
 		dubins_curve(x0, y0, th0, s1, s2, s3, ksigns[pidx-1][0] * Kmax, ksigns[pidx-1][1] * Kmax, ksigns[pidx-1][2] * Kmax, curve);
 
-		assert(check(sc_s1, ksigns[pidx-1][0] * sc_Kmax, sc_s2, ksigns[pidx-1][1] * sc_Kmax, sc_s3, ksigns[pidx-1][2] * sc_Kmax, sc_th0, sc_thf));
+		// assert(check(sc_s1, ksigns[pidx-1][0] * sc_Kmax, sc_s2, ksigns[pidx-1][1] * sc_Kmax, sc_s3, ksigns[pidx-1][2] * sc_Kmax, sc_th0, sc_thf));
 
 	}
 }
@@ -375,7 +375,8 @@ void plotarc
 {
 	std::vector<double> temp;
 	temp.push_back(arc->x0);
-	temp.push_back(arc->x0);
+	temp.push_back(arc->y0);
+	temp.push_back(arc->th0);
 	points.insert(points.begin(),temp);
 
 	std::vector<std::vector<double>>::iterator row;

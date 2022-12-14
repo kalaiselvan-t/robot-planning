@@ -4,12 +4,13 @@
 
 bool DEBUG = false;
 
-double X0 = 2.0;
-double Y0 = 2.0;
+double X0 = 0.0;
+double Y0 = 0.0;
 double Th0 = round_up((-2.0/3.0 * M_PI),4);
 
-double Xf = 18.0;
-double Yf = 18.0;
+double Xf = 5.0;
+double Yf = 3
+.0;
 double Thf = round_up((-M_PI / 3.0),4);
 
 double Kmax = 3.0;
