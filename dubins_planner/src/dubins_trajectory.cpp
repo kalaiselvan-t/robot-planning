@@ -5,17 +5,17 @@
 ===========================Helper functions===========================
 ====================================================================*/
 
-double round_up
-(double value, int decimal_places)
+float round_up
+(float value, int decimal_places)
 {
-	const double multiplier = std::pow(10.0, decimal_places);
+	const float multiplier = std::pow(10.0, decimal_places);
 	return std::ceil(value * multiplier) / multiplier;
 }
 
-double sinc
-(double t)
+float sinc
+(float t)
 {
-	double out;
+	float out;
 	if
 	(std::abs(t) < 0.002)
 	{
@@ -29,10 +29,10 @@ double sinc
 	return out;
 }
 
-double mod2pi
-(double ang)
+float mod2pi
+(float ang)
 {
-	double out = ang;
+	float out = ang;
 	while (out < 0)
 	{
 		out = out + (2.0 * M_PI);
@@ -45,7 +45,7 @@ double mod2pi
 }
 
 void circline
-(double s, double x0, double y0, double th0, double k, double &x, double &y, double &th)
+(float s, float x0, float y0, float th0, float k, float &x, float &y, float &th)
 {
 	x = x0 + s * sinc(k * s/2.0) * std::cos(th0 + k * s/2.0);
 	y = y0 + s * sinc(k * s/2.0) * std::sin(th0 + k * s / 2.0);
@@ -53,7 +53,7 @@ void circline
 }
 
 void dubins_arc
-(double x0, double y0, double th0, double k, double l, dubinsarc_out *out)
+(float x0, float y0, float th0, float k, float l, dubinsarc_out *out)
 {
 	out->x0 = x0;
 	out->y0 = y0;
@@ -69,7 +69,7 @@ void dubins_arc
 }
 
 void dubins_curve
-(double x0, double y0, double th0, double s1, double s2, double s3, double k0, double k1, double k2, dubinscurve_out *out)
+(float x0, float y0, float th0, float s1, float s2, float s3, float k0, float k1, float k2, dubinscurve_out *out)
 {
 	dubinsarc_out a1, a2, a3;
 	dubins_arc(x0, y0, th0, k0, s1, &a1);
@@ -81,10 +81,10 @@ void dubins_curve
 	out->a3 = a3;
 }
 
-double rangeSymm
-(double ang)
+float rangeSymm
+(float ang)
 {
-	double out = ang;
+	float out = ang;
 
 	while
 	(out <= -M_PI)
@@ -102,22 +102,22 @@ double rangeSymm
 }
 
 bool check
-(double s1, double k0, double s2, double k1, double s3, double k2, double th0, double thf)
+(float s1, float k0, float s2, float k1, float s3, float k2, float th0, float thf)
 {
 	int x0 = -1;
 	int y0 = 0;
 	int xf = 1;
 	int yf = 0;
 
-	double eq1 = x0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::cos(th0 + (1.0/2.0) * k0 * s1)
+	float eq1 = x0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::cos(th0 + (1.0/2.0) * k0 * s1)
        + s2 * sinc((1.0/2.0) * k1 * s2) * std::cos(th0 + k0 * s1 + (1.0/2.0) * k1 * s2)
        + s3 * sinc((1.0/2.0) * k2 * s3) * std::cos(th0 + k0 * s1 + k1 * s2 + (1.0/2.0) * k2 * s3) - xf;
 
-  	double eq2 = y0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::sin(th0 + (1.0/2.0) * k0 * s1)
+  	float eq2 = y0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::sin(th0 + (1.0/2.0) * k0 * s1)
        + s2 * sinc((1.0/2.0) * k1 * s2) * std::sin(th0 + k0 * s1 + (1.0/2.0) * k1 * s2)
        + s3 * sinc((1.0/2.0) * k2 * s3) * std::sin(th0 + k0 * s1 + k1 * s2 + (1.0/2.0) * k2 * s3) - yf;
 
-	double eq3 = rangeSymm(k0 * s1 + k1 * s2 + k2 * s3 + th0 - thf);
+	float eq3 = rangeSymm(k0 * s1 + k1 * s2 + k2 * s3 + th0 - thf);
 
 	bool Lpos = (s1 > 0) || (s2 > 0) || (s3 > 0);
 
@@ -131,14 +131,14 @@ bool check
 ==================================================================*/
 
 void LSL
-(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+(float sc_th0, float sc_thf, float sc_Kmax, float &sc_s1, float &sc_s2, float &sc_s3, bool &ok)
 {
-	double invK = 1.0 / sc_Kmax;
-	double C = std::cos(sc_thf) - std::cos(sc_th0);
-	double S = 2.0 * sc_Kmax + std::sin(sc_th0) - std::sin(sc_thf);
-	double temp1 = std::atan2(C, S);
+	float invK = 1.0 / sc_Kmax;
+	float C = std::cos(sc_thf) - std::cos(sc_th0);
+	float S = 2.0 * sc_Kmax + std::sin(sc_th0) - std::sin(sc_thf);
+	float temp1 = std::atan2(C, S);
 	sc_s1 = invK * mod2pi(temp1 - sc_th0);
-	double temp2 = 2.0 + 4.0 * std::pow(sc_Kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
+	float temp2 = 2.0 + 4.0 * std::pow(sc_Kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
 	
 	if (temp2 < 0)
 	{
@@ -153,14 +153,14 @@ void LSL
 
 	
 void RSR
-(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+(float sc_th0, float sc_thf, float sc_Kmax, float &sc_s1, float &sc_s2, float &sc_s3, bool &ok)
 {
-	double invK = 1.0 / sc_Kmax;
-	double C = std::cos(sc_th0) - std::cos(sc_thf);
-	double S = 2.0 * sc_Kmax - std::sin(sc_th0) + std::sin(sc_thf);
-	double temp1 = std::atan2(C, S);
+	float invK = 1.0 / sc_Kmax;
+	float C = std::cos(sc_th0) - std::cos(sc_thf);
+	float S = 2.0 * sc_Kmax - std::sin(sc_th0) + std::sin(sc_thf);
+	float temp1 = std::atan2(C, S);
 	sc_s1 = invK * mod2pi(sc_th0 - temp1);
-	double temp2 = 2.0 + 4.0 * std::pow(sc_Kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
+	float temp2 = 2.0 + 4.0 * std::pow(sc_Kmax, 2) - 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
 	
 	if (temp2 < 0)
 	{
@@ -174,13 +174,13 @@ void RSR
 
 
 void LSR
-(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+(float sc_th0, float sc_thf, float sc_Kmax, float &sc_s1, float &sc_s2, float &sc_s3, bool &ok)
 {
-	double invK = 1.0 / sc_Kmax;
-	double C = std::cos(sc_th0) + std::cos(sc_thf);
-	double S = 2.0 * sc_Kmax + std::sin(sc_th0) + std::sin(sc_thf);
-	double temp1 = std::atan2(-C, S);
-	double temp3 = 4.0 * std::pow(sc_Kmax, 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
+	float invK = 1.0 / sc_Kmax;
+	float C = std::cos(sc_th0) + std::cos(sc_thf);
+	float S = 2.0 * sc_Kmax + std::sin(sc_th0) + std::sin(sc_thf);
+	float temp1 = std::atan2(-C, S);
+	float temp3 = 4.0 * std::pow(sc_Kmax, 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
 	
 	if (temp3 < 0)
 	{
@@ -188,7 +188,7 @@ void LSR
 	}
 	
 	sc_s2 = invK * std::sqrt(temp3);
-	double temp2 = -std::atan2(-2.0, sc_s2 * sc_Kmax);
+	float temp2 = -std::atan2(-2.0, sc_s2 * sc_Kmax);
 	sc_s1 = invK * mod2pi(temp1 + temp2 - sc_th0);
 	sc_s3 = invK * mod2pi(temp1 + temp2 - sc_thf);
 	ok = true;
@@ -196,13 +196,13 @@ void LSR
 
 
 void RSL
-(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+(float sc_th0, float sc_thf, float sc_Kmax, float &sc_s1, float &sc_s2, float &sc_s3, bool &ok)
 {
-	double invK = 1.0 / sc_Kmax;
-	double C = std::cos(sc_th0) + std::cos(sc_thf);
-	double S = 2.0 * sc_Kmax - std::sin(sc_th0) - std::sin(sc_thf);
-	double temp1 = std::atan2(C, S);
-	double temp3 = 4.0 * std::pow(sc_Kmax, 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) + std::sin(sc_thf));
+	float invK = 1.0 / sc_Kmax;
+	float C = std::cos(sc_th0) + std::cos(sc_thf);
+	float S = 2.0 * sc_Kmax - std::sin(sc_th0) - std::sin(sc_thf);
+	float temp1 = std::atan2(C, S);
+	float temp3 = 4.0 * std::pow(sc_Kmax, 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) + std::sin(sc_thf));
 	
 	if (temp3 < 0)
 	{
@@ -210,7 +210,7 @@ void RSL
 	}
 	
 	sc_s2 = invK * std::sqrt(temp3);
-	double temp2 = std::atan2(2.0, sc_s2 * sc_Kmax);
+	float temp2 = std::atan2(2.0, sc_s2 * sc_Kmax);
 	sc_s1 = invK * mod2pi(sc_th0 - temp1 + temp2);
 	sc_s3 = invK * mod2pi(sc_thf - temp1 + temp2);
 	ok = true;
@@ -218,13 +218,13 @@ void RSL
 
 	
 void RLR
-(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+(float sc_th0, float sc_thf, float sc_Kmax, float &sc_s1, float &sc_s2, float &sc_s3, bool &ok)
 {
-	double invK = 1.0 / sc_Kmax;
-	double C = std::cos(sc_th0) - std::cos(sc_thf);
-	double S = 2.0 * sc_Kmax - std::sin(sc_th0) + std::sin(sc_thf);
-	double temp1 = std::atan2(C, S);
-	double temp2 = 0.125 * (6.0 - 4.0 * std::pow(sc_Kmax, 2) + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf))); 
+	float invK = 1.0 / sc_Kmax;
+	float C = std::cos(sc_th0) - std::cos(sc_thf);
+	float S = 2.0 * sc_Kmax - std::sin(sc_th0) + std::sin(sc_thf);
+	float temp1 = std::atan2(C, S);
+	float temp2 = 0.125 * (6.0 - 4.0 * std::pow(sc_Kmax, 2) + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf))); 
 	
 	if (std::abs(temp2) > 1)
 	{
@@ -240,13 +240,13 @@ void RLR
 
 
 void LRL
-(double sc_th0, double sc_thf, double sc_Kmax, double &sc_s1, double &sc_s2, double &sc_s3, bool &ok)
+(float sc_th0, float sc_thf, float sc_Kmax, float &sc_s1, float &sc_s2, float &sc_s3, bool &ok)
 {
-	double invK = 1.0 / sc_Kmax;
-	double C = std::cos(sc_thf) - std::cos(sc_th0);
-	double S = 2.0 * sc_Kmax + std::sin(sc_th0) - std::sin(sc_thf);
-	double temp1 = std::atan2(C, S);
-	double temp2 = 0.125 * (6.0 - 4.0 * std::pow(sc_Kmax,2) + 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf))); 
+	float invK = 1.0 / sc_Kmax;
+	float C = std::cos(sc_thf) - std::cos(sc_th0);
+	float S = 2.0 * sc_Kmax + std::sin(sc_th0) - std::sin(sc_thf);
+	float temp1 = std::atan2(C, S);
+	float temp2 = 0.125 * (6.0 - 4.0 * std::pow(sc_Kmax,2) + 2.0 * std::cos(sc_th0 - sc_thf) - 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf))); 
 	
 	if 
 	(std::abs(temp2) > 1)
@@ -263,11 +263,11 @@ void LRL
 
 
 void scale_to_standard
-(double x0, double y0, double th0, double xf, double yf, double thf, double Kmax, double &sc_th0, double &sc_thf, double &sc_Kmax, double &lambda)
+(float x0, float y0, float th0, float xf, float yf, float thf, float Kmax, float &sc_th0, float &sc_thf, float &sc_Kmax, float &lambda)
 {
-	double dx = xf - x0;
-	double dy = yf - y0;
-	double phi = std::atan2(dy, dx);
+	float dx = xf - x0;
+	float dy = yf - y0;
+	float phi = std::atan2(dy, dx);
 	lambda = std::hypot(dx, dy) / 2.0;
 
 	sc_th0 = mod2pi(th0 - phi);
@@ -276,7 +276,7 @@ void scale_to_standard
 }
 
 void scale_from_standard
-(double lambda, double sc_s1, double sc_s2, double sc_s3, double &s1, double &s2, double &s3)
+(float lambda, float sc_s1, float sc_s2, float sc_s3, float &s1, float &s2, float &s3)
 {
 	s1 = sc_s1 * lambda;
 	s2 = sc_s2 * lambda;
@@ -284,34 +284,34 @@ void scale_from_standard
 }
 
 void dubins_shortest_path
-(double x0, double y0, double th0, double xf, double yf, double thf, double Kmax, int &pidx, dubinscurve_out *curve)
+(float x0, float y0, float th0, float xf, float yf, float thf, float Kmax, int &pidx, dubinscurve_out *curve)
 {
 
-	double sc_th0, sc_thf, sc_Kmax, lambda = 0.0;
+	float sc_th0, sc_thf, sc_Kmax, lambda = 0.0;
 
-	if
-	(DEBUG)
-	{
-		std::cout << "dubins_shortest_path\n";
-		std::cout << "============================\n";
-		std::cout << "x0: " << x0 << ", " << "y0: " << y0 << ", " << "th0: " << th0 << ", " << "xf: " << xf << ", " << "yf: " << yf << ", " << "thf: " << thf << std::endl;
-		std::cout << "Kmax: " << Kmax << ", " << "pidx: " << pidx << std::endl;
-	}
+	// if
+	// (DEBUG)
+	// {
+	// 	std::cout << "dubins_shortest_path\n";
+	// 	std::cout << "============================\n";
+	// 	std::cout << "x0: " << x0 << ", " << "y0: " << y0 << ", " << "th0: " << th0 << ", " << "xf: " << xf << ", " << "yf: " << yf << ", " << "thf: " << thf << std::endl;
+	// 	std::cout << "Kmax: " << Kmax << ", " << "pidx: " << pidx << std::endl;
+	// }
 
 	scale_to_standard(x0, y0, th0, xf, yf, thf, Kmax, sc_th0, sc_thf, sc_Kmax, lambda)	;
 
-	double sc_s1, sc_s2, sc_s3 = 0.0;
+	float sc_s1, sc_s2, sc_s3 = 0.0;
 	bool ok = false;
 																																		//Function pointers
-	void (*lsl)(double, double, double, double&, double&, double&, bool&);
-	void (*rsr)(double, double, double, double&, double&, double&, bool&);
-	void (*lsr)(double, double, double, double&, double&, double&, bool&);
-	void (*rsl)(double, double, double, double&, double&, double&, bool&);
-	void (*rlr)(double, double, double, double&, double&, double&, bool&);
-	void (*lrl)(double, double, double, double&, double&, double&, bool&);
+	void (*lsl)(float, float, float, float&, float&, float&, bool&);
+	void (*rsr)(float, float, float, float&, float&, float&, bool&);
+	void (*lsr)(float, float, float, float&, float&, float&, bool&);
+	void (*rsl)(float, float, float, float&, float&, float&, bool&);
+	void (*rlr)(float, float, float, float&, float&, float&, bool&);
+	void (*lrl)(float, float, float, float&, float&, float&, bool&);
 
 																																		//Functions vector
-	std::vector<void (*)(double, double, double, double&, double&, double&, bool&)> primitives;
+	std::vector<void (*)(float, float, float, float&, float&, float&, bool&)> primitives;
 
 																																		//Initialization
 	lsl = &LSL;
@@ -331,11 +331,11 @@ void dubins_shortest_path
 	int ksigns[6][3] = {1, 0, 1, -1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 1, -1, 1, -1, 1};
 
 	pidx = -1;
-	double L = std::numeric_limits<double>::max();
+	float L = std::numeric_limits<float>::max();
 
-	double sc_s1_c, sc_s2_c, sc_s3_c = 0.0;
+	float sc_s1_c, sc_s2_c, sc_s3_c = 0.0;
 
-	double Lcur = 0.0;
+	float Lcur = 0.0;
 
 	for
 	(size_t i = 0; i < primitives.size(); i++)
@@ -356,7 +356,7 @@ void dubins_shortest_path
 	if
 	(pidx > 0)
 	{
-		double s1, s2, s3 = 0.0;
+		float s1, s2, s3 = 0.0;
 		scale_from_standard(lambda, sc_s1, sc_s2, sc_s3, s1, s2, s3);
 
 		dubins_curve(x0, y0, th0, s1, s2, s3, ksigns[pidx-1][0] * Kmax, ksigns[pidx-1][1] * Kmax, ksigns[pidx-1][2] * Kmax, curve);
@@ -371,52 +371,61 @@ void dubins_shortest_path
 ====================================================================*/
 
 void plotarc
-(dubinsarc_out *arc, std::vector<std::vector<double>> &points)
+(dubinsarc_out *arc, std::vector<std::vector<float>> &points)
 {
-	std::vector<double> temp;
+	std::vector<float> temp;
 	temp.push_back(arc->x0);
 	temp.push_back(arc->y0);
 	temp.push_back(arc->th0);
 	points.insert(points.begin(),temp);
 
-	std::vector<std::vector<double>>::iterator row;
-	std::vector<double>::iterator col;
+	std::vector<std::vector<float>>::iterator row;
+	std::vector<float>::iterator col;
 
 	for 
 	(int i = 1; i <= no_of_samples; i++)
 	{
-		double s = arc->l / no_of_samples * i;
+		float s = (arc->l / no_of_samples) * i;
 
-		double x,y,th = 0.0;
+		float x,y,th = 0.0;
 
 		circline(s, arc->x0, arc->y0, arc->th0, arc->k, x, y, th);
 
-		std::vector<double> temp2;
+		std::vector<float> temp2;
 
-		temp2.push_back(x);
-		temp2.push_back(y);
-		temp2.push_back(th);
+		if
+		(!(std::isnan(x) || std::isnan(y) || std::isnan(th)))
+		{
+			temp2.push_back(x);
+			temp2.push_back(y);
+			temp2.push_back(th);
+		}
+		else
+		{
+			temp2 = points[i-1];
+		}
+		
 
 		points.insert(points.begin() + i, temp2);
 
 		temp2.clear();
 	}
 
-	if
-	(DEBUG)
-	{
-		for 
-		(int i = 0; i < no_of_samples; ++i)
-		{
-			std::cout << points[i][0] << ", " << points[i][1] << std::endl; 
-		}
-		std::cout << "======================================\n";
-	}
+	// if
+	// (DEBUG)
+	// {
+	// 	for 
+	// 	(int i = 0; i < no_of_samples; ++i)
+	// 	{
+	// 		std::cout << points[i][0] << ", " << points[i][1] << std::endl; 
+	// 	}
+	// 	std::cout << "======================================\n";
+	// }
 
 }
 
 void plot_dubins
-(dubinscurve_out *curve, std::vector<std::vector<double>> &c1, std::vector<std::vector<double>> &c2, std::vector<std::vector<double>> &c3)
+(dubinscurve_out *curve, std::vector<std::vector<float>> &c1, std::vector<std::vector<float>> &c2, std::vector<std::vector<float>> &c3)
 {
 	plotarc(&curve->a1, c1);
 	plotarc(&curve->a2, c2);

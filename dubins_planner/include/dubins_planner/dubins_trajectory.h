@@ -7,7 +7,7 @@
 ====================================================================*/
 struct dubinsarc_out
 {
-	double x0, y0, th0, k, l, xf, yf, thf;
+	float x0, y0, th0, k, l, xf, yf, thf;
 };
 
 struct dubinscurve_out
@@ -15,12 +15,12 @@ struct dubinscurve_out
 	dubinsarc_out a1;
 	dubinsarc_out a2;
 	dubinsarc_out a3;
-	double L;
+	float L;
 };
 
 struct point
 {
-	double x,y,th;
+	float x,y,th;
 };
 
 /*====================================================================
@@ -29,18 +29,18 @@ struct point
 
 extern bool DEBUG;
 
-extern double X0;
-extern double Y0;
-extern double Xf;
-extern double Yf;
-extern double Th0;
-extern double Thf;
-extern double Kmax;
+extern float X0;
+extern float Y0;
+extern float Xf;
+extern float Yf;
+extern float Th0;
+extern float Thf;
+extern float Kmax;
 extern int pidx;
 
 extern int no_waypts;
 extern int step;
-extern double angle_step;
+extern float angle_step;
 
 extern int no_of_samples;
 
@@ -48,53 +48,55 @@ extern dubinscurve_out dubin_curve;
 extern point init, final;
 
 extern std::vector<point> best_path;
+extern std::vector<dubinscurve_out> trajectory_points;
+extern std::vector<dubinsarc_out> trajectory_arcs;
 
 /*====================================================================
 ============================Helper functions==========================
 ====================================================================*/
 
-double round_up(double, int);
+float round_up(float, int);
 
-double sinc(double);
+float sinc(float);
 
-double mod2pi(double);
+float mod2pi(float);
 
-void circline(double, double, double, double, double, double &, double &, double &);
+void circline(float, float, float, float, float, float &, float &, float &);
 
-void dubins_arc(double, double, double, double, double, dubinsarc_out *);
+void dubins_arc(float, float, float, float, float, dubinsarc_out *);
 
-void dubins_curve(double, double, double, double, double, double, double, double, double, dubinscurve_out *);
+void dubins_curve(float, float, float, float, float, float, float, float, float, dubinscurve_out *);
 
-double rangeSymm(double);
+float rangeSymm(float);
 
-bool check(double, double, double, double, double, double, double, double);
+bool check(float, float, float, float, float, float, float, float);
 
 /*====================================================================
 =========================Function Declarations========================
 ====================================================================*/
 
-void LSL(double, double, double, double &, double &, double &, bool &);
+void LSL(float, float, float, float &, float &, float &, bool &);
 
-void RSR(double, double, double, double &, double &, double &, bool &);	
+void RSR(float, float, float, float &, float &, float &, bool &);	
 
-void LSR(double, double, double, double &, double &, double &, bool &);
+void LSR(float, float, float, float &, float &, float &, bool &);
 
-void RSL(double, double, double, double &, double &, double &, bool &);
+void RSL(float, float, float, float &, float &, float &, bool &);
 	
-void RLR(double, double, double, double &, double &, double &, bool &);
+void RLR(float, float, float, float &, float &, float &, bool &);
 
-void LRL(double, double, double, double &, double &, double &, bool &);
+void LRL(float, float, float, float &, float &, float &, bool &);
 
-void scale_to_standard(double, double, double, double, double, double, double, double &, double &, double &, double &);
+void scale_to_standard(float, float, float, float, float, float, float, float &, float &, float &, float &);
 
-void scale_from_standard(double, double, double, double, double &, double &, double &);
+void scale_from_standard(float, float, float, float, float &, float &, float &);
 
-void dubins_shortest_path(double, double, double, double, double, double, double, int &, dubinscurve_out *);
+void dubins_shortest_path(float, float, float, float, float, float, float, int &, dubinscurve_out *);
 
 /*====================================================================
 =============================Plot Functions===========================
 ====================================================================*/
 
-void plotarc(dubinsarc_out *, std::vector<std::vector<double>> &points);
+void plotarc(dubinsarc_out *, std::vector<std::vector<float>> &points);
 
 void plot_dubins(dubinscurve_out *, std::vector<std::vector<int>> &c1, std::vector<std::vector<int>> &c2, std::vector<std::vector<int>> &c3);
