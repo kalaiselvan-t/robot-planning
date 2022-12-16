@@ -21,6 +21,19 @@ vector<vector<float>> arc1_pts;
 vector<vector<float>> arc2_pts;
 vector<vector<float>> arc3_pts;
 
+vector<point> waypoints = {
+
+	{2.0,0.0,0.0},
+	{4.0,0.0,4.0},
+	{6.0,0.0,0.0},
+	{8.0,0.0,0.0},
+	{8.0,2.0,0.0},
+	{6.0,2.0,0.0},
+	{4.0,2.0,0.0},
+	{2.0,2.0,0.0},
+	{0.0,2.0,0.0}
+};
+
 class DubinsPathPublisher: public rclcpp::Node
 {
 
@@ -37,75 +50,10 @@ private:
 	void timer_callback()
 	{
 		nav_msgs::msg::Path path_msg;
-		// geometry_msgs::msg::PoseStamped temp;
 		tf2::Quaternion q; 
 
 		path_msg.header.stamp = this->get_clock()->now();
 		path_msg.header.frame_id = "map";
-
-		// temp.header.stamp = this->get_clock()->now();
-		// temp.header.frame_id = ' ';
-
-		// plotarc(&dubin_curve.a1, arc1_pts);
-
-		// for 
-		// (size_t i = 0; i < trajectory_points.size(); i++)
-		// {
-		// 	//a1
-		// 	plotarc(&trajectory_points[i].a1, arc1_pts);
-		// 	for 
-		// 	(int j = 0; j < no_of_samples; j++)
-		// 	{	
-		// 		temp.pose.position.x = arc1_pts[j][0];
-		// 		temp.pose.position.y = arc1_pts[j][1];
-		// 		temp.pose.position.z = 0;
-
-		// 		q.setRPY(0, 0, arc1_pts[j][2]);
-
-		// 		temp.pose.orientation.x = q.x();
-		// 		temp.pose.orientation.y = q.y();
-		// 		temp.pose.orientation.z = q.z();
-		// 		temp.pose.orientation.w = q.w();
-		// 		path_msg.poses.push_back(temp);
-		// 	}
-
-		// 	//a2
-		// 	plotarc(&trajectory_points[i].a2, arc2_pts);
-		// 	for 
-		// 	(int j = 0; j < no_of_samples; j++)
-		// 	{	
-		// 		temp.pose.position.x = arc2_pts[j][0];
-		// 		temp.pose.position.y = arc2_pts[j][1];
-		// 		temp.pose.position.z = 0;
-
-		// 		q.setRPY(0, 0, arc2_pts[j][2]);
-
-		// 		temp.pose.orientation.x = q.x();
-		// 		temp.pose.orientation.y = q.y();
-		// 		temp.pose.orientation.z = q.z();
-		// 		temp.pose.orientation.w = q.w();
-		// 		path_msg.poses.push_back(temp);
-		// 	}
-
-		// 	//a3
-		// 	plotarc(&trajectory_points[i].a3, arc3_pts);
-		// 	for 
-		// 	(int j = 0; j < no_of_samples; j++)
-		// 	{	
-		// 		temp.pose.position.x = arc3_pts[j][0];
-		// 		temp.pose.position.y = arc3_pts[j][1];
-		// 		temp.pose.position.z = 0;
-
-		// 		q.setRPY(0, 0, arc3_pts[j][2]);
-
-		// 		temp.pose.orientation.x = q.x();
-		// 		temp.pose.orientation.y = q.y();
-		// 		temp.pose.orientation.z = q.z();
-		// 		temp.pose.orientation.w = q.w();
-		// 		path_msg.poses.push_back(temp);
-		// 	}
-			
-		// }
 		
 		for 
 		(size_t i = 0; i < trajectory_arcs.size(); i++)
@@ -121,117 +69,19 @@ private:
 				temp.pose.position.x = round_up((arc1_pts[j][0]),4);
 				temp.pose.position.y = round_up((arc1_pts[j][1]),4);
 				// cout << "temp; " << temp.pose.position.x << ", " << temp.pose.position.x << endl;  
-				// temp.pose.position.z = 0;
+				temp.pose.position.z = 0;
 
-				// q.setRPY(0, 0, arc1_pts[j][2]);
+				q.setRPY(0, 0, arc1_pts[j][2]);
 
-				// temp.pose.orientation.x = q.x();
-				// temp.pose.orientation.y = q.y();
-				// temp.pose.orientation.z = q.z();
-				// temp.pose.orientation.w = q.w();
+				temp.pose.orientation.x = q.x();
+				temp.pose.orientation.y = q.y();
+				temp.pose.orientation.z = q.z();
+				temp.pose.orientation.w = q.w();
 				path_msg.poses.push_back(temp);
 			}
 			// cout << "=================================\n";
 			arc1_pts.clear();
 		}
-		
-
-		// for 
-		// (int i = 0; i <= no_of_samples-1; ++i)
-		// {
-		// 	for
-		// 	(int j = 0; j < 2; ++j)
-		// 	{
-		// 		temp.pose.position.x = round_up((arc1_pts[i][0]),2);
-		// 		temp.pose.position.y = round_up((arc1_pts[i][1]),2);
-		// 		temp.pose.position.z = 0;
-
-		// 		if
-		// 		(DEBUG)
-		// 		{
-		// 			temp.pose.position.x = 1;
-		// 			temp.pose.position.y = 1;
-		// 		}
-				
-
-        //     	q.setRPY(0, 0, arc1_pts[i][2]);
-
-		// 		temp.pose.orientation.x = q.x();
-		// 		temp.pose.orientation.y = q.y();
-		// 		temp.pose.orientation.z = q.z();
-		// 		temp.pose.orientation.w = q.w();
-		// 		path_msg.poses.push_back(temp);
-
-		// 		if
-		// 		(DEBUG)
-		// 		{// temp.pose.position.x = 3;
-		// 			temp.pose.position.y = 4;
-		// 			temp.pose.position.z = 0;
-	
-		// 			temp.pose.orientation.x = 0;
-		// 			temp.pose.orientation.y = 0;
-		// 			temp.pose.orientation.z = 0;
-		// 			temp.pose.orientation.w = 1;
-		// 			path_msg.poses.push_back(temp);
-	
-		// 			temp.pose.position.x = 9;
-		// 			temp.pose.position.y = 3;
-		// 			temp.pose.position.z = 0;
-	
-		// 			temp.pose.orientation.x = 0;
-		// 			temp.pose.orientation.y = 0;
-		// 			temp.pose.orientation.z = 0;
-		// 			temp.pose.orientation.w = 1;
-		// 			path_msg.poses.push_back(temp);
-		// 		}
-		// 	}
-		// }
-
-		// plotarc(&dubin_curve.a2, arc2_pts);
-
-		// for 
-		// (int i = 1; i <= no_of_samples; ++i)
-		// {
-		// 	for
-		// 	(int j = 0; j < 2; ++j)
-		// 	{
-		// 		temp.pose.position.x = round_up((arc2_pts[i][0]),2);
-		// 		temp.pose.position.y = round_up((arc2_pts[i][1]),2);
-		// 		temp.pose.position.z = 0;
-
-		// 		q.setRPY(0, 0, arc2_pts[i][2]);
-
-		// 		temp.pose.orientation.x = q.x();
-		// 		temp.pose.orientation.y = q.y();
-		// 		temp.pose.orientation.z = q.z();
-		// 		temp.pose.orientation.w = q.w();
-		// 		path_msg.poses.push_back(temp);
-		// 	}
-		// }
-
-		// plotarc(&dubin_curve.a3, arc3_pts);
-
-		// for 
-		// (int i = 1; i <= no_of_samples; ++i)
-		// {
-		// 	for
-		// 	(int j = 0; j < 2; ++j)
-		// 	{
-		// 		temp.pose.position.x = round_up((arc3_pts[i][0]),2);
-		// 		temp.pose.position.y = round_up((arc3_pts[i][1]),2);
-		// 		// temp.pose.position.x = 1;
-		// 		// temp.pose.position.y = 1;
-		// 		temp.pose.position.z = 0;
-
-		// 		q.setRPY(0, 0, arc3_pts[i][2]);
-
-		// 		temp.pose.orientation.x = q.x();
-		// 		temp.pose.orientation.y = q.y();
-		// 		temp.pose.orientation.z = q.z();
-		// 		temp.pose.orientation.w = q.w();
-		// 		path_msg.poses.push_back(temp);
-		// 	}
-		// }
 
 		RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path");
 
@@ -245,6 +95,7 @@ private:
 
 int main(int argc, char * argv[])
 {
+	// cout << "waypoints: " << waypoints[0].y << endl;
 	// Create a list of intermediate paths
 	for
 	(int i = 1; i <= no_waypts; i++)
@@ -275,6 +126,11 @@ int main(int argc, char * argv[])
 			best_path.push_back(temp);
 		}
 	}
+
+	cout << "best Path size bfr: " << best_path.size() << endl;
+	// best_path.erase(best_path.begin()+1);
+	best_path.insert(best_path.begin()+1,waypoints.begin(),waypoints.end());
+	cout << "best Path size aft: " << best_path.size() << endl;
 
 	// if
 	// (true)
