@@ -171,12 +171,22 @@ int main(int argc, char * argv[])
 		dubinscurve_out temp;
 		dubins_shortest_path(best_path[i].x, best_path[i].y, best_path[i].th, best_path[i+1].x, best_path[i+1].y, best_path[i+1].th, Kmax, pidx, &temp);
 		
+		cout << "a1: " << temp.a1.x0 << ", " << temp.a1.y0 << ", " << temp.a1.th0 << endl;
+		cout << "a1: " << temp.a1.xf << ", " << temp.a1.yf << ", " << temp.a1.thf << endl;
+		cout << "a1.l: " << temp.a1.l << " a1.k: " << temp.a1.k << endl << endl;
+		cout << "a2: " << temp.a2.x0 << ", " << temp.a2.y0 << ", " << temp.a2.th0 << endl;
+		cout << "a2: " << temp.a2.xf << ", " << temp.a2.yf << ", " << temp.a2.thf << endl;
+		cout << "a2.l: " << temp.a2.l << " a2.k: " << temp.a2.yf << endl << endl;
+		cout << "a3: " << temp.a3.x0 << ", " << temp.a3.y0 << ", " << temp.a3.th0 << endl;
+		cout << "a3: " << temp.a3.xf << ", " << temp.a3.yf << ", " << temp.a3.thf << endl;
+		cout << "a3.l: " << temp.a3.l << " a3.k " << temp.a3.k << endl << endl;
+
 		trajectory_arcs.push_back(temp.a1);
-		cout << "a1.l: " << temp.a1.l << endl; 
+		// cout << "a1.l: " << temp.a1.l << endl; 
 		trajectory_arcs.push_back(temp.a2);
-		cout << "a2.l: " << temp.a2.l << endl;
+		// cout << "a2.l: " << temp.a2.l << endl;
 		trajectory_arcs.push_back(temp.a3);
-		cout << "a3.l: " << temp.a3.l << endl;
+		// cout << "a3.l: " << temp.a3.l << endl;
 	}
 	
 

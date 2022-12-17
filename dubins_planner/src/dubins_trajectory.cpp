@@ -104,24 +104,41 @@ float rangeSymm
 bool check
 (float s1, float k0, float s2, float k1, float s3, float k2, float th0, float thf)
 {
-	int x0 = -1;
-	int y0 = 0;
-	int xf = 1;
-	int yf = 0;
+	float x0 = -1.0;
+	float y0 = 0.0;
+	float xf = 1.0;
+	float yf = 0.0;
 
 	float eq1 = x0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::cos(th0 + (1.0/2.0) * k0 * s1)
        + s2 * sinc((1.0/2.0) * k1 * s2) * std::cos(th0 + k0 * s1 + (1.0/2.0) * k1 * s2)
        + s3 * sinc((1.0/2.0) * k2 * s3) * std::cos(th0 + k0 * s1 + k1 * s2 + (1.0/2.0) * k2 * s3) - xf;
+	
+	eq1 = std::trunc(eq1);
 
   	float eq2 = y0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::sin(th0 + (1.0/2.0) * k0 * s1)
        + s2 * sinc((1.0/2.0) * k1 * s2) * std::sin(th0 + k0 * s1 + (1.0/2.0) * k1 * s2)
        + s3 * sinc((1.0/2.0) * k2 * s3) * std::sin(th0 + k0 * s1 + k1 * s2 + (1.0/2.0) * k2 * s3) - yf;
 
+	eq2 = std::trunc(eq2);
+
 	float eq3 = rangeSymm(k0 * s1 + k1 * s2 + k2 * s3 + th0 - thf);
+
+	eq3 = std::trunc(eq3);
+
+	// float blah = round_up((y0 + s1 * sinc((1.0/2.0) * k0 * s1) * std::sin(th0 + (1.0/2.0) * k0 * s1)
+    //    + s2 * sinc((1.0/2.0) * k1 * s2) * std::sin(th0 + k0 * s1 + (1.0/2.0) * k1 * s2)
+    //    + s3 * sinc((1.0/2.0) * k2 * s3) * std::sin(th0 + k0 * s1 + k1 * s2 + (1.0/2.0) * k2 * s3) - yf),4);
 
 	bool Lpos = (s1 > 0) || (s2 > 0) || (s3 > 0);
 
-	bool out = (std::sqrt(eq1 * eq1 + eq2 * eq2 + eq3 * eq3) < 1E-10) && Lpos;
+	bool temp = (std::sqrt(eq1 * eq1 + eq2 * eq2 + eq3 * eq3) < 1.E-10);
+
+	bool out = temp && Lpos;
+
+	// std::cout << "blah: " << blah<< "check: \n";
+	// std::cout << "x0: " << x0 << " y0: " << y0 << " xf: " << xf << " yf: " << yf << std::endl;
+	// std::cout << "s1: " << s1 << " s2: " << s2 << " s3: " << s3 << " k0: " << k0 << " k1: " << k1 << " k2: " << k2 << " th0: " << th0 << " thf: " << thf <<std::endl;
+	// std::cout << "eq1: " << eq1 << " eq2: " << eq2 << " eq3: " << eq3 << " Lpos: " << Lpos << " out: " << out << " temp: " << temp << std::endl;
 
 	return out;
 }
@@ -361,7 +378,7 @@ void dubins_shortest_path
 
 		dubins_curve(x0, y0, th0, s1, s2, s3, ksigns[pidx-1][0] * Kmax, ksigns[pidx-1][1] * Kmax, ksigns[pidx-1][2] * Kmax, curve);
 
-		// assert(check(sc_s1, ksigns[pidx-1][0] * sc_Kmax, sc_s2, ksigns[pidx-1][1] * sc_Kmax, sc_s3, ksigns[pidx-1][2] * sc_Kmax, sc_th0, sc_thf));
+		assert(check(sc_s1, ksigns[pidx-1][0] * sc_Kmax, sc_s2, ksigns[pidx-1][1] * sc_Kmax, sc_s3, ksigns[pidx-1][2] * sc_Kmax, sc_th0, sc_thf));
 
 	}
 }
