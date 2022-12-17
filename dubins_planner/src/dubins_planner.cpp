@@ -84,35 +84,45 @@ int main(int argc, char * argv[])
 {
 	// cout << "waypoints: " << waypoints[0].y << endl;
 	// Create a list of intermediate paths
-	for
-	(int i = 1; i <= no_waypts; i++)
-	{
-		// cout << i << endl;
-		if
-		(i == 1)
-		{
-			init.x = X0;
-			init.y = Y0;
-			init.th = Th0;
-			best_path.push_back(init);
-		}
-		else if
-		(i == no_waypts)
-		{
-			final.x = Xf;
-			final.y = Yf;
-			final.th = Thf;
-			best_path.push_back(final);
-		}
-		else
-		{
-			point temp;
-			temp.x = 3.0;
-			temp.y = 3.0;
-			temp.th = 0.0;
-			best_path.push_back(temp);
-		}
-	}
+	init.x = X0;
+	init.y = Y0;
+	init.th = Th0;
+
+	final.x = Xf;
+	final.y = Yf;
+	final.th = Thf;
+
+	best_path.push_back(init);
+	best_path.push_back(final);
+	// for
+	// (int i = 1; i <= no_waypts; i++)
+	// {
+	// 	// cout << i << endl;
+	// 	if
+	// 	(i == 1)
+	// 	{
+	// 		init.x = X0;
+	// 		init.y = Y0;
+	// 		init.th = Th0;
+	// 		best_path.push_back(init);
+	// 	}
+	// 	else if
+	// 	(i == no_waypts)
+	// 	{
+	// 		final.x = Xf;
+	// 		final.y = Yf;
+	// 		final.th = Thf;
+	// 		best_path.push_back(final);
+	// 	}
+	// 	else
+	// 	{
+	// 		point temp;
+	// 		temp.x = 3.0;
+	// 		temp.y = 3.0;
+	// 		temp.th = 0.0;
+	// 		best_path.push_back(temp);
+	// 	}
+	// }
 
 	// cout << "best Path size bfr: " << best_path.size() << endl;
 	// best_path.erase(best_path.begin()+1);
@@ -127,7 +137,7 @@ int main(int argc, char * argv[])
 	// 	std::cout << best_path[1].x << ", " << best_path[1].y << ", " << best_path[1].th << std::endl;
 	// 	std::cout << best_path[2].x << ", " << best_path[2].y << ", " << best_path[2].th << std::endl;
 	// }
-
+	float overall_length = 0.0;
 	for
 	(size_t i = no_waypts - 2; i > 0; i--)
 	{
@@ -144,16 +154,16 @@ int main(int argc, char * argv[])
 			dubins_shortest_path(best_path[i].x, best_path[i].y, temp_ang, best_path[i+1].x, best_path[i+1].y, best_path[i+1].th, Kmax, pidx, &temp);
 			cout << "index: " << k << "curve length: " << temp.L << endl;
 
-			if (temp.L < best_path_length)
+			if ((temp.L + overall_length) < (best_path_length + overall_length))
 			{
 				best_path_length = temp.L;
 				best_path_index = k;
 				cout << "best length found: " << best_path_length << endl;
 			}
-
-			best_path[i].th = best_path_index * angle_step;
 			// cout << "k: " << k << endl;
 		}
+		best_path[i].th = best_path_index * angle_step;
+		overall_length = overall_length + best_path_length;
 	}
 
 	// if
