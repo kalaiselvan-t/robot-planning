@@ -15,7 +15,7 @@ float Thf = M_PI / 3.0;
 float Kmax = 3.0;
 int no_of_samples = 100;
 
-int no_waypts = 2;
+int no_waypts = 11;
 int step = 12;
 float angle_step = 2*M_PI/step;
 
@@ -29,8 +29,8 @@ std::vector<dubinsarc_out> trajectory_arcs;
 std::vector<point> waypoints = {
 
 	{2.0,0.0,0.0},
-	{4.0,0.0,4.0},
-	{6.0,0.0,0.0},
+	{3.0,0.0,0.0},
+	{4.0,0.0,0.0},
 	{8.0,0.0,0.0},
 	{8.0,2.0,0.0},
 	{6.0,2.0,0.0},
