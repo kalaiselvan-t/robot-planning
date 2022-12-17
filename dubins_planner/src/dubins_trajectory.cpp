@@ -180,7 +180,7 @@ void LSR
 	float C = std::cos(sc_th0) + std::cos(sc_thf);
 	float S = 2.0 * sc_Kmax + std::sin(sc_th0) + std::sin(sc_thf);
 	float temp1 = std::atan2(-C, S);
-	float temp3 = 4.0 * std::pow(sc_Kmax, 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) - std::sin(sc_thf));
+	float temp3 = 4.0 * std::pow(sc_Kmax, 2) - 2.0 + 2.0 * std::cos(sc_th0 - sc_thf) + 4.0 * sc_Kmax * (std::sin(sc_th0) + std::sin(sc_thf));
 	
 	if (temp3 < 0)
 	{

@@ -48,6 +48,7 @@ extern dubinscurve_out dubin_curve;
 extern point init, final;
 
 extern std::vector<point> best_path;
+extern std::vector<point> waypoints;
 extern std::vector<dubinscurve_out> trajectory_points;
 extern std::vector<dubinsarc_out> trajectory_arcs;
 

@@ -21,19 +21,6 @@ vector<vector<float>> arc1_pts;
 vector<vector<float>> arc2_pts;
 vector<vector<float>> arc3_pts;
 
-vector<point> waypoints = {
-
-	{2.0,0.0,0.0},
-	{4.0,0.0,4.0},
-	{6.0,0.0,0.0},
-	{8.0,0.0,0.0},
-	{8.0,2.0,0.0},
-	{6.0,2.0,0.0},
-	{4.0,2.0,0.0},
-	{2.0,2.0,0.0},
-	{0.0,2.0,0.0}
-};
-
 class DubinsPathPublisher: public rclcpp::Node
 {
 
