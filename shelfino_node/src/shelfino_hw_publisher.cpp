@@ -108,7 +108,7 @@ class ShelfinoHWNode : public rclcpp::Node
     void t265_callback()
     {
       RobotStatus::OdometryData odomData; 
-      HardwareGlobalInterface::getInstance().getRealSenseOdomData(odomData);
+      HardwareGlobalInterface::getInstance().getOdomData(odomData);
 
       nav_msgs::msg::Odometry msg;
       msg.header.stamp = this->get_clock()->now();

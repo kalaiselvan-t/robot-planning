@@ -100,8 +100,8 @@ void HardwareGlobalInterface::subHW_callback(const char *topic, const char *buf,
     hwData.leftWheel.ticks = tick_l/180*M_PI;
 
 
-    hwData.speed = (0.125/2.0)*(omega_l-omega_r); //0.125->radius
-    hwData.omega = (0.125/0.4)*(-omega_r-omega_l);
+    hwData.speed = (LEFT_RADIUS/2.0)*(omega_l-omega_r); //0.125->radius
+    hwData.omega = (LEFT_RADIUS/0.4)*(-omega_r-omega_l);
     //        hwData.speed = (0.031/2.0)*(omega_r+omega_l);
     //        hwData.omega = (0.031/0.271756)*(omega_r-omega_l);
 

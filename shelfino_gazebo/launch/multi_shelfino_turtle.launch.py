@@ -30,7 +30,6 @@ def generate_launch_description():
 
     rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfino.rviz')
 
-    robot_id = LaunchConfiguration('robot_id', default='gazebo')
 
     return LaunchDescription([
         DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
@@ -39,20 +38,30 @@ def generate_launch_description():
         DeclareLaunchArgument(name='rviz', default_value='true', choices=['true', 'false'],
                                 description='Flag to enable rviz visualization'),
 
-        DeclareLaunchArgument(name='robot_id', default_value='gazebo', 
-                                description='Robot name'),
+        DeclareLaunchArgument('model1', default_value=[os.path.join(gazebo_models_path, 'shelfino'),'/shelfino1.sdf']),
+        LogInfo(msg=LaunchConfiguration('model1')),
 
-        DeclareLaunchArgument('model', default_value=[os.path.join(gazebo_models_path, 'shelfino'),'/',LaunchConfiguration('robot_id'), '.sdf']),
-        LogInfo(msg=LaunchConfiguration('model')),
+        DeclareLaunchArgument('model2', default_value=[os.path.join(gazebo_models_path, 'shelfino'),'/shelfino2.sdf']),
+        LogInfo(msg=LaunchConfiguration('model2')),
 
         ExecuteProcess(
             cmd=[[
                 'xacro ',
                  os.path.join(get_package_share_directory('shelfino_description'),'models','shelfino','model.sdf.xacro'),
-                ' robot_name:=',
-                LaunchConfiguration('robot_id'),
+                ' robot_name:=shelfino1',
                 ' > ',
-                LaunchConfiguration('model')
+                LaunchConfiguration('model1')
+            ]],
+            shell=True
+        ),
+
+        ExecuteProcess(
+            cmd=[[
+                'xacro ',
+                 os.path.join(get_package_share_directory('shelfino_description'),'models','shelfino','model.sdf.xacro'),
+                ' robot_name:=shelfino2',
+                ' > ',
+                LaunchConfiguration('model2')
             ]],
             shell=True
         ),
@@ -74,14 +83,28 @@ def generate_launch_description():
         Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
-            arguments=['-file', LaunchConfiguration('model'),
-                       '-entity', robot_id]
+            arguments=['-file', LaunchConfiguration('model1'),
+                       '-entity', 'shelfino1']
+        ),
+
+        Node(
+            package='gazebo_ros',
+            executable='spawn_entity.py',
+            arguments=['-file', LaunchConfiguration('model2'),
+                       '-entity', 'shelfino2',
+                       '-x', '1']
         ),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([launch_file_dir, '/robot_state_publisher.launch.py']),
             launch_arguments={'use_sim_time': use_sim_time,
-                              'robot_id': robot_id}.items()
+                              'robot_id': 'shelfino1'}.items()
+        ),
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([launch_file_dir, '/robot_state_publisher.launch.py']),
+            launch_arguments={'use_sim_time': use_sim_time,
+                              'robot_id': 'shelfino2'}.items()
         ),
 
         Node(
