@@ -9,14 +9,13 @@ from launch.substitutions import LaunchConfiguration, Command
 from launch.actions import DeclareLaunchArgument
 from launch import LaunchDescription
 from launch_ros.actions import Node
-import xacro
 
 
 def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     robot_id = LaunchConfiguration('robot_id', default='')
-    urdf_file_name = 'model.urdf.xacro'
+    urdf_file_name = 'model.urdf'
 
     print('urdf_file_name : {}'.format(urdf_file_name))
 
@@ -24,7 +23,7 @@ def generate_launch_description():
         get_package_share_directory('shelfino_description'),
         'models','shelfino',urdf_file_name)
     
-    robot_desc = Command(['xacro ',urdf,' robot_name:=',robot_id])
+    robot_desc = Command(["xacro", " ", urdf])
 
     remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
 
@@ -47,7 +46,6 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time},
                         {'robot_description': robot_desc}],
-            arguments=[urdf]
-            # remappings=remappings
+            remappings=remappings
         )
     ])
