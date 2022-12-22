@@ -24,7 +24,7 @@ def generate_launch_description():
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'map',
-            'ufficio3.yaml'))
+            'turtle.yaml'))
 
     param_file_name = LaunchConfiguration(
         'params_file',
@@ -63,7 +63,7 @@ def generate_launch_description():
                 'map': map_dir,
                 'use_sim_time': sim,
                 'params_file': param_file_name}.items(),
-            condition=UnlessCondition(remote),
+            # condition=UnlessCondition(remote),
         ),
 
         Node(
@@ -72,7 +72,7 @@ def generate_launch_description():
             name='rviz2',
             arguments=['-d', rviz_config_dir],
             parameters=[{'use_sim_time': sim}],
-            condition=IfCondition(remote),
+            # condition=IfCondition(remote),
             output='screen'),
     ])
 

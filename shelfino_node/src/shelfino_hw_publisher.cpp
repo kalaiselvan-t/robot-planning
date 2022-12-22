@@ -56,9 +56,9 @@ class ShelfinoHWNode : public rclcpp::Node
       encoders_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("joint_states", 10);
       // Selectiong the callbacks for the publishers
       lidar_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWNode::lidar_callback, this));
-      t265_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWNode::t265_callback, this));
-      odom_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWNode::odom_callback, this));
-      encoders_timer_ = this->create_wall_timer(100ms, std::bind(&ShelfinoHWNode::enc_callback, this));
+      t265_timer_ = this->create_wall_timer(500ms, std::bind(&ShelfinoHWNode::t265_callback, this));
+      odom_timer_ = this->create_wall_timer(200ms, std::bind(&ShelfinoHWNode::odom_callback, this));
+      encoders_timer_ = this->create_wall_timer(200ms, std::bind(&ShelfinoHWNode::enc_callback, this));
       // Creation of the CMD_VEL subscriber to move the shelfino
       cmd_subscription_ = this->create_subscription<geometry_msgs::msg::Twist>(
         "cmd_vel", 10, std::bind(&ShelfinoHWNode::handle_shelfino_cmd_vel, this, std::placeholders::_1));
