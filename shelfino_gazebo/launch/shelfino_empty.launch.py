@@ -32,6 +32,8 @@ def generate_launch_description():
 
     rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfino.rviz')
 
+    remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
+
     return LaunchDescription([
         DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
                                 description='Flag to enable gazebo visualization'),
@@ -57,19 +59,22 @@ def generate_launch_description():
             package='gazebo_ros',
             executable='spawn_entity.py',
             arguments=['-file', model,
-                       '-entity', 'shelfino']
+                       '-entity', 'shelfino',
+                       '-robot_namespace', 'shelfinoG']
         ),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([launch_file_dir, '/robot_state_publisher.launch.py']),
             launch_arguments={'use_sim_time': use_sim_time,
-                              'robot_id': 'gazebo'}.items()
+                              'robot_id': 'shelfinoG'}.items()
         ),
 
         Node(
             package='rviz2',
             executable='rviz2',
+            namespace='shelfinoG',
             arguments=['-d', rviz_config],
-            condition=IfCondition(rviz)
+            condition=IfCondition(rviz),
+            remappings=remappings
         )
     ])

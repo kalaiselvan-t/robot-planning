@@ -16,6 +16,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     sim = LaunchConfiguration('sim', default='false')
     remote = LaunchConfiguration('remote', default='false')
+    headless = LaunchConfiguration('headless', default='false')
 
     launch_file_dir = os.path.join(get_package_share_directory('shelfino_description'), 'launch')
     
@@ -57,13 +58,19 @@ def generate_launch_description():
         DeclareLaunchArgument(name='remote', default_value='false', choices=['true', 'false'],
                         description='Flag to toggle between navigation stack running on robot or locally'),
 
+        DeclareLaunchArgument(name='headless', default_value='false', choices=['true', 'false'],
+                        description='Flag to toggle between navigation stack running on robot or locally'),
+
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
             launch_arguments={
                 'map': map_dir,
                 'use_sim_time': sim,
+                'namespace': 'shelfino2',
+                'use_namespace': 'True',
+                'use_composition': 'True',
                 'params_file': param_file_name}.items(),
-            # condition=UnlessCondition(remote),
+            condition=UnlessCondition(remote),
         ),
 
         Node(
@@ -72,7 +79,7 @@ def generate_launch_description():
             name='rviz2',
             arguments=['-d', rviz_config_dir],
             parameters=[{'use_sim_time': sim}],
-            # condition=IfCondition(remote),
+            condition=UnlessCondition(headless),
             output='screen'),
     ])
 
