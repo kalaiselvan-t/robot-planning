@@ -175,7 +175,7 @@ local_costmap:
         enabled: True
         observation_sources: scan
         scan:
-          topic: /shelfino2/scan
+          topic: /shelfino1/scan
           data_type: "LaserScan"
           max_obstacle_height: 2.0
           clearing: True

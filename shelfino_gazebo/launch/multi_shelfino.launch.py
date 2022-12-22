@@ -28,8 +28,10 @@ def generate_launch_description():
     gazebo_models_path = os.path.join(get_package_share_directory('shelfino_description'), 'models')
     os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
 
-    rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfino.rviz')
+    rviz_config1 = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfino1.rviz')
+    rviz_config2 = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfino2.rviz')
 
+    remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
 
     return LaunchDescription([
         DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
@@ -59,8 +61,9 @@ def generate_launch_description():
             package='gazebo_ros',
             executable='spawn_entity.py',
             arguments=['-file', LaunchConfiguration('model'),
-                       '-robot_namespace', 'shelfino2',
-                       '-entity', 'shelfino1']
+                       '-entity', 'shelfino1',
+                       '-robot_namespace', 'shelfino1',
+                       '-x', '0']
         ),
 
         Node(
@@ -87,7 +90,18 @@ def generate_launch_description():
         Node(
             package='rviz2',
             executable='rviz2',
-            arguments=['-d', rviz_config],
-            condition=IfCondition(rviz)
+            namespace='shelfino1',
+            arguments=['-d', rviz_config1],
+            condition=IfCondition(rviz),
+            remappings=remappings
+        ),
+
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            namespace='shelfino2',
+            arguments=['-d', rviz_config2],
+            condition=IfCondition(rviz),
+            remappings=remappings
         )
     ])
