@@ -30,7 +30,7 @@ def generate_launch_description():
     model = os.path.join(gazebo_models_path, 'shelfino', 'model.sdf')
     os.environ["GAZEBO_MODEL_PATH"] = gazebo_models_path
 
-    rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfino.rviz')
+    rviz_config = os.path.join(get_package_share_directory('shelfino_gazebo'), 'rviz', 'shelfinoG.rviz')
 
     remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
 

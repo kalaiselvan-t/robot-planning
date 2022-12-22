@@ -54,7 +54,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /shelfino2/robot_description
+        Value: /shelfino1/robot_description
       Enabled: true
       Links:
         All Links Enabled: true
@@ -154,7 +154,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /shelfino2/scan
+        Value: /shelfino1/scan
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
@@ -170,13 +170,13 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /shelfino2/map
+        Value: /shelfino1/map
       Update Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /shelfino2/map_updates
+        Value: /shelfino1/map_updates
       Use Timestamp: false
       Value: true
     - Alpha: 1
@@ -193,7 +193,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /shelfino2/particle_cloud
+        Value: /shelfino1/particle_cloud
       Value: true
     - Class: rviz_common/Group
       Displays:
@@ -209,13 +209,13 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /shelfino2/global_costmap/costmap
+            Value: /shelfino1/global_costmap/costmap
           Update Topic:
             Depth: 5
             Durability Policy: Volatile
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /shelfino2/global_costmap/costmap_updates
+            Value: /shelfino1/global_costmap/costmap_updates
           Use Timestamp: false
           Value: true
         - Alpha: 0.30000001192092896
@@ -265,7 +265,7 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /shelfino2/plan
+            Value: /shelfino1/plan
           Value: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
@@ -330,13 +330,13 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /shelfino2/local_costmap/costmap
+            Value: /shelfino1/local_costmap/costmap
           Update Topic:
             Depth: 5
             Durability Policy: Volatile
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /shelfino2/local_costmap/costmap_updates
+            Value: /shelfino1/local_costmap/costmap_updates
           Use Timestamp: false
           Value: true
         - Alpha: 1
@@ -365,7 +365,7 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /shelfino2/lookahead_collision_arc
+            Value: /shelfino1/lookahead_collision_arc
           Value: true
         - Class: rviz_default_plugins/MarkerArray
           Enabled: false
@@ -390,7 +390,7 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /shelfino2/local_costmap/published_footprint
+            Value: /shelfino1/local_costmap/published_footprint
           Value: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
@@ -490,7 +490,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /shelfino2/waypoints
+        Value: /shelfino1/waypoints
       Value: true
   Enabled: true
   Global Options:

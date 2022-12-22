@@ -27,7 +27,14 @@ def generate_launch_description():
             'map',
             'turtle.yaml'))
 
-    param_file_name = LaunchConfiguration(
+    param_file_name1 = LaunchConfiguration(
+        'params_file',
+        default=os.path.join(
+            get_package_share_directory('shelfino_navigation'),
+            'config',
+            'shelfino1.yaml'))
+
+    param_file_name2 = LaunchConfiguration(
         'params_file',
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
@@ -36,7 +43,12 @@ def generate_launch_description():
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
-    rviz_config_dir = os.path.join(
+    rviz_config_dir1 = os.path.join(
+        get_package_share_directory('shelfino_navigation'),
+        'rviz',
+        'shelfino1_nav.rviz')
+
+    rviz_config_dir2 = os.path.join(
         get_package_share_directory('shelfino_navigation'),
         'rviz',
         'shelfino2_nav.rviz')
@@ -53,11 +65,6 @@ def generate_launch_description():
             default_value=map_dir,
             description='Full path to map file to load'),
 
-        DeclareLaunchArgument(
-            'params_file',
-            default_value=param_file_name,
-            description='Full path to param file to load'),
-
         DeclareLaunchArgument(name='sim', default_value='false', choices=['true', 'false'],
                         description='Flag to toggle between real robot and simulation'),
 
@@ -72,11 +79,34 @@ def generate_launch_description():
             launch_arguments={
                 'map': map_dir,
                 'use_sim_time': sim,
+                'namespace': 'shelfino1',
+                'use_namespace': 'True',
+                'use_composition': 'False',
+                'autostart': 'False',
+                'params_file': param_file_name1}.items(),
+            condition=UnlessCondition(remote),
+        ),
+
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            namespace='shelfino1',
+            arguments=['-d', rviz_config_dir1],
+            parameters=[{'use_sim_time': sim}],
+            condition=UnlessCondition(headless),
+            remappings=remappings,
+            output='screen'),
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
+            launch_arguments={
+                'map': map_dir,
+                'use_sim_time': sim,
                 'namespace': 'shelfino2',
                 'use_namespace': 'True',
                 'use_composition': 'False',
                 'autostart': 'False',
-                'params_file': param_file_name}.items(),
+                'params_file': param_file_name2}.items(),
             condition=UnlessCondition(remote),
         ),
 
@@ -84,7 +114,7 @@ def generate_launch_description():
             package='rviz2',
             executable='rviz2',
             namespace='shelfino2',
-            arguments=['-d', rviz_config_dir],
+            arguments=['-d', rviz_config_dir2],
             parameters=[{'use_sim_time': sim}],
             condition=UnlessCondition(headless),
             remappings=remappings,
