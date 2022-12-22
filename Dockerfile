@@ -38,6 +38,7 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y ros-humble-cartographer && \
     apt-get install -y ros-humble-cartographer-ros && \
     apt-get install -y ros-humble-gazebo-ros && \
+    apt-get install -y ros-humble-gazebo-ros-pkgs && \
     apt-get install -y ros-humble-test-msgs && \
     apt-get install -y ros-humble-xacro && \
     apt-get install -y net-tools && \
