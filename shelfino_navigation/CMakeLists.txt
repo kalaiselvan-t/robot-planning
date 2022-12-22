@@ -18,7 +18,6 @@ install(DIRECTORY
         config
         rviz
         map
-        param
   DESTINATION share/${PROJECT_NAME})
 
 

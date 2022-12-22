@@ -14,8 +14,8 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    use_rviz = LaunchConfiguration('use_rviz', default='true')
     sim = LaunchConfiguration('sim', default='false')
+    remote = LaunchConfiguration('remote', default='false')
 
     launch_file_dir = os.path.join(get_package_share_directory('shelfino_description'), 'launch')
     
@@ -24,22 +24,21 @@ def generate_launch_description():
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'map',
-            'ufficio2.yaml'))
+            'turtle.yaml'))
 
-    param_file_name = 'shelfino2.yaml'
-    param_dir = LaunchConfiguration(
+    param_file_name = LaunchConfiguration(
         'params_file',
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
-            'param',
-            param_file_name))
+            'config',
+            'shelfino2.yaml'))
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
     rviz_config_dir = os.path.join(
-        get_package_share_directory('nav2_bringup'),
+        get_package_share_directory('shelfino_navigation'),
         'rviz',
-        'nav2_default_view.rviz')
+        'shelfino2_nav.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -49,18 +48,22 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             'params_file',
-            default_value=param_dir,
+            default_value=param_file_name,
             description='Full path to param file to load'),
 
         DeclareLaunchArgument(name='sim', default_value='false', choices=['true', 'false'],
                         description='Flag to toggle between real robot and simulation'),
+
+        DeclareLaunchArgument(name='remote', default_value='false', choices=['true', 'false'],
+                        description='Flag to toggle between navigation stack running on robot or locally'),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
             launch_arguments={
                 'map': map_dir,
                 'use_sim_time': sim,
-                'params_file': param_dir}.items(),
+                'params_file': param_file_name}.items(),
+            # condition=UnlessCondition(remote),
         ),
 
         Node(
@@ -69,6 +72,8 @@ def generate_launch_description():
             name='rviz2',
             arguments=['-d', rviz_config_dir],
             parameters=[{'use_sim_time': sim}],
-            condition=IfCondition(use_rviz),
+            # condition=IfCondition(remote),
             output='screen'),
     ])
+
+    

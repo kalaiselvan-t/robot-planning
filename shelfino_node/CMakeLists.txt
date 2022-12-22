@@ -19,6 +19,7 @@ find_package(nav_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 
 include_directories(
   include
@@ -40,6 +41,7 @@ ament_target_dependencies(shelfino_node
   tf2
   tf2_ros
   geometry_msgs
+  std_srvs
 )
 
 target_link_libraries(shelfino_node
@@ -54,5 +56,6 @@ install(DIRECTORY
 install(TARGETS
   shelfino_node
   DESTINATION lib/${PROJECT_NAME})
+
 
 ament_package()

@@ -8,6 +8,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 
+#include "std_srvs/srv/set_bool.hpp"
+
 using namespace std::chrono_literals;
 
 std::mutex pressedMTX;
@@ -38,7 +40,19 @@ class CMDPublisher : public rclcpp::Node
     CMDPublisher()
     : Node("remote_control")
     {
-      publisher_ = rclcpp::Node::create_publisher<geometry_msgs::msg::Twist>(robot_id_topic, 10);
+      client_ = this->create_client<std_srvs::srv::SetBool>(robot_id_topic+"/power");
+      auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
+      while (!client_->wait_for_service(1s)) {
+        if (!rclcpp::ok()) {
+          RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+          return;
+        }
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+      }
+      request->data = true;
+      client_->async_send_request(request);
+
+      publisher_ = rclcpp::Node::create_publisher<geometry_msgs::msg::Twist>(robot_id_topic+"/cmd_vel", 10);
       initscr();
       noecho();
       last = std::chrono::system_clock::now();
@@ -50,6 +64,8 @@ class CMDPublisher : public rclcpp::Node
     /// @brief Method callback to publish the velocities command from the keyboard input.
     void timer_callback()
     {
+      auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
+      request->data = false;
       geometry_msgs::msg::Twist msg;
       auto curr = std::chrono::system_clock::now();
       std::chrono::duration<double> diff = curr - last;
@@ -91,6 +107,7 @@ class CMDPublisher : public rclcpp::Node
           break;
         case 'q':
           terminate = true;
+          client_->async_send_request(request);
           break;
         default:
           break;
@@ -147,6 +164,8 @@ class CMDPublisher : public rclcpp::Node
     bool terminate = false;
     double v_c = 0.0, omega_c = 0.0, V_MAX = 0.0, O_MAX = 0.0;
     std::chrono::system_clock::time_point last;
+
+    rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr client_;
 };
 
 /// @brief Function that checks if there is new data available from the keyboard without having to wait for the return key.
@@ -177,9 +196,8 @@ void kbhit()
  */
 void start_ros_node(int argc, char * argv[])
 {
-  std::string append_topic = "/cmd_vel";
-  if(argc < 2)  robot_id_topic = append_topic;
-  else          robot_id_topic = argv[1] + append_topic;
+  if(argc < 2)  robot_id_topic = "";
+  else          robot_id_topic = argv[1];
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<CMDPublisher>());
 }

@@ -24,22 +24,21 @@ def generate_launch_description():
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
             'map',
-            'turtlebot3_world.yaml'))
+            'turtle.yaml'))
 
-    param_file_name = 'shelfino_gazebo.yaml'
     param_dir = LaunchConfiguration(
         'params_file',
         default=os.path.join(
             get_package_share_directory('shelfino_navigation'),
-            'param',
-            param_file_name))
+            'config',
+            'gazebo.yaml'))
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
     rviz_config_dir = os.path.join(
-        get_package_share_directory('nav2_bringup'),
+        get_package_share_directory('shelfino_navigation'),
         'rviz',
-        'nav2_default_view.rviz')
+        'shelfino_gazebo_nav.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(

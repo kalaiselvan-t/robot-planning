@@ -21,8 +21,8 @@
 #define LIDAR_TIMEOUT 200
 #define TRACKING_TIMEOUT 200
 
-static const double LEFT_INCREMENTS_PER_TOUR = 294912.;
-static const double RIGHT_INCREMENTS_PER_TOUR = 294912.;
+static const double LEFT_INCREMENTS_PER_TOUR = 230000.; //230000.
+static const double RIGHT_INCREMENTS_PER_TOUR = 230000.; //294912.
 static const double LEFT_RADIUS = 0.99 * 0.125 ; //0.9907*0.125; //0.125186;
 static const double RIGHT_RADIUS = 0.99 * 0.125 ; //0.99*0.125; //0.125138;
 static const double WHEEL_BASE = 0.383;
