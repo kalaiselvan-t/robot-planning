@@ -11,8 +11,10 @@
 
 #include "geometry_msgs/msg/point32.hpp"
 #include "geometry_msgs/msg/polygon.hpp"
+#include "geometry_msgs/msg/polygon_stamped.hpp"
 #include "obstacles_msgs/msg/obstacle_array_msg.hpp"
 #include "obstacles_msgs/msg/obstacle_msg.hpp"
+#include "std_msgs/msg/header.hpp"
 
 
 class PathPublisher : public rclcpp::Node
@@ -23,12 +25,23 @@ class PathPublisher : public rclcpp::Node
     {
         publisher_ = this->create_publisher<obstacles_msgs::msg::ObstacleArrayMsg>("obstacles", 10);
 
+        std_msgs::msg::Header hh;
+
+        hh.stamp = this->get_clock()->now();
+        hh.frame_id = "map";
+
         obstacles_msgs::msg::ObstacleArrayMsg msg;
         obstacles_msgs::msg::ObstacleMsg obs;
         std::vector<obstacles_msgs::msg::ObstacleMsg> obs_temp;
         geometry_msgs::msg::Polygon pol;
         geometry_msgs::msg::Point32 point;
 
+        geometry_msgs::msg::PolygonStamped pol1;
+        geometry_msgs::msg::PolygonStamped pol2;
+
+        pol1.header = hh;
+        pol2.header = hh;
+
         // First square obstacle
         {
           std::vector<geometry_msgs::msg::Point32> points_temp;
@@ -51,6 +64,7 @@ class PathPublisher : public rclcpp::Node
           pol.points = points_temp;
           obs.polygon = pol;
           obs_temp.push_back(obs);
+          pol1.polygon = pol;
         }
 
         // First square obstacle
@@ -75,12 +89,18 @@ class PathPublisher : public rclcpp::Node
           pol.points = points_temp;
           obs.polygon = pol;
           obs_temp.push_back(obs);
+          pol2.polygon = pol;
         }
 
         msg.obstacles = obs_temp;
 
+        rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr pub1 = this->create_publisher<geometry_msgs::msg::PolygonStamped>("obs1", 10);
+        rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr pub2 = this->create_publisher<geometry_msgs::msg::PolygonStamped>("obs2", 10);
+
         while(1){
           publisher_->publish(msg);
+          pub1->publish(pol1);
+          pub2->publish(pol2);
           usleep(1000000);
         }
     }
