@@ -34,12 +34,14 @@ endif()
   #========================================================================
   # Dubins Planner
   #========================================================================
-  add_executable(dubins_planner src/dubins_planner.cpp src/dubins_trajectory.cpp src/dubins_trajectory_config.cpp)
+  add_executable(dubins_planner src/dubins_planner.cpp src/dubins_trajectory.cpp src/config.cpp)
+  add_executable(obstacles src/obstacles.cpp src/utils.cpp src/config.cpp)
   #add_library(dubins_trajectory src/dubins_trajectory.cpp)
   ament_target_dependencies(dubins_planner rclcpp std_msgs nav_msgs geometry_msgs tf2)
   
   install(TARGETS
   dubins_planner
+  obstacles
   DESTINATION lib/${PROJECT_NAME}/
   )
 
