@@ -1,61 +1,40 @@
 #include "utils/utils.h"
-// #include <algorithm>
 
-obstacles map_obstacles;
+Obstacles map_obstacles;
 
-void greet
+/*=======================================
+=========Obstacles Class Methods=========
+=========================================*/
+
+// RectangleObs
+
+void RectangleObs::construct_list
 ()
 {
-    std::cout << "Greetings\n";
+    points = {ver_1,ver_2,ver_3};
 }
 
-bool yComparator
-(const point_2d & lhs, const point_2d & rhs)
-{
-    return lhs.y < rhs.y;
-}
-
-bool xComparator
-(const point_2d & lhs, const point_2d & rhs)
-{
-    return lhs.x < rhs.x;
-}
-
-// Prints the current values in obstacle_list
-void print_obstacle_list
+void RectangleObs::print
 ()
 {
-    // if 
-    // (sort)
-    // {
-    //     for 
-    //     (size_t i = 0; i < obstacle_list.size(); i++)
-    //     {
-    //         std::stable_sort(obstacle_list[i].begin(), obstacle_list[i].end(), yComparator());
-    //         std::stable_sort(obstacle_list[i].begin(), obstacle_list[i].end(), xComparator());
-
-    //     }
-        
-    // }
-    // else
-    // {
-        for 
-        (size_t i = 0; i < obstacle_list.size(); i++)
-        {
-            std::cout << "obstacle: " << i << std::endl;
-            for 
-            (size_t j = 0; j < obstacle_list[i].size(); j++)
-            {
-                std::cout << obstacle_list[i][j][0] << ", " << obstacle_list[i][j][1] << std::endl;
-            }
-        }
-//     }
-    
+    std::cout << "==========Rectangle Obstacle==========\n";
+    for 
+    (size_t i = 0; i < points.size(); i++)
+    {
+        std::cout << points[i].x << ", " << points[i].y << std::endl;
+    }
 }
 
-//inflates given obstacle by 1 unit
-void inflate_obstacle
-(std::vector<std::vector<int>> &inp)
+void RectangleObs::sort
+()
+{ 
+    std::stable_sort(std::begin(points), std::end(points), [] (const auto& lhs, const auto& rhs) {return lhs.y < rhs.y;});
+    std::stable_sort(std::begin(points), std::end(points), [] (const auto& lhs, const auto& rhs) {return lhs.x < rhs.x;});
+    sorted = true;
+}
+
+void RectangleObs::inflate
+()
 {
     int big_row = 0;
     int big_col = 0;
@@ -63,96 +42,262 @@ void inflate_obstacle
     int small_col = 0;
 
     for 
-    (size_t i = 0; i < inp.size(); i++)
+    (size_t i = 0; i < points.size(); i++)
     {
         if
         (big_row == 0 && small_row == 0){
 
-            big_row = inp[i][0];
-            small_row = inp[i][0];
-            big_col =inp[i][1];
-            small_col = inp[i][1];
+            big_row = points[i].x;
+            small_row = points[i].x;
+            big_col =points[i].y;
+            small_col = points[i].y;
         }
         else
         {
             if
-            (inp[i][0] < small_row)
+            (points[i].x < small_row)
             {
-                small_row = inp[i][0];
+                small_row = points[i].x;
             }
 
             if
-            (inp[i][0] > big_row)
+            (points[i].x > big_row)
             {
-                big_row = inp[i][0];
+                big_row = points[i].x;
             }
 
             if
-            (inp[i][1] < small_col)
+            (points[i].y < small_col)
             {
-                small_col = inp[i][1];
+                small_col = points[i].y;
             }
 
             if
-            (inp[i][1] > big_col)
+            (points[i].y > big_col)
             {
-                big_col = inp[i][1];
+                big_col = points[i].y;
             }
         }
     }
     
     for 
-    (size_t i = 0; i < inp.size(); i++)
+    (size_t i = 0; i < points.size(); i++)
     {
 
         if
-        (inp[i][0] == small_row)
+        (points[i].x == small_row)
         {
-            inp[i][0] = inp[i][0] - 1;
+            points[i].x = points[i].x - 1;
         }
         
         if
-        (inp[i][0] == big_row)
+        (points[i].x == big_row)
         {
-            inp[i][0] = inp[i][0] + 1;
+            points[i].x = points[i].x + 1;
         }
 
         if
-        (inp[i][1] == small_col)
+        (points[i].y == small_col)
         {
-            inp[i][1] = inp[i][1] - 1;
+            points[i].y = points[i].y - 1;
         }
         
         if
-        (inp[i][1] == big_col)
+        (points[i].y == big_col)
         {
-            inp[i][1] = inp[i][1] + 1;
+            points[i].y = points[i].y + 1;
         }
     }
 }
 
-// Loops through the obstacle list and inflates each obstacle
-void inflate_obstacles_list
-(std::vector<std::vector<std::vector<int>>> &inp)
+// TriangleObs
+
+void TriangleObs::construct_list
+()
+{
+    points = {ver_1,ver_2,ver_3};
+}
+
+void TriangleObs::print
+()
+{   
+    std::cout << "==========Triangle Obstacle==========\n";
+    for 
+    (size_t i = 0; i < points.size(); i++)
+    {
+        std::cout << points[i].x << ", " << points[i].y << std::endl;
+    }
+}
+
+void TriangleObs::sort
+()
+{ 
+    std::stable_sort(std::begin(points), std::end(points), [] (const auto& lhs, const auto& rhs) {return lhs.y < rhs.y;});
+    std::stable_sort(std::begin(points), std::end(points), [] (const auto& lhs, const auto& rhs) {return lhs.x < rhs.x;});
+    sorted = true;
+}
+
+void TriangleObs::inflate()
+{
+    int big_row = 0;
+    int big_col = 0;
+    int small_row = 0;
+    int small_col = 0;
+
+    for 
+    (size_t i = 0; i < points.size(); i++)
+    {
+        if
+        (big_row == 0 && small_row == 0){
+
+            big_row = points[i].x;
+            small_row = points[i].x;
+            big_col =points[i].y;
+            small_col = points[i].y;
+        }
+        else
+        {
+            if
+            (points[i].x < small_row)
+            {
+                small_row = points[i].x;
+            }
+
+            if
+            (points[i].x > big_row)
+            {
+                big_row = points[i].x;
+            }
+
+            if
+            (points[i].y < small_col)
+            {
+                small_col = points[i].y;
+            }
+
+            if
+            (points[i].y > big_col)
+            {
+                big_col = points[i].y;
+            }
+        }
+    }
+    
+    for 
+    (size_t i = 0; i < points.size(); i++)
+    {
+
+        if
+        (points[i].x == small_row)
+        {
+            points[i].x = points[i].x - 1;
+        }
+        
+        if
+        (points[i].x == big_row)
+        {
+            points[i].x = points[i].x + 1;
+        }
+
+        if
+        (points[i].y == small_col)
+        {
+            points[i].y = points[i].y - 1;
+        }
+        
+        if
+        (points[i].y == big_col)
+        {
+            points[i].y = points[i].y + 1;
+        }
+    }
+}
+/*----------------------------------------*/
+
+/*=======================================
+=========Obstacles Class Methods=========
+=========================================*/
+
+int Obstacles::get_rectangle_obst_count
+()
+{
+    return rect_obs_count;
+}
+
+int Obstacles::get_triangle_obst_count
+()
+{
+    return tri_obs_count;
+}
+
+void Obstacles::add_rectangle_obs
+(RectangleObs obs)
+{
+    obs.inflate();
+    rect_obs_list.push_back(obs);
+    rect_obs_count = rect_obs_list.size();
+}
+
+void Obstacles::add_triangle_obs
+(TriangleObs obs)
+{   
+    obs.inflate();
+    tri_obs_list.push_back(obs);
+    tri_obs_count = tri_obs_list.size();
+}
+
+void Obstacles::print
+()
+{
+    std::cout << "Rectangle obstacle list: \n";
+    for 
+    (size_t i = 0; i < rect_obs_list.size(); i++)
+    {
+        rect_obs_list[i].print();
+    }
+
+    std::cout << "Triangle obstacle list: \n";
+    for 
+    (size_t i = 0; i < tri_obs_list.size(); i++)
+    {
+        tri_obs_list[i].print();
+    }
+}
+
+int Obstacles::is_inside_obs
+(point_2d point)
+{
+    
+}
+/*------------------------------------------------*/
+
+// Prints the current values in obstacle_list
+void print_obstacle_list
+()
 {
     for 
-    (size_t i = 0; i < inp.size(); i++)
+    (size_t i = 0; i < obstacle_list.size(); i++)
     {
-        inflate_obstacle(inp[i]);
-    }
+        std::cout << "obstacle: " << i << std::endl;
+        for 
+        (size_t j = 0; j < obstacle_list[i].size(); j++)
+        {
+            std::cout << obstacle_list[i][j][0] << ", " << obstacle_list[i][j][1] << std::endl;
+        }
+    }   
 }
 
+// Populates the obstacles class from given obstacles list
 void init_obstacle_structure
 ()
 {
-    // int count = -1;
     for 
     (size_t i = 0; i < obstacle_list.size(); i++)
     {
         if 
         (obstacle_list[i].size() == 4)
         {   
-            rectangle_obstacle obs;     
+            RectangleObs obs;     
             // std::cout << "iteration: " << i << std::endl;
             obs.ver_1.x = obstacle_list[i][0][0];
             obs.ver_1.y = obstacle_list[i][0][1];
@@ -164,18 +309,20 @@ void init_obstacle_structure
             obs.ver_4.y = obstacle_list[i][3][1];
 
             obs.construct_list();
-            obs.print();
-            obs.sort();
+            // std::cout << "======================\n";
+            // obs.print();
+            // obs.sort();
             map_obstacles.add_rectangle_obs(obs);
-            std::cout << "======================\n";
-            obs.print();
-            std::cout << "area: " << obs.area() << std::endl;
+            // std::cout << "-------------------------\n";
+            // obs.print();
+            // std::cout << "area: " << obs.area() << std::endl;
+            // std::cout << "======================\n";
         }
 
         if 
         (obstacle_list[i].size() == 3)
         {   
-            triangle_obstacle obs;     
+            TriangleObs obs;     
             // std::cout << "iteration: " << i << std::endl;
             obs.ver_1.x = obstacle_list[i][0][0];
             obs.ver_1.y = obstacle_list[i][0][1];
@@ -184,11 +331,13 @@ void init_obstacle_structure
             obs.ver_3.x = obstacle_list[i][2][0];
             obs.ver_3.y = obstacle_list[i][2][1];
             obs.construct_list();
-            obs.print();
-            obs.sort();
+            // std::cout << "======================\n";
+            // obs.print();
+            // obs.sort();
             map_obstacles.add_triangle_obs(obs);
-            std::cout << "======================\n";
-            obs.print();
+            // std::cout << "--------------------------\n";
+            // obs.print();
+            // std::cout << "======================\n";
             // std::cout << "area: " << obs.area() << std::endl;
         }          
     }   

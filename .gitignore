@@ -6,3 +6,6 @@ shelfino_node/
 dubins_planner/src/*.tar.bz2
 dubins_planner/src/*.out
 dubins_planner/.*
+install/
+log/
+build/

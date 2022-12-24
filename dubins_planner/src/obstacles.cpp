@@ -13,6 +13,7 @@ int main()
     // cout << "========================\n";
     init_obstacle_structure();
 
-    cout << "rectangle count: "<< map_obstacles.get_rectangle_obst_count() << endl;
-    cout << "triangle count: "<< map_obstacles.get_triangle_obst_count() << endl;
+    map_obstacles.print();
+    // cout << "rectangle count: "<< map_obstacles.get_rectangle_obst_count() << endl;
+    // cout << "triangle count: "<< map_obstacles.get_triangle_obst_count() << endl;
 }
