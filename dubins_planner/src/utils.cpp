@@ -11,13 +11,14 @@ Obstacles map_obstacles;
 void RectangleObs::construct_list
 ()
 {
-    points = {ver_1,ver_2,ver_3};
+    points = {ver_1, ver_2, ver_3, ver_4};
 }
 
 void RectangleObs::print
 ()
 {
     std::cout << "==========Rectangle Obstacle==========\n";
+    std::cout << "size: " << points.size() << std::endl;
     for 
     (size_t i = 0; i < points.size(); i++)
     {
@@ -122,6 +123,7 @@ void TriangleObs::print
 ()
 {   
     std::cout << "==========Triangle Obstacle==========\n";
+    std::cout << "size: " << points.size() << std::endl;
     for 
     (size_t i = 0; i < points.size(); i++)
     {
@@ -221,13 +223,13 @@ void TriangleObs::inflate()
 int Obstacles::get_rectangle_obst_count
 ()
 {
-    return rect_obs_count;
+    return rect_obs_list.size();
 }
 
 int Obstacles::get_triangle_obst_count
 ()
 {
-    return tri_obs_count;
+    return tri_obs_list.size();
 }
 
 void Obstacles::add_rectangle_obs
@@ -235,7 +237,6 @@ void Obstacles::add_rectangle_obs
 {
     obs.inflate();
     rect_obs_list.push_back(obs);
-    rect_obs_count = rect_obs_list.size();
 }
 
 void Obstacles::add_triangle_obs
@@ -243,7 +244,6 @@ void Obstacles::add_triangle_obs
 {   
     obs.inflate();
     tri_obs_list.push_back(obs);
-    tri_obs_count = tri_obs_list.size();
 }
 
 void Obstacles::print
@@ -264,12 +264,72 @@ void Obstacles::print
     }
 }
 
-int Obstacles::is_inside_obs
+bool Obstacles::is_inside_obs
 (point_2d point)
 {
+    int count = -1;
+    for 
+    (size_t i = 0; i < rect_obs_list.size(); i++)
+    {
+        // std::cout << "Rectangle iter: " << i << std::endl;
+
+        float Area = area(rect_obs_list[i].points[0].x, rect_obs_list[i].points[0].y, rect_obs_list[i].points[1].x, rect_obs_list[i].points[1].y, rect_obs_list[i].points[2].x, rect_obs_list[i].points[2].y) +
+                    
+                    area(rect_obs_list[i].points[0].x, rect_obs_list[i].points[0].y, rect_obs_list[i].points[3].x, rect_obs_list[i].points[3].y, rect_obs_list[i].points[2].x, rect_obs_list[i].points[2].y);
+        
+        float A1 = area(point.x, point.y, rect_obs_list[i].points[0].x, rect_obs_list[i].points[0].y, rect_obs_list[i].points[1].x, rect_obs_list[i].points[1].y);
+
+        float A2 = area(point.x, point.y, rect_obs_list[i].points[1].x, rect_obs_list[i].points[1].y, rect_obs_list[i].points[2].x, rect_obs_list[i].points[2].y);
+
+        float A3 = area(point.x, point.y, rect_obs_list[i].points[2].x, rect_obs_list[i].points[2].y, rect_obs_list[i].points[3].x, rect_obs_list[i].points[3].y);
+
+        float A4 = area(point.x, point.y, rect_obs_list[i].points[0].x, rect_obs_list[i].points[0].y, rect_obs_list[i].points[3].x, rect_obs_list[i].points[3].y);
+
+        if 
+        (Area == A1 + A2 + A3 + A4)
+        {
+            count += 1;
+            // std::cout << "in here\n";
+        }
+    }
     
+    for 
+    (size_t i = 0; i < tri_obs_list.size(); i++)
+    {
+        // std::cout << "Triangle iter: " << i << std::endl;
+
+        float Area = area(tri_obs_list[i].points[0].x, tri_obs_list[i].points[0].y, tri_obs_list[i].points[1].x, tri_obs_list[i].points[1].y, tri_obs_list[i].points[2].x, tri_obs_list[i].points[2].y);
+
+        float A1 = area(point.x, point.y, tri_obs_list[i].points[1].x, tri_obs_list[i].points[1].y, tri_obs_list[i].points[2].x, tri_obs_list[i].points[2].y);
+
+        float A2 = area(tri_obs_list[i].points[0].x, tri_obs_list[i].points[0].y, point.x, point.y, tri_obs_list[i].points[2].x, tri_obs_list[i].points[2].y);
+
+        float A3 = area(tri_obs_list[i].points[0].x, tri_obs_list[i].points[0].y, tri_obs_list[i].points[1].x, tri_obs_list[i].points[1].y, point.x, point.y);
+
+        if 
+        (Area == A1 + A2 + A3)
+        {
+            count += 1;
+            // std::cout << "in here\n";
+        }
+    }
+
+    if
+    (count < 0)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 /*------------------------------------------------*/
+
+float area(int x1, int y1, int x2, int y2, int x3, int y3)
+{
+    return std::abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0);
+}
 
 // Prints the current values in obstacle_list
 void print_obstacle_list
@@ -279,6 +339,7 @@ void print_obstacle_list
     (size_t i = 0; i < obstacle_list.size(); i++)
     {
         std::cout << "obstacle: " << i << std::endl;
+        std::cout << "size: " << obstacle_list[i].size() << std::endl;
         for 
         (size_t j = 0; j < obstacle_list[i].size(); j++)
         {
@@ -298,7 +359,7 @@ void init_obstacle_structure
         (obstacle_list[i].size() == 4)
         {   
             RectangleObs obs;     
-            // std::cout << "iteration: " << i << std::endl;
+            
             obs.ver_1.x = obstacle_list[i][0][0];
             obs.ver_1.y = obstacle_list[i][0][1];
             obs.ver_2.x = obstacle_list[i][1][0];
@@ -309,21 +370,14 @@ void init_obstacle_structure
             obs.ver_4.y = obstacle_list[i][3][1];
 
             obs.construct_list();
-            // std::cout << "======================\n";
-            // obs.print();
-            // obs.sort();
             map_obstacles.add_rectangle_obs(obs);
-            // std::cout << "-------------------------\n";
-            // obs.print();
-            // std::cout << "area: " << obs.area() << std::endl;
-            // std::cout << "======================\n";
         }
 
         if 
         (obstacle_list[i].size() == 3)
         {   
             TriangleObs obs;     
-            // std::cout << "iteration: " << i << std::endl;
+    
             obs.ver_1.x = obstacle_list[i][0][0];
             obs.ver_1.y = obstacle_list[i][0][1];
             obs.ver_2.x = obstacle_list[i][1][0];
@@ -331,14 +385,8 @@ void init_obstacle_structure
             obs.ver_3.x = obstacle_list[i][2][0];
             obs.ver_3.y = obstacle_list[i][2][1];
             obs.construct_list();
-            // std::cout << "======================\n";
-            // obs.print();
-            // obs.sort();
+            
             map_obstacles.add_triangle_obs(obs);
-            // std::cout << "--------------------------\n";
-            // obs.print();
-            // std::cout << "======================\n";
-            // std::cout << "area: " << obs.area() << std::endl;
         }          
     }   
 }

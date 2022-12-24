@@ -52,8 +52,6 @@ class Obstacles
     private:
         std::vector<RectangleObs> rect_obs_list;
         std::vector<TriangleObs> tri_obs_list;
-        int rect_obs_count = rect_obs_list.size();
-        int tri_obs_count = rect_obs_list.size();
     
     public:
         
@@ -67,8 +65,10 @@ class Obstacles
 
         void print();
 
-        int is_inside_obs();
+        bool is_inside_obs(point_2d point);
 };
+
+float area(int x1, int y1, int x2, int y2, int x3, int y3);
 
 extern Obstacles map_obstacles;
 
