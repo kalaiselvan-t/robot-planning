@@ -35,6 +35,10 @@ ament_target_dependencies(dubins_planner
   rclcpp_action
 )
 
+install(DIRECTORY 
+        launch
+  DESTINATION share/${PROJECT_NAME})
+
 install(TARGETS
   dubins_planner
   DESTINATION lib/${PROJECT_NAME})
