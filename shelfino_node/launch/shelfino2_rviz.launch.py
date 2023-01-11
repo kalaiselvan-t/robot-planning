@@ -13,11 +13,21 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     launch_file_dir = os.path.join(get_package_share_directory('shelfino_description'), 'launch')
 
+    remappings = [('/tf', 'tf'),
+                  ('/tf_static', 'tf_static'),
+                  ('/goal_pose', 'goal_pose'),
+                  ('/clicked_point', 'clicked_point'),
+                  ('/initialpose', 'initialpose')]
+
     return LaunchDescription([
         Node(
             package='rviz2',
             executable='rviz2',
+            namespace='shelfino2',
+            parameters=[{'use_sim_time': use_sim_time}],
+            remappings=remappings,
+            output='screen',
             arguments=['-d', os.path.join(get_package_share_directory("shelfino_node"),
                                    'rviz', 'shelfino2.rviz')]
-        )
+        ),
     ])

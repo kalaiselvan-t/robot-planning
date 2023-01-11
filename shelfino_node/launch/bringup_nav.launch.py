@@ -20,6 +20,8 @@ def generate_launch_description():
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('shelfino_navigation'), 'launch')
 
+    remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'robot_id',
@@ -35,8 +37,7 @@ def generate_launch_description():
             package='shelfino_node',
             namespace=robot_id,
             executable='shelfino_node',
-            remappings=[
-            ('/shelfino2/cmd_vel', '/cmd_vel')]
+            remappings=remappings
         ),
 
         IncludeLaunchDescription(
