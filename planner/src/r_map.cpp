@@ -2,6 +2,7 @@
 
 // Data Struct Initialisations
 int resolution = 100;
+float resol = 0.5;
 int max_border_x = 20;
 int max_border_y = 20;
 
@@ -56,17 +57,16 @@ void Grid::create_grid
 ()
 {
     for 
-        (int i = -max_border_x/2; i <= max_border_x/2; i++)
+        (float i = -max_border_x/2; i <= max_border_x/2; i++)
     {
         vector<point> temp;
         for 
-            (int j = -max_border_y/2; j <= max_border_y/2; j++)
+            (float j = -max_border_y/2; j <= max_border_y/2; j++)
         {
             pt.x(static_cast<float>(i));
             pt.y(static_cast<float>(j));
             // grid[i][j] = pt;
             temp.push_back(pt);
-            // cout << "i: " << i << ", j: " << j << endl;
         }
         grid.push_back(temp);
     }
@@ -140,7 +140,7 @@ bool operator==(const point& lhs, const point& rhs)
 
 // Util fns
 
-float round_up
+float round_up2
     (float inp, int places)
 {
     int no = pow(10,places);

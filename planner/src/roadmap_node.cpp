@@ -11,8 +11,64 @@ mt19937 gen(rd());
 uniform_real_distribution<float> dis_x(0,max_border_x);
 uniform_real_distribution<float> dis_y(0, max_border_y);
 
+class RoadMap : public rclcpp::Node
+{
+    public:
+        RoadMap():Node("roadmap_node")
+        {
+            sub_ = this->create_subscription<obstacles_msgs::msg::ObstacleArrayMsg>(
+                "/inflated_obstacles",1,bind(&RoadMap::topic_callback, this, _1));
 
-void Roadmap::topic_callback(const obstacles_msgs::msg::ObstacleArrayMsg & msg)
+            pub_ = this->create_publisher<obstacles_msgs::msg::WaypointsMsg>("waypoints",10);
+        }
+
+    private:
+        rclcpp::Subscription<obstacles_msgs::msg::ObstacleArrayMsg>::SharedPtr sub_;
+        rclcpp::Publisher<obstacles_msgs::msg::WaypointsMsg>::SharedPtr pub_;
+
+        vector<pair<Point,pair<int,int>>> follow_path;
+        Grid dup_grid;
+
+        void topic_callback(const obstacles_msgs::msg::ObstacleArrayMsg & msg);
+
+        bool start_condition(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en);
+
+        void publisher();
+
+        void create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg);
+
+        void remove_obs_in_grid();
+
+        NodeGraph create_random_node();
+
+        void create_node_graph();
+
+        void find_path(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en);
+
+        void up(Point start, Point end, pair<Point,pair<int,int>> &best,float &best_dist);
+
+        void up_right(Point end, pair<Point,pair<int,int>> &best,float &best_dist);
+
+        void right(Point end, pair<Point,pair<int,int>> &best,float &best_dist);
+
+        void right_down(Point end, pair<Point,pair<int,int>> &best,float &best_dist);
+
+        void down(Point end, pair<Point,pair<int,int>> &best,float &best_dist);
+
+        void down_left(Point end, pair<Point,pair<int,int>> &best,float &best_dist);
+
+        void left(Point end, pair<Point,pair<int,int>> &best,float &best_dist);
+
+        void left_up(Point end, pair<Point,pair<int,int>> &best,float &best_dist);
+
+        void print_obs();
+
+        void print_followpath();
+
+        void print_obs_pts();
+};
+
+void RoadMap::topic_callback(const obstacles_msgs::msg::ObstacleArrayMsg & msg)
 {
     cout << "===========Beginning of DEBUG=============\n\n";
     follow_path.clear();
@@ -35,11 +91,11 @@ void Roadmap::topic_callback(const obstacles_msgs::msg::ObstacleArrayMsg & msg)
     bool ok = start_condition(st,en);
 
     if(ok){
-        // find_path(st,en);
+        find_path(st,en);
         print_obs_pts();
-        // print_followpath();
+        print_followpath();
         cout << "\n===========End of graph=============\n";
-        // publisher();
+        publisher();
     }
     else{
         cout << "start or end is inside obs\n";
@@ -49,7 +105,7 @@ void Roadmap::topic_callback(const obstacles_msgs::msg::ObstacleArrayMsg & msg)
     // print_followpath();
 }
 
-bool Roadmap::start_condition(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en)
+bool RoadMap::start_condition(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en)
 {
     bool ret = true;
     if(st != en){
@@ -68,7 +124,7 @@ bool Roadmap::start_condition(geometry_msgs::msg::Point32 st, geometry_msgs::msg
     return ret;
 }
 
-void Roadmap::find_path(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en,vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::find_path(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en)
 {
     Point start(st);
     Point end(en);
@@ -95,75 +151,74 @@ void Roadmap::find_path(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Poin
     cout << start_ind.first << ", " << start_ind.second << endl;
     // cout << map_grid.grid[15][13].x() << ", " << map_grid.grid[15][13].y() << endl;
 
-    if(fp.size() == 0)
+    if(follow_path.size() == 0)
     {
         pair<Point,pair<int,int>> temp;
         temp.first = start;
         temp.second = start_ind;
-        fp.push_back(temp);
+        follow_path.push_back(temp);
     }
     // cout << follow_path[0].second.first << ", " << follow_path[0].second.second << endl;
     // else
     // {
         int count = 0;
-        while(!fp[fp.size()-1].first.operator==(end.boost_pt) && count < 100)
+        while(!follow_path[follow_path.size()-1].first.operator==(end.boost_pt) && count < 100)
         {   
             if(count > 0)
             {
-                dup_grid.grid[fp[count-1].second.first][fp[count-1].second.second].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[fp[count-1].second.first][fp[count-1].second.second].y(std::numeric_limits<float>::infinity());
+                dup_grid.grid[follow_path[count-1].second.first][follow_path[count-1].second.second].x(std::numeric_limits<float>::infinity());
+                dup_grid.grid[follow_path[count-1].second.first][follow_path[count-1].second.second].y(std::numeric_limits<float>::infinity());
             }
 
             pair<Point,pair<int,int>> best;
             float best_dist = std::numeric_limits<float>::infinity();
 
             //up
-            up(end, best, best_dist, fp);
+            up(start,end, best, best_dist);
             
             //up right
-            up_right(end, best, best_dist, fp);
+            up_right(end, best, best_dist);
 
             //right
-            right(end, best, best_dist, fp);
+            right(end, best, best_dist);
 
             // right down
-            right_down(end, best, best_dist, fp);
+            right_down(end, best, best_dist);
 
             // down
-            down(end, best, best_dist, fp);
+            down(end, best, best_dist);
 
             // down left
-            down_left(end, best, best_dist, fp);
+            down_left(end, best, best_dist);
 
             // left
-            left(end, best, best_dist, fp);
+            left(end, best, best_dist);
             
 
             // left up
-            left_up(end, best, best_dist, fp);
+            left_up(end, best, best_dist);
             
-            // cout << "x: " << best.first.boost_pt.x() << ", y: " << best.first.boost_pt.y() << endl;
-            fp.push_back(best);
+            follow_path.push_back(best);
             count++;
             cout << "-------------------------------------\n";
         }
     // }
 }
 
-// void Roadmap::publisher()
-// {
-//     obstacles_msgs::msg::WaypointsMsg w_msg;
-//     vector<geometry_msgs::msg::Point32> way_pts_list;
+void RoadMap::publisher()
+{
+    obstacles_msgs::msg::WaypointsMsg w_msg;
+    vector<geometry_msgs::msg::Point32> way_pts_list;
     
-//     for (size_t i = 0; i < fp.size(); i++)
-//     {
-//         w_msg.waypoints.push_back(fp[i].first.ros_pt);
-//     }
-//     pub_->publish(w_msg);
-//     cout << "waypoints published\n";
-// }
+    for (size_t i = 0; i < follow_path.size(); i++)
+    {
+        w_msg.waypoints.push_back(follow_path[i].first.ros_pt);
+    }
+    pub_->publish(w_msg);
+    cout << "waypoints published\n";
+}
 
-void Roadmap::create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg)
+void RoadMap::create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg)
 {
     for 
     (size_t i = 0; i < msg.obstacles.size(); i++)
@@ -182,7 +237,7 @@ void Roadmap::create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg
     }
 }
 
-void Roadmap::remove_obs_in_grid()
+void RoadMap::remove_obs_in_grid()
 {   
     
     for 
@@ -220,7 +275,7 @@ void Roadmap::remove_obs_in_grid()
     }  
 }
 
-NodeGraph Roadmap::create_random_node()
+NodeGraph RoadMap::create_random_node()
 {
     NodeGraph node;
     float x = round_up2(dis_x(gen),2);
@@ -241,7 +296,7 @@ NodeGraph Roadmap::create_random_node()
     }
 }
 
-void Roadmap::create_node_graph()
+void RoadMap::create_node_graph()
 {
     while 
     (static_cast<int>(roadmap_nodes.list.size()) < resolution)
@@ -251,11 +306,11 @@ void Roadmap::create_node_graph()
     // roadmap_nodes.print();
 }
 
-void Roadmap::up(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::up(Point start, Point end, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int up_x = fp[fp.size()-1].second.first;
-    int up_y = fp[fp.size()-1].second.second + 1;
-    point current_pt = fp[fp.size()-1].first.boost_pt;
+    int up_x = follow_path[follow_path.size()-1].second.first;
+    int up_y = follow_path[follow_path.size()-1].second.second + 1;
+    point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
     cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl; 
     cout << "up_x: " << up_x << ", " << " up_y: " << up_y << endl;
     
@@ -285,11 +340,11 @@ void Roadmap::up(Point end, pair<Point,pair<int,int>> &best,float &best_dist, ve
     }
 }
 
-void Roadmap::up_right(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::up_right(Point end, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int up_right_x = fp.back().second.first + 1;
-    int up_right_y = fp.back().second.second + 1;
-    point current_pt = fp[fp.size()-1].first.boost_pt;
+    int up_right_x = follow_path.back().second.first + 1;
+    int up_right_y = follow_path.back().second.second + 1;
+    point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
     cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     cout << "up_right_x: " << up_right_x << ", " << " up_right_y: " << up_right_y << endl;
     
@@ -321,11 +376,11 @@ void Roadmap::up_right(Point end, pair<Point,pair<int,int>> &best,float &best_di
     }
 }
 
-void Roadmap::right(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::right(Point end, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int right_x = fp.back().second.first + 1;
-    int right_y = fp.back().second.second;
-    point current_pt = fp[fp.size()-1].first.boost_pt;
+    int right_x = follow_path.back().second.first + 1;
+    int right_y = follow_path.back().second.second;
+    point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
     cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     cout << "right_x: " << right_x << ", " << " right_y: " << right_y << endl;
         
@@ -356,11 +411,11 @@ void Roadmap::right(Point end, pair<Point,pair<int,int>> &best,float &best_dist,
     }
 }
 
-void Roadmap::right_down(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::right_down(Point end, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int right_down_x = fp.back().second.first + 1;
-    int right_down_y = fp.back().second.second - 1;
-    point current_pt = fp[fp.size()-1].first.boost_pt;
+    int right_down_x = follow_path.back().second.first + 1;
+    int right_down_y = follow_path.back().second.second - 1;
+    point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
     cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     cout << "right_down_x: " << right_down_x << ", " << " right_down_y: " << right_down_y << endl;
         
@@ -391,11 +446,11 @@ void Roadmap::right_down(Point end, pair<Point,pair<int,int>> &best,float &best_
     }
 }
 
-void Roadmap::down(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::down(Point end, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int down_x = fp.back().second.first;
-    int down_y = fp.back().second.second - 1;
-    point current_pt = fp[fp.size()-1].first.boost_pt;
+    int down_x = follow_path.back().second.first;
+    int down_y = follow_path.back().second.second - 1;
+    point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
     cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     cout << "down_x: " << down_x << ", " << " down_y: " << down_y << endl;
         
@@ -426,11 +481,11 @@ void Roadmap::down(Point end, pair<Point,pair<int,int>> &best,float &best_dist, 
     }
 }
 
-void Roadmap::down_left(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::down_left(Point end, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int down_left_x = fp.back().second.first - 1;
-    int down_left_y = fp.back().second.second - 1;
-    point current_pt = fp[fp.size()-1].first.boost_pt;
+    int down_left_x = follow_path.back().second.first - 1;
+    int down_left_y = follow_path.back().second.second - 1;
+    point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
     cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     cout << "down_left_x: " << down_left_x << ", " << " down_left_y: " << down_left_y << endl;
         
@@ -461,11 +516,11 @@ void Roadmap::down_left(Point end, pair<Point,pair<int,int>> &best,float &best_d
     }
 }
 
-void Roadmap::left(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::left(Point end, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int left_x = fp.back().second.first - 1;
-    int left_y = fp.back().second.second;
-    point current_pt = fp[fp.size()-1].first.boost_pt;
+    int left_x = follow_path.back().second.first - 1;
+    int left_y = follow_path.back().second.second;
+    point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
     cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     cout << "left_x: " << left_x << ", " << " left_y: " << left_y << endl;
     
@@ -495,11 +550,11 @@ void Roadmap::left(Point end, pair<Point,pair<int,int>> &best,float &best_dist, 
     }
 }
 
-void Roadmap::left_up(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::left_up(Point end, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int left_up_x = fp.back().second.first - 1;
-    int left_up_y = fp.back().second.second + 1;
-    point current_pt = fp[fp.size()-1].first.boost_pt;
+    int left_up_x = follow_path.back().second.first - 1;
+    int left_up_y = follow_path.back().second.second + 1;
+    point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
     cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     cout << "left_up_x: " << left_up_x << ", " << " left_up_y: " << left_up_y << endl;
         
@@ -530,7 +585,7 @@ void Roadmap::left_up(Point end, pair<Point,pair<int,int>> &best,float &best_dis
     }
 }
 
-void Roadmap::print_obs()
+void RoadMap::print_obs()
 {
     cout << "=========Printing Obstacles=============\n";
     for 
@@ -546,22 +601,31 @@ void Roadmap::print_obs()
     cout << "=========End of Obstacles=============\n";   
 }
 
-void Roadmap::print_followpath(vector<pair<Point,pair<int,int>>> &fp)
+void RoadMap::print_followpath()
 {
     cout << "============FollowPath Start============\n";
     for 
-    (size_t i = 0; i < fp.size(); i++)
+    (size_t i = 0; i < follow_path.size(); i++)
     {
-        cout << "i: " << i << " x: " << fp[i].first.boost_pt.x() << " y: " << fp[i].first.boost_pt.y() << endl;
+        cout << "i: " << i << " x: " << follow_path[i].first.boost_pt.x() << " y: " << follow_path[i].first.boost_pt.y() << endl;
     }
     cout << "============FollowPath End=============\n";
 }
 
-void Roadmap::print_obs_pts()
+void RoadMap::print_obs_pts()
 {
     for 
     (size_t i = 0; i < obs_pts_list.size(); i++)
     {
         cout << "x: " << obs_pts_list[i].first << ", y: " <<  obs_pts_list[i].second << endl;
     }    
+}
+
+int main(int argc, char * argv[])
+{
+    map_grid.create_grid();
+    rclcpp::init(argc, argv);
+    rclcpp::spin(std::make_shared<RoadMap>());
+    rclcpp::shutdown();
+    return 0;
 }

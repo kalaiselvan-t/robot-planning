@@ -10,12 +10,20 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(obstacles_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(tf2 REQUIRED)
 
-add_executable(roadmap src/roadmap.cpp src/r_map.cpp)
+include_directories(include)
+
+add_executable(roadmap src/roadmap_node.cpp src/r_map.cpp)
 ament_target_dependencies(roadmap rclcpp geometry_msgs obstacles_msgs)
+
+add_executable(planner src/planner.cpp src/r_map.cpp src/roadmap.cpp src/dubins_trajectory.cpp src/config.cpp src/utils.cpp)
+ament_target_dependencies(planner rclcpp geometry_msgs obstacles_msgs nav_msgs tf2)
 
 install(TARGETS
   roadmap
+  planner
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

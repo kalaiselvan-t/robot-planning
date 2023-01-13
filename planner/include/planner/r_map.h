@@ -102,6 +102,7 @@ bool operator==(const point& lhs, const point& rhs);
 
 // Initialisations
 extern int resolution;
+extern float resol;
 extern int max_border_x;
 extern int max_border_y;
 
@@ -115,10 +116,72 @@ extern vector<pair<float,float>> obs_pts_list;
 
 // Function Declarations
 
-float round_up(float inp, int places);
+float round_up2(float inp, int places);
 
 NodeGraph create_random_node();
 
 void test_link();
+
+// Class declarations
+
+class Roadmap
+{
+    public:
+        vector<pair<Point,pair<int,int>>> follow_path;
+        Grid dup_grid;
+
+        void create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg);
+        void remove_obs_in_grid();
+        bool start_condition(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en);
+        void find_path(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en, vector<pair<Point,pair<int,int>>> &fp);
+        void print_obs();
+        void print_obs_pts();
+        void print_followpath(vector<pair<Point,pair<int,int>>> &fp);
+
+    private:
+        rclcpp::Subscription<obstacles_msgs::msg::ObstacleArrayMsg>::SharedPtr sub_;
+        rclcpp::Publisher<obstacles_msgs::msg::WaypointsMsg>::SharedPtr pub_;
+
+        // vector<pair<Point,pair<int,int>>> follow_path;
+        // Grid dup_grid;
+
+        void topic_callback(const obstacles_msgs::msg::ObstacleArrayMsg & msg);
+
+        // bool start_condition(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en);
+
+        void publisher();
+
+        // void create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg);
+
+        // void remove_obs_in_grid();
+
+        NodeGraph create_random_node();
+
+        void create_node_graph();
+
+        // void find_path(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en);
+
+        void up(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp);
+
+        void up_right(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp);
+
+        void right(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp);
+
+        void right_down(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp);
+
+        void down(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp);
+
+        void down_left(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp);
+
+        void left(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp);
+
+        void left_up(Point end, pair<Point,pair<int,int>> &best,float &best_dist, vector<pair<Point,pair<int,int>>> &fp);
+
+        // void print_obs();
+
+        // void print_followpath();
+
+        // void print_obs_pts();
+};
 
 #endif
