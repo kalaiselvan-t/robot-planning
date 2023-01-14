@@ -61,7 +61,6 @@ void PlannerNode::timer_callback()
     ros_point st,en;
     st.x = 0.0;
     st.y = -1.0;
-    st.
     en.x = 7.0;
     en.y = 6.0;
 
