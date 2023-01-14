@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="send_obstacles" exec="send_obstacles" name="send_obstacles"/>
+  <node pkg="obstacles" exec="inflate_obstacles_node" name="inflate_obstacles"/>
+  <node pkg="planner" exec="planner" name="planner"/>
+</launch>
