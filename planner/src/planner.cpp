@@ -59,10 +59,11 @@ void PlannerNode::timer_callback()
 {
     // follow_path.clear();
     ros_point st,en;
-    st.x = 2.0;
-    st.y = 2.0;
-    en.x = -4.0;
-    en.y = -4.0;
+    st.x = 0.0;
+    st.y = -1.0;
+    st.
+    en.x = 7.0;
+    en.y = 6.0;
 
     if(obs_list.size() > 0 && map_grid.grid.size() == 0)
     {
@@ -101,12 +102,15 @@ void PlannerNode::timer_callback()
 
     if(waypoints.size() > 0)
     {
+        trajectory_arcs.clear();
         multipoints(waypoints);
     }
     else
     {
         cout << "waypoints size is 0\n";
     }
+
+    cout << "traj arc size: " << trajectory_arcs.size() << endl;
 
     if(trajectory_arcs.size() > 0)
     {
