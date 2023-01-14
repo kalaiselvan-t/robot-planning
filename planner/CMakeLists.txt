@@ -15,14 +15,10 @@ find_package(tf2 REQUIRED)
 
 include_directories(include)
 
-add_executable(roadmap src/roadmap_node.cpp src/r_map.cpp)
-ament_target_dependencies(roadmap rclcpp geometry_msgs obstacles_msgs)
-
 add_executable(planner src/planner.cpp src/r_map.cpp src/roadmap.cpp src/dubins_trajectory.cpp src/config.cpp src/utils.cpp)
 ament_target_dependencies(planner rclcpp geometry_msgs obstacles_msgs nav_msgs tf2)
 
 install(TARGETS
-  roadmap
   planner
   DESTINATION lib/${PROJECT_NAME})
 

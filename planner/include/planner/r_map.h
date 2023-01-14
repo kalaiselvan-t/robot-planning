@@ -16,42 +16,38 @@
 #include <boost/geometry/geometries/geometries.hpp>
 
 #include "rclcpp/rclcpp.hpp"
+#include "geometry_msgs/msg/polygon.hpp"
 #include "obstacles_msgs/msg/obstacle_array_msg.hpp"
 #include "obstacles_msgs/msg/obstacle_msg.hpp"
 #include "obstacles_msgs/msg/waypoints_msg.hpp"
 
 using namespace std;
 
-typedef boost::geometry::model::d2::point_xy<float> point;
-typedef boost::geometry::model::polygon<point> polygon;
+typedef geometry_msgs::msg::Point32 ros_point;
+typedef geometry_msgs::msg::Polygon ros_polygon;
+
+typedef boost::geometry::model::d2::point_xy<float> boost_point;
+typedef boost::geometry::model::polygon<boost_point> boost_polygon;
 
 // Data Structs
 
 struct Point
 {
-    float x;
-    float y;
-    point boost_pt;
-    geometry_msgs::msg::Point32 ros_pt;
+    ros_point ros_pt;
+    boost_point boost_pt;
 
-    Point(geometry_msgs::msg::Point32 inp);
+    Point(ros_point inp);
 
-    Point(point inp);
+    Point(boost_point inp);
 
     Point();
 
     void get_boost_pt();
     void get_ros_pt();
 
-    // bool operator!=(const point& rhs)
-    // {
-    //     return boost_pt.x() != rhs.x() && boost_pt.y() != rhs.y();
-    // }
-
-    bool operator==(const point& rhs){
+    bool operator==(const boost_point& rhs){
         return boost_pt.x() == rhs.x() && boost_pt.y() == rhs.y();
     }
-
 };
 
 struct NodeGraph
@@ -76,18 +72,18 @@ struct Nodes
 
 struct Grid
 {
-    vector<vector<point>> grid;
+    vector<vector<boost_point>> grid;
     void create_grid();
     void print_grid();
 };
 
 struct ObstacleTypes
 {
-    geometry_msgs::msg::Polygon ros_poly;
-    boost::geometry::model::polygon<point> boost_poly;
+    ros_polygon ros_poly;
+    boost_polygon boost_poly;
 
-    geometry_msgs::msg::Polygon boost2ros(boost::geometry::model::polygon<point>);
-    boost::geometry::model::polygon<point> ros2boost(geometry_msgs::msg::Polygon);
+    ros_polygon boost2ros(boost_polygon);
+    boost_polygon ros2boost(ros_polygon);
 
     void get_boost_poly();
     void get_ros_poly();
@@ -97,7 +93,7 @@ struct ObstacleTypes
 //   cout << "Caught segmentation fault" << endl;
 // }
 
-bool operator==(const point& lhs, const point& rhs);
+bool operator==(const boost_point& lhs, const boost_point& rhs);
 
 
 // Initialisations
@@ -108,7 +104,7 @@ extern int max_border_y;
 
 extern random_device rd;
 
-extern point pt;
+extern boost_point pt;
 extern Nodes roadmap_nodes;
 extern Grid map_grid;
 extern vector<ObstacleTypes> obs_list;
@@ -132,8 +128,8 @@ class Roadmap
 
         void create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg);
         void remove_obs_in_grid();
-        bool start_condition(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en);
-        void find_path(geometry_msgs::msg::Point32 st, geometry_msgs::msg::Point32 en, vector<pair<Point,pair<int,int>>> &fp);
+        bool start_condition(ros_point start, ros_point end);
+        void find_path(ros_point start, ros_point end, vector<pair<Point,pair<int,int>>> &fp);
         void print_obs();
         void print_obs_pts();
         void print_followpath(vector<pair<Point,pair<int,int>>> &fp);

@@ -11,8 +11,6 @@
 using std::placeholders::_1;
 using namespace std;
 
-typedef geometry_msgs::msg::Point32 ros_point;
-
 class PlannerNode : public rclcpp::Node
 {
     public:
@@ -58,11 +56,11 @@ void PlannerNode::topic_callback(const obstacles_msgs::msg::ObstacleArrayMsg & m
 void PlannerNode::timer_callback()
 {
     // follow_path.clear();
-    ros_point st,en;
-    st.x = 0.0;
-    st.y = -1.0;
-    en.x = 7.0;
-    en.y = 6.0;
+    ros_point start, end;
+    start.x = 0.0;
+    start.y = -1.0;
+    end.x = 7.0;
+    end.y = 6.0;
 
     if(obs_list.size() > 0 && map_grid.grid.size() == 0)
     {
@@ -76,7 +74,7 @@ void PlannerNode::timer_callback()
     {
         if(follow_path.size() == 0)
         {                
-            roadmap.find_path(st,en,follow_path);
+            roadmap.find_path(start, end, follow_path);
             for (size_t i = 0; i < follow_path.size(); i++)
             {
                 Pt p;

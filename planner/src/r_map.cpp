@@ -11,23 +11,23 @@ int max_border_y = 20;
 // uniform_real_distribution<float> dis_x(0,max_border_x);
 // uniform_real_distribution<float> dis_y(0, max_border_y);
 
-point pt;
+boost_point pt;
 Nodes roadmap_nodes;
 Grid map_grid;
 vector<ObstacleTypes> obs_list;
-vector<pair<float,float>> obs_pts_list;
+vector<pair<float, float>> obs_pts_list;
 
 // Function Declarations
 
-//Point
+// Point
 
-Point::Point(geometry_msgs::msg::Point32 inp)
+Point::Point(ros_point inp)
 {
     ros_pt = inp;
     get_boost_pt();
 }
 
-Point::Point(point inp)
+Point::Point(boost_point inp)
 {
     boost_pt = inp;
     get_ros_pt();
@@ -35,33 +35,27 @@ Point::Point(point inp)
 
 Point::Point()
 {
-
 }
 
-void Point::get_boost_pt
-()
+void Point::get_boost_pt()
 {
     boost_pt.x(ros_pt.x);
     boost_pt.y(ros_pt.y);
 }
 
-void Point::get_ros_pt
-()
+void Point::get_ros_pt()
 {
     ros_pt.x = boost_pt.x();
     ros_pt.y = boost_pt.y();
 }
 
-//Grid
-void Grid::create_grid
-()
+// Grid
+void Grid::create_grid()
 {
-    for 
-        (float i = -max_border_x/2; i <= max_border_x/2; i++)
+    for (float i = -max_border_x / 2; i <= max_border_x / 2; i++)
     {
-        vector<point> temp;
-        for 
-            (float j = -max_border_y/2; j <= max_border_y/2; j++)
+        vector<boost_point> temp;
+        for (float j = -max_border_y / 2; j <= max_border_y / 2; j++)
         {
             pt.x(static_cast<float>(i));
             pt.y(static_cast<float>(j));
@@ -72,14 +66,11 @@ void Grid::create_grid
     }
 }
 
-void Grid::print_grid
-()
+void Grid::print_grid()
 {
-    for 
-        (size_t i = 0; i < grid.size(); i++)
+    for (size_t i = 0; i < grid.size(); i++)
     {
-        for 
-            (size_t j = 0; j < grid[i].size(); j++)
+        for (size_t j = 0; j < grid[i].size(); j++)
         {
             cout << "x: " << grid[i][j].x() << ", y: " << grid[i][j].y() << endl;
         }
@@ -89,31 +80,27 @@ void Grid::print_grid
 
 // ObstacleTypes
 
-geometry_msgs::msg::Polygon ObstacleTypes::boost2ros
-(boost::geometry::model::polygon<point> inp)
+ros_polygon ObstacleTypes::boost2ros(boost_polygon inp)
 {
-    geometry_msgs::msg::Polygon ret;
-    for
-    (const auto& point : inp.outer() )
+    ros_polygon ret;
+    for (const auto &p : inp.outer())
     {
 
-        geometry_msgs::msg::Point32 temp;
-        temp.x = point.x();
-        temp.y = point.y();
+        ros_point temp;
+        temp.x = p.x();
+        temp.y = p.y();
         ret.points.push_back(temp);
     }
     return ret;
 }
 
-boost::geometry::model::polygon<point> ObstacleTypes::ros2boost
-(geometry_msgs::msg::Polygon inp)
+boost_polygon ObstacleTypes::ros2boost(ros_polygon inp)
 {
-    boost::geometry::model::polygon<point> ret;
+    boost_polygon ret;
 
-    for 
-    (size_t i = 0; i < inp.points.size(); i++)
+    for (size_t i = 0; i < inp.points.size(); i++)
     {
-        point temp;
+        boost_point temp;
         temp.x(inp.points[i].x);
         temp.y(inp.points[i].y);
         ret.outer().push_back(temp);
@@ -121,29 +108,26 @@ boost::geometry::model::polygon<point> ObstacleTypes::ros2boost
     return ret;
 }
 
-void ObstacleTypes::get_boost_poly
-()
+void ObstacleTypes::get_boost_poly()
 {
     boost_poly = ros2boost(ros_poly);
 }
 
-void ObstacleTypes::get_ros_poly
-()
+void ObstacleTypes::get_ros_poly()
 {
     ros_poly = boost2ros(boost_poly);
 }
 
-bool operator==(const point& lhs, const point& rhs)
+bool operator==(const boost_point &lhs, const boost_point &rhs)
 {
     return lhs.x() == rhs.x() && lhs.y() == rhs.y();
 }
 
 // Util fns
 
-float round_up2
-    (float inp, int places)
+float round_up2(float inp, int places)
 {
-    int no = pow(10,places);
+    int no = pow(10, places);
 
     return floorf(inp * no) / no;
 }
@@ -158,8 +142,7 @@ float round_up2
 //     return node;
 // }
 
-void test_link
-    ()
+void test_link()
 {
     cout << "Connected\n";
 }
