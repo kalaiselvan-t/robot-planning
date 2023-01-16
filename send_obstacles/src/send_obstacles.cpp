@@ -21,7 +21,7 @@ class PathPublisher : public rclcpp::Node
 {
   public:
     PathPublisher()
-    : Node("follow_path")
+    : Node("obstacles_sender")
     {
         publisher_ = this->create_publisher<obstacles_msgs::msg::ObstacleArrayMsg>("obstacles", 10);
 
