@@ -99,11 +99,17 @@ def generate_launch_description():
         ),
 
         Node(
-            package='rviz2',
-            executable='rviz2',
-            namespace='shelfino2',
-            arguments=['-d', rviz_config2],
-            condition=IfCondition(rviz),
-            remappings=remappings
-        )
+            package='send_obstacles',
+            executable='send_obstacles'
+        ),
+
+        Node(
+            package='send_borders',
+            executable='send_borders'
+        ),
+
+        Node(
+            package='send_gates',
+            executable='send_gates'
+        ),
     ])

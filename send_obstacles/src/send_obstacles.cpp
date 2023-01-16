@@ -17,10 +17,10 @@
 #include "std_msgs/msg/header.hpp"
 
 
-class PathPublisher : public rclcpp::Node
+class ObstaclesPublisher : public rclcpp::Node
 {
   public:
-    PathPublisher()
+    ObstaclesPublisher()
     : Node("obstacles_sender")
     {
         publisher_ = this->create_publisher<obstacles_msgs::msg::ObstacleArrayMsg>("obstacles", 10);
@@ -114,7 +114,7 @@ class PathPublisher : public rclcpp::Node
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<PathPublisher>());
+  rclcpp::spin(std::make_shared<ObstaclesPublisher>());
   rclcpp::shutdown();
   return 0;
 }
