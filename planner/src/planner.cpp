@@ -3,9 +3,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "../include/planner/r_map.h"
 #include "./dubins_planner.cpp"
-#include "obstacles_msgs/msg/obstacle_array_msg.hpp"
-#include "obstacles_msgs/msg/obstacle_msg.hpp"
-#include "obstacles_msgs/msg/waypoints_msg.hpp"
 #include "nav_msgs/msg/path.hpp"
 
 using std::placeholders::_1;

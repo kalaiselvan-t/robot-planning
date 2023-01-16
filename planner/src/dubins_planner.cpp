@@ -8,7 +8,6 @@
 #include "std_msgs/msg/string.hpp"
 #include "nav_msgs/msg/path.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
-#include "obstacles_msgs/msg/waypoints_msg.hpp"
 #include "tf2/LinearMath/Quaternion.h"
 
 #include "dubins_planner/dubins_trajectory.h"

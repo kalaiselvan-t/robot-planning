@@ -16,10 +16,10 @@
 #include <boost/geometry/geometries/geometries.hpp>
 
 #include "rclcpp/rclcpp.hpp"
+#include "geometry_msgs/msg/point32.hpp"
 #include "geometry_msgs/msg/polygon.hpp"
 #include "obstacles_msgs/msg/obstacle_array_msg.hpp"
 #include "obstacles_msgs/msg/obstacle_msg.hpp"
-#include "obstacles_msgs/msg/waypoints_msg.hpp"
 
 using namespace std;
 
@@ -136,7 +136,7 @@ class Roadmap
 
     private:
         rclcpp::Subscription<obstacles_msgs::msg::ObstacleArrayMsg>::SharedPtr sub_;
-        rclcpp::Publisher<obstacles_msgs::msg::WaypointsMsg>::SharedPtr pub_;
+        // rclcpp::Publisher<geometry_msgs::msg::WaypointsMsg>::SharedPtr pub_;
 
         // vector<pair<Point,pair<int,int>>> follow_path;
         // Grid dup_grid;
