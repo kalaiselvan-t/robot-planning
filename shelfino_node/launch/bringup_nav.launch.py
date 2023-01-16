@@ -47,7 +47,7 @@ def generate_launch_description():
         ),
 
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([nav2_launch_file_dir, '/shelfino2_nav.launch.py']),
+            PythonLaunchDescriptionSource([nav2_launch_file_dir, '/', robot_id, '_nav.launch.py']),
             launch_arguments={'remote': remote}.items()
         ),
     ])
