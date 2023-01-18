@@ -49,7 +49,7 @@ class PositionListener : public rclcpp::Node
       // and send velocity commands for turtle2 to reach target_frame
       try {
           rclcpp::Time now = this->get_clock()->now();
-          t = tf_buffer_->lookupTransform("map", "base_link", tf2::TimePointZero, 20s);
+          t = tf_buffer_->lookupTransform("map", "shelfino1/base_link", tf2::TimePointZero, 20s);
       } catch (const tf2::TransformException & ex) {
           RCLCPP_INFO(this->get_logger(), "Could not transform map to base_link: %s", ex.what());
           return;

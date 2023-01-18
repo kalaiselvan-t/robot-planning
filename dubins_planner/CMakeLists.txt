@@ -20,10 +20,10 @@ find_package(rclcpp_action REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_executable(dubins_planner 
+add_executable(path_publisher 
   src/path_planner.cpp
 )
-ament_target_dependencies(dubins_planner 
+ament_target_dependencies(path_publisher 
   rclcpp 
   std_msgs
   nav_msgs
@@ -40,7 +40,7 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS
-  dubins_planner
+  path_publisher
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

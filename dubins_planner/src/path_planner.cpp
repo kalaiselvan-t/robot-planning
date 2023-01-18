@@ -100,8 +100,6 @@ class PathPublisher : public rclcpp::Node
             usleep(1000000);
             RCLCPP_INFO(this->get_logger(), "%s", path_msg.header.frame_id.c_str());
         }
-        
-      
     }
 
   
