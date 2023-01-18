@@ -22,8 +22,9 @@ class ObstaclesSubscriber: public rclcpp::Node
     ObstaclesSubscriber()
     : Node("obstacles_subscriber")
     {
-      subscription_ = this->create_subscription<obstacles_msgs::msg::ObstacleArrayMsg>(
-      "obstacles", 1, std::bind(&ObstaclesSubscriber::topic_callback, this, _1));
+        auto qos = rclcpp::QoS(rclcpp::KeepLast(1), rmw_qos_profile_sensor_data);
+        subscription_ = this->create_subscription<obstacles_msgs::msg::ObstacleArrayMsg>(
+            "obstacles", qos, std::bind(&ObstaclesSubscriber::topic_callback, this, _1));
     }
 
     private:
