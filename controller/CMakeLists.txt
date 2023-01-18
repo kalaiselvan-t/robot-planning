@@ -20,8 +20,15 @@ ament_target_dependencies(controller rclcpp geometry_msgs obstacles_msgs tf2 tf2
 add_executable(teleop src/teleop.cpp)
 ament_target_dependencies(teleop rclcpp geometry_msgs obstacles_msgs tf2 tf2_ros)
 
-install(TARGETS controller teleop
-DESTINATION lib/${PROJECT_NAME}
+install(TARGETS
+  controller
+  teleop
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY 
+  launch
+  DESTINATION share/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
