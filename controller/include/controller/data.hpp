@@ -32,11 +32,11 @@ struct Pose2d
 	float x,y,th;
 };
 
-struct Grid
+struct GridMap
 {
-    std::vector<std::vector<boost_point>> grid;
-    void create_grid();
-    void print_grid();
+    std::vector<std::vector<boost_point>> content;
+    void create();
+    void print();
 };
 
 struct ObstacleTypes
@@ -96,14 +96,14 @@ struct Dubins_arc{
 class Planner
 {
     public:
-        Grid dup_grid;
+        GridMap dup_gridmap;
         vector<pair<Point,pair<int,int>>> follow_path;
         vector<Pose2d> waypoints;
         vector<Pose2d> best_path;
         vector<Dubins_arc> arcs;
         vector<vector<float>> points;
 
-        Planner(geometry_msgs::msg::Pose start, geometry_msgs::msg::Pose end, Grid map);
+        Planner(geometry_msgs::msg::Pose start, geometry_msgs::msg::Pose end, GridMap gridmap);
 
         // void create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg);
         // void remove_obs_in_grid();

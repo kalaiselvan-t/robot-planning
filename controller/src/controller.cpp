@@ -30,7 +30,7 @@ class Controller: public rclcpp::Node
 	  		timer_ = this->create_wall_timer(
       			500ms, std::bind(&Controller::timer_callback, this));
 			
-			map.create_grid();
+			gridmap.create();
         }
     
     private:
@@ -43,7 +43,7 @@ class Controller: public rclcpp::Node
 		rclcpp::TimerBase::SharedPtr timer_;
 		
 		size_t count_;
-		Grid map;
+		GridMap gridmap;
 
 		vector<Dubins_arc> path1_arcs;
 		vector<Dubins_arc> path2_arcs;
@@ -80,7 +80,7 @@ void Controller::timer_callback()
 		rp.position.y = 2.0;
 		ep.position.x = 5.0;
 		ep.position.y = 7.0;
-		Planner planner = Planner(rp,ep,map);
+		Planner planner = Planner(rp,ep,gridmap);
 		this->path1_arcs = planner.plan();
 		path1_publisher();
 		geometry_msgs::msg::Pose rp1;
@@ -89,7 +89,7 @@ void Controller::timer_callback()
 		rp1.position.y = 2.0;
 		ep1.position.x = 5.0;
 		ep1.position.y = 7.0;
-		Planner planner1 = Planner(rp1,ep1,map);
+		Planner planner1 = Planner(rp1,ep1,gridmap);
 		this->path2_arcs = planner1.plan();
 		path2_publisher();
 	// }
@@ -302,19 +302,19 @@ void Controller::get_obs(const obstacles_msgs::msg::ObstacleArrayMsg msg)
 void Controller::remove_obs_in_grid()
 {   
     for 
-        (size_t i = 0; i < map.grid.size(); i++)
+        (size_t i = 0; i < gridmap.content.size(); i++)
     {
         for 
-            (size_t j = 0; j < map.grid[i].size(); j++)
+            (size_t j = 0; j < gridmap.content[i].size(); j++)
         {   
             for 
             (size_t k = 0; k < obs.size(); k++)
             {
-                if(boost::geometry::covered_by(map.grid[i][j], obs[k].boost_poly))
+                if(boost::geometry::covered_by(gridmap.content[i][j], obs[k].boost_poly))
                 {
-                    cout << "inside obs: " << map.grid[i][j].x() << ", " << map.grid[i][j].y() << endl;
-                    map.grid[i][j].x(std::numeric_limits<float>::infinity());
-                    map.grid[i][j].y(std::numeric_limits<float>::infinity());
+                    cout << "inside obs: " << gridmap.content[i][j].x() << ", " << gridmap.content[i][j].y() << endl;
+                    gridmap.content[i][j].x(std::numeric_limits<float>::infinity());
+                    gridmap.content[i][j].y(std::numeric_limits<float>::infinity());
                 }
             }
         } 

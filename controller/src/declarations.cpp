@@ -36,7 +36,7 @@ void Point::get_ros_pose()
 /*
 ========================================================GRID=====================================================
 */
-void Grid::create_grid()
+void GridMap::create()
 {
     for (float i = -max_border_x / 2; i <= max_border_x / 2; i++)
     {
@@ -48,17 +48,17 @@ void Grid::create_grid()
             p.y(static_cast<float>(j));
             temp.push_back(p);
         }
-        grid.push_back(temp);
+        content.push_back(temp);
     }
 }
 
-void Grid::print_grid()
+void GridMap::print()
 {
-    for (size_t i = 0; i < grid.size(); i++)
+    for (size_t i = 0; i < content.size(); i++)
     {
-        for (size_t j = 0; j < grid[i].size(); j++)
+        for (size_t j = 0; j < content[i].size(); j++)
         {
-            cout << "x: " << grid[i][j].x() << ", y: " << grid[i][j].y() << endl;
+            cout << "x: " << content[i][j].x() << ", y: " << content[i][j].y() << endl;
         }
         cout << "-----------------------\n";
     }
@@ -114,11 +114,11 @@ bool operator==(const boost_point &lhs, const boost_point &rhs)
 /*
 ========================================================PLANNER CLASS=====================================================
 */
-Planner::Planner(geometry_msgs::msg::Pose start, geometry_msgs::msg::Pose end, Grid map)
+Planner::Planner(geometry_msgs::msg::Pose start, geometry_msgs::msg::Pose end, GridMap gridmap)
 {
     this->start = start;
     this->end = end;
-    this->dup_grid = map;
+    this->dup_gridmap = gridmap;
 }
 
 void Planner::find_path()
@@ -130,19 +130,19 @@ void Planner::find_path()
     // cout << "st_boost_x: " << st.boost_pt.x() << ", st_boost_y: " << st.boost_pt.x() << endl;
     pair<int,int> start_ind, end_ind;
 
-    // cout << "grid size: " << this->dup_grid.grid.size() << endl;
+    // cout << "grid size: " << this->dup_gridmap.content.size() << endl;
 
-    for (size_t i = 0; i < this->dup_grid.grid.size(); i++)
+    for (size_t i = 0; i < this->dup_gridmap.content.size(); i++)
     {
-        for (size_t j = 0; j < this->dup_grid.grid[i].size(); j++)
+        for (size_t j = 0; j < this->dup_gridmap.content[i].size(); j++)
         {
-            if (st.boost_pt == this->dup_grid.grid[i][j])
+            if (st.boost_pt == this->dup_gridmap.content[i][j])
             {
                 start_ind.first = i;
                 start_ind.second = j;
             }
 
-            if (en.boost_pt == this->dup_grid.grid[i][j])
+            if (en.boost_pt == this->dup_gridmap.content[i][j])
             {
                 end_ind.first = i;
                 end_ind.second = j;
@@ -167,8 +167,8 @@ void Planner::find_path()
     {   
         if(count > 0)
         {
-            dup_grid.grid[follow_path[count-1].second.first][follow_path[count-1].second.second].x(std::numeric_limits<float>::infinity());
-            dup_grid.grid[follow_path[count-1].second.first][follow_path[count-1].second.second].y(std::numeric_limits<float>::infinity());
+            dup_gridmap.content[follow_path[count-1].second.first][follow_path[count-1].second.second].x(std::numeric_limits<float>::infinity());
+            dup_gridmap.content[follow_path[count-1].second.first][follow_path[count-1].second.second].y(std::numeric_limits<float>::infinity());
         }
 
         pair<Point,pair<int,int>> best;
@@ -216,21 +216,21 @@ void Planner::up(Point en, pair<Point,pair<int,int>> &best, float &best_dist)
     
     if (0 <= up_x && up_x <= max_border_x && 0 <= up_y && up_y <= max_border_y)
     {
-        // cout << "x: " << dup_grid.grid[up_x][up_y].x() << ", y: " << dup_grid.grid[up_x][up_y].y() << endl;
-        if(!(isinf(dup_grid.grid[up_x][up_y].x()) || isinf(dup_grid.grid[up_x][up_y].y())) && abs(boost::geometry::distance(dup_grid.grid[up_x][up_y],current_pt)) < 5)
+        // cout << "x: " << dup_gridmap.content[up_x][up_y].x() << ", y: " << dup_gridmap.content[up_x][up_y].y() << endl;
+        if(!(isinf(dup_gridmap.content[up_x][up_y].x()) || isinf(dup_gridmap.content[up_x][up_y].y())) && abs(boost::geometry::distance(dup_gridmap.content[up_x][up_y],current_pt)) < 5)
         {
-            if(boost::geometry::distance(dup_grid.grid[up_x][up_y],en.boost_pt) <= best_dist)
+            if(boost::geometry::distance(dup_gridmap.content[up_x][up_y],en.boost_pt) <= best_dist)
             {
-                dup_grid.grid[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
-                best_dist = boost::geometry::distance(dup_grid.grid[up_x][up_y],en.boost_pt);
-                best.first = Point(dup_grid.grid[up_x][up_y]);
+                dup_gridmap.content[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
+                best_dist = boost::geometry::distance(dup_gridmap.content[up_x][up_y],en.boost_pt);
+                best.first = Point(dup_gridmap.content[up_x][up_y]);
                 best.second = {up_x,up_y};
             }
             else
             {
-                dup_grid.grid[up_x][up_y].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[up_x][up_y].y(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[up_x][up_y].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[up_x][up_y].y(std::numeric_limits<float>::infinity());
             }
             // cout << "not a obs\n";
         }
@@ -250,21 +250,21 @@ void Planner::up_right(Point en, pair<Point,pair<int,int>> &best,float &best_dis
     
     if (0 <= up_right_x && up_right_x <= max_border_x && 0 <= up_right_y && up_right_y <= max_border_y)
     {
-        // cout << "x: " << dup_grid.grid[up_right_x][up_right_y].x() << ", y: " << dup_grid.grid[up_right_x][up_right_y].y() << endl;
-        if(!(isinf(dup_grid.grid[up_right_x][up_right_y].x()) || isinf(dup_grid.grid[up_right_x][up_right_y].y())) && abs(boost::geometry::distance(dup_grid.grid[up_right_x][up_right_y],current_pt)) < 5)
+        // cout << "x: " << dup_gridmap.content[up_right_x][up_right_y].x() << ", y: " << dup_gridmap.content[up_right_x][up_right_y].y() << endl;
+        if(!(isinf(dup_gridmap.content[up_right_x][up_right_y].x()) || isinf(dup_gridmap.content[up_right_x][up_right_y].y())) && abs(boost::geometry::distance(dup_gridmap.content[up_right_x][up_right_y],current_pt)) < 5)
         {
-            if(boost::geometry::distance(dup_grid.grid[up_right_x][up_right_y],en.boost_pt) <= best_dist)
+            if(boost::geometry::distance(dup_gridmap.content[up_right_x][up_right_y],en.boost_pt) <= best_dist)
             {   
-                dup_grid.grid[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
-                best_dist = boost::geometry::distance(dup_grid.grid[up_right_x][up_right_y],en.boost_pt);
-                best.first = Point(dup_grid.grid[up_right_x][up_right_y]);
+                dup_gridmap.content[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
+                best_dist = boost::geometry::distance(dup_gridmap.content[up_right_x][up_right_y],en.boost_pt);
+                best.first = Point(dup_gridmap.content[up_right_x][up_right_y]);
                 best.second = {up_right_x,up_right_y};
             }
             else
             {
-                dup_grid.grid[up_right_x][up_right_y].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[up_right_x][up_right_y].y(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[up_right_x][up_right_y].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[up_right_x][up_right_y].y(std::numeric_limits<float>::infinity());
             }
             
             // cout << "not a obs\n";
@@ -286,21 +286,21 @@ void Planner::right(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
         
     if (0 <= right_x && right_x <= max_border_x && 0 <= right_y && right_y <= max_border_y)
     {
-        // cout << "x: " << dup_grid.grid[right_x][right_y].x() << ", y: " << dup_grid.grid[right_x][right_y].y() << endl;
-        if(!(isinf(dup_grid.grid[right_x][right_y].x()) || isinf(dup_grid.grid[right_x][right_y].y())) && abs(boost::geometry::distance(dup_grid.grid[right_x][right_y],current_pt)) < 5)
+        // cout << "x: " << dup_gridmap.content[right_x][right_y].x() << ", y: " << dup_gridmap.content[right_x][right_y].y() << endl;
+        if(!(isinf(dup_gridmap.content[right_x][right_y].x()) || isinf(dup_gridmap.content[right_x][right_y].y())) && abs(boost::geometry::distance(dup_gridmap.content[right_x][right_y],current_pt)) < 5)
         {
-            if(boost::geometry::distance(dup_grid.grid[right_x][right_y],en.boost_pt) <= best_dist)
+            if(boost::geometry::distance(dup_gridmap.content[right_x][right_y],en.boost_pt) <= best_dist)
             {
-                dup_grid.grid[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
-                best_dist = boost::geometry::distance(dup_grid.grid[right_x][right_y],en.boost_pt);
-                best.first = Point(dup_grid.grid[right_x][right_y]);
+                dup_gridmap.content[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
+                best_dist = boost::geometry::distance(dup_gridmap.content[right_x][right_y],en.boost_pt);
+                best.first = Point(dup_gridmap.content[right_x][right_y]);
                 best.second = {right_x,right_y};
             }
             else
             {
-                dup_grid.grid[right_x][right_y].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[right_x][right_y].y(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[right_x][right_y].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[right_x][right_y].y(std::numeric_limits<float>::infinity());
             }
             // cout << "not a obs\n";
         }
@@ -321,21 +321,21 @@ void Planner::right_down(Point en, pair<Point,pair<int,int>> &best,float &best_d
         
     if (0 <= right_down_x && right_down_x <= max_border_x && 0 <= right_down_y && right_down_y <= max_border_y)
     {
-        // cout << "x: " << dup_grid.grid[right_down_x][right_down_y].x() << ", y: " << dup_grid.grid[right_down_x][right_down_y].y() << endl;
-        if(!(isinf(dup_grid.grid[right_down_x][right_down_y].x()) || isinf(dup_grid.grid[right_down_x][right_down_y].y())) && abs(boost::geometry::distance(dup_grid.grid[right_down_x][right_down_y],current_pt)) < 5)
+        // cout << "x: " << dup_gridmap.content[right_down_x][right_down_y].x() << ", y: " << dup_gridmap.content[right_down_x][right_down_y].y() << endl;
+        if(!(isinf(dup_gridmap.content[right_down_x][right_down_y].x()) || isinf(dup_gridmap.content[right_down_x][right_down_y].y())) && abs(boost::geometry::distance(dup_gridmap.content[right_down_x][right_down_y],current_pt)) < 5)
         {
-            if(boost::geometry::distance(dup_grid.grid[right_down_x][right_down_y],en.boost_pt) <= best_dist)
+            if(boost::geometry::distance(dup_gridmap.content[right_down_x][right_down_y],en.boost_pt) <= best_dist)
             {
-                dup_grid.grid[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
-                best_dist = boost::geometry::distance(dup_grid.grid[right_down_x][right_down_y],en.boost_pt);
-                best.first = Point(dup_grid.grid[right_down_x][right_down_y]);
+                dup_gridmap.content[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
+                best_dist = boost::geometry::distance(dup_gridmap.content[right_down_x][right_down_y],en.boost_pt);
+                best.first = Point(dup_gridmap.content[right_down_x][right_down_y]);
                 best.second = {right_down_x,right_down_y};
             }
             else
             {
-                dup_grid.grid[right_down_x][right_down_y].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[right_down_x][right_down_y].y(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[right_down_x][right_down_y].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[right_down_x][right_down_y].y(std::numeric_limits<float>::infinity());
             }
             // cout << "not a obs\n";
         }
@@ -356,21 +356,21 @@ void Planner::down(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
         
     if (0 <= down_x && down_x <= max_border_x && 0 <= down_y && down_y <= max_border_y)
     {
-        // cout << "x: " << dup_grid.grid[down_x][down_y].x() << ", y: " << dup_grid.grid[down_x][down_y].y() << endl;
-        if(!(isinf(dup_grid.grid[down_x][down_y].x()) || isinf(dup_grid.grid[down_x][down_y].y())) && abs(boost::geometry::distance(dup_grid.grid[down_x][down_y],current_pt)) < 5)
+        // cout << "x: " << dup_gridmap.content[down_x][down_y].x() << ", y: " << dup_gridmap.content[down_x][down_y].y() << endl;
+        if(!(isinf(dup_gridmap.content[down_x][down_y].x()) || isinf(dup_gridmap.content[down_x][down_y].y())) && abs(boost::geometry::distance(dup_gridmap.content[down_x][down_y],current_pt)) < 5)
         {
-            if(boost::geometry::distance(dup_grid.grid[down_x][down_y],en.boost_pt) <= best_dist)
+            if(boost::geometry::distance(dup_gridmap.content[down_x][down_y],en.boost_pt) <= best_dist)
             {
-                dup_grid.grid[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
-                best_dist = boost::geometry::distance(dup_grid.grid[down_x][down_y],en.boost_pt);
-                best.first = Point(dup_grid.grid[down_x][down_y]);
+                dup_gridmap.content[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
+                best_dist = boost::geometry::distance(dup_gridmap.content[down_x][down_y],en.boost_pt);
+                best.first = Point(dup_gridmap.content[down_x][down_y]);
                 best.second = {down_x,down_y};
             }
             else
             {
-                dup_grid.grid[down_x][down_y].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[down_x][down_y].y(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[down_x][down_y].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[down_x][down_y].y(std::numeric_limits<float>::infinity());
             }
             // cout << "not a obs\n";
         }
@@ -391,21 +391,21 @@ void Planner::down_left(Point en, pair<Point,pair<int,int>> &best,float &best_di
         
     if (0 <= down_left_x && down_left_x <= max_border_x && 0 <= down_left_y && down_left_y <= max_border_y)
     {
-        // cout << "x: " << dup_grid.grid[down_left_x][down_left_y].x() << ", y: " << dup_grid.grid[down_left_x][down_left_y].y() << endl;
-        if(!(isinf(dup_grid.grid[down_left_x][down_left_y].x()) || isinf(dup_grid.grid[down_left_x][down_left_y].y())) && abs(boost::geometry::distance(dup_grid.grid[down_left_x][down_left_y],current_pt)) < 5)
+        // cout << "x: " << dup_gridmap.content[down_left_x][down_left_y].x() << ", y: " << dup_gridmap.content[down_left_x][down_left_y].y() << endl;
+        if(!(isinf(dup_gridmap.content[down_left_x][down_left_y].x()) || isinf(dup_gridmap.content[down_left_x][down_left_y].y())) && abs(boost::geometry::distance(dup_gridmap.content[down_left_x][down_left_y],current_pt)) < 5)
         {
-            if(boost::geometry::distance(dup_grid.grid[down_left_x][down_left_y],en.boost_pt) <= best_dist)
+            if(boost::geometry::distance(dup_gridmap.content[down_left_x][down_left_y],en.boost_pt) <= best_dist)
             {
-                dup_grid.grid[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
-                best_dist = boost::geometry::distance(dup_grid.grid[down_left_x][down_left_y],en.boost_pt);
-                best.first = Point(dup_grid.grid[down_left_x][down_left_y]);
+                dup_gridmap.content[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
+                best_dist = boost::geometry::distance(dup_gridmap.content[down_left_x][down_left_y],en.boost_pt);
+                best.first = Point(dup_gridmap.content[down_left_x][down_left_y]);
                 best.second = {down_left_x,down_left_y};
             }
             else
             {
-                dup_grid.grid[down_left_x][down_left_y].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[down_left_x][down_left_y].y(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[down_left_x][down_left_y].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[down_left_x][down_left_y].y(std::numeric_limits<float>::infinity());
             }
             // cout << "not a obs\n";
         }
@@ -426,21 +426,21 @@ void Planner::left(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
     
     if (0 <= left_x && left_x <= max_border_x && 0 <= left_y && left_y <= max_border_y)
     {
-        // cout << "x: " << dup_grid.grid[left_x][left_y].x() << ", y: " << dup_grid.grid[left_x][left_y].y() << endl;
-        if(!(isinf(dup_grid.grid[left_x][left_y].x()) || isinf(dup_grid.grid[left_x][left_y].y())) && abs(boost::geometry::distance(dup_grid.grid[left_x][left_y],current_pt)) < 5)
+        // cout << "x: " << dup_gridmap.content[left_x][left_y].x() << ", y: " << dup_gridmap.content[left_x][left_y].y() << endl;
+        if(!(isinf(dup_gridmap.content[left_x][left_y].x()) || isinf(dup_gridmap.content[left_x][left_y].y())) && abs(boost::geometry::distance(dup_gridmap.content[left_x][left_y],current_pt)) < 5)
         {
-            if(boost::geometry::distance(dup_grid.grid[left_x][left_y],en.boost_pt) <= best_dist)
+            if(boost::geometry::distance(dup_gridmap.content[left_x][left_y],en.boost_pt) <= best_dist)
             {
-                dup_grid.grid[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
-                best_dist = boost::geometry::distance(dup_grid.grid[left_x][left_y],en.boost_pt);
-                best.first = Point(dup_grid.grid[left_x][left_y]);
+                dup_gridmap.content[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
+                best_dist = boost::geometry::distance(dup_gridmap.content[left_x][left_y],en.boost_pt);
+                best.first = Point(dup_gridmap.content[left_x][left_y]);
                 best.second = {left_x,left_y};
             }
             else
             {
-                dup_grid.grid[left_x][left_y].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[left_x][left_y].y(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[left_x][left_y].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[left_x][left_y].y(std::numeric_limits<float>::infinity());
             }
             // cout << "not a obs\n";
         }
@@ -460,21 +460,21 @@ void Planner::left_up(Point en, pair<Point,pair<int,int>> &best,float &best_dist
         
     if (0 <= left_up_x && left_up_x <= max_border_x && 0 <= left_up_y && left_up_y <= max_border_y)
     {
-        // cout << "x: " << dup_grid.grid[left_up_x][left_up_y].x() << ", y: " << dup_grid.grid[left_up_x][left_up_y].y() << endl;
-        if(!(isinf(dup_grid.grid[left_up_x][left_up_y].x()) || isinf(dup_grid.grid[left_up_x][left_up_y].y())) && abs(boost::geometry::distance(dup_grid.grid[left_up_x][left_up_y],current_pt)) < 5)
+        // cout << "x: " << dup_gridmap.content[left_up_x][left_up_y].x() << ", y: " << dup_gridmap.content[left_up_x][left_up_y].y() << endl;
+        if(!(isinf(dup_gridmap.content[left_up_x][left_up_y].x()) || isinf(dup_gridmap.content[left_up_x][left_up_y].y())) && abs(boost::geometry::distance(dup_gridmap.content[left_up_x][left_up_y],current_pt)) < 5)
         {
-            if(boost::geometry::distance(dup_grid.grid[left_up_x][left_up_y],en.boost_pt) <= best_dist)
+            if(boost::geometry::distance(dup_gridmap.content[left_up_x][left_up_y],en.boost_pt) <= best_dist)
             {
-                dup_grid.grid[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
-                best_dist = boost::geometry::distance(dup_grid.grid[left_up_x][left_up_y],en.boost_pt);
-                best.first = Point(dup_grid.grid[left_up_x][left_up_y]);
+                dup_gridmap.content[best.second.first][best.second.second].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[best.second.first][best.second.second].y(std::numeric_limits<float>::infinity());
+                best_dist = boost::geometry::distance(dup_gridmap.content[left_up_x][left_up_y],en.boost_pt);
+                best.first = Point(dup_gridmap.content[left_up_x][left_up_y]);
                 best.second = {left_up_x,left_up_y};
             }
             else
             {
-                dup_grid.grid[left_up_x][left_up_y].x(std::numeric_limits<float>::infinity());
-                dup_grid.grid[left_up_x][left_up_y].y(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[left_up_x][left_up_y].x(std::numeric_limits<float>::infinity());
+                dup_gridmap.content[left_up_x][left_up_y].y(std::numeric_limits<float>::infinity());
             }
             // cout << "not a obs\n";
         }
