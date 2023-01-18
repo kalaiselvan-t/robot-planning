@@ -7,24 +7,25 @@ using std::placeholders::_1;
 class Controller: public rclcpp::Node
 {
     public:
-
-        Controller():Node("controller_node")
+        Controller() : Node("controller_node")
         {
+			auto qos = rclcpp::QoS(rclcpp::KeepLast(1), rmw_qos_profile_sensor_data);
+
 			border_sub_ = this->create_subscription<geometry_msgs::msg::Polygon>(
-      "map_borders", 10, std::bind(&Controller::get_border, this, _1));
+				"map_borders", qos, std::bind(&Controller::get_border, this, _1));
 
 	  		gate_poses_sub_ = this->create_subscription<geometry_msgs::msg::PoseArray>(
-      "gate_position", 10, std::bind(&Controller::get_gate_poses, this, _1));
+				"gate_position", qos, std::bind(&Controller::get_gate_poses, this, _1));
 
 	  		obs_sub_ = this->create_subscription<obstacles_msgs::msg::ObstacleArrayMsg>(
-      "inflated_obstacles", 10, std::bind(&Controller::get_obs, this, _1));
+				"inflated_obstacles", 1, std::bind(&Controller::get_obs, this, _1));
 
 	  		robot_pose_sub_ = this->create_subscription<geometry_msgs::msg::TransformStamped>(
-      "transform", 10, std::bind(&Controller::get_robot_pose, this, _1));
+				"transform", 1, std::bind(&Controller::get_robot_pose, this, _1));
 
-	  		pub1_ = this->create_publisher<nav_msgs::msg::Path>("shelfino1/path",10);
+	  		pub1_ = this->create_publisher<nav_msgs::msg::Path>("shelfino1/path", 1);
 
-			pub2_ = this->create_publisher<nav_msgs::msg::Path>("shelfino2/path",10);
+			pub2_ = this->create_publisher<nav_msgs::msg::Path>("shelfino2/path", 1);
 
 	  		timer_ = this->create_wall_timer(
       			500ms, std::bind(&Controller::timer_callback, this));
@@ -131,7 +132,7 @@ void Controller::path1_publisher()
 		points.clear();
 	}
 
-	RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path");
+	// RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path");
 
 	pub1_->publish(path_msg);
 }
@@ -173,7 +174,7 @@ void Controller::path2_publisher()
 		points.clear();
 	}
 
-	RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path2");
+	// RCLCPP_INFO(this->get_logger(), "Publishing: dubins_path2");
 
 	pub2_->publish(path_msg);
 }
