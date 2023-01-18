@@ -12,13 +12,26 @@ find_package(geometry_msgs REQUIRED)
 find_package(obstacles_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(tf2 REQUIRED)
+find_package(behaviortree_cpp_v3 REQUIRED)
+find_package(nav2_behavior_tree REQUIRED)
+
+# install directories
+install(DIRECTORY
+  config
+  rviz
+  DESTINATION share/${PROJECT_NAME}/
+)
 
 include_directories(include)
+
+add_executable(navigation_bt src/navigation/navigation_bt.cpp)
+ament_target_dependencies(navigation_bt rclcpp behaviortree_cpp_v3)
 
 add_executable(planner src/planner.cpp src/r_map.cpp src/roadmap.cpp src/dubins_trajectory.cpp src/config.cpp src/utils.cpp)
 ament_target_dependencies(planner rclcpp geometry_msgs obstacles_msgs nav_msgs tf2)
 
 install(TARGETS
+  navigation_bt
   planner
   DESTINATION lib/${PROJECT_NAME})
 
