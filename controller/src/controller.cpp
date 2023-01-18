@@ -271,7 +271,7 @@ void Controller::get_gate_poses(const geometry_msgs::msg::PoseArray msg)
 {
 	// cout << "gate pose sub\n";
 	gate_poses = msg;
-	cout << "gate size: " << gate_poses.size() << endl;
+	cout << "gate size: " << gate_poses.poses.size() << endl;
 	// cout << "x: " << gate_poses.poses[0].position.x << ", y: " << gate_poses.poses[0].position.y << endl;
 }
 
