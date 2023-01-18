@@ -31,6 +31,7 @@ class Controller: public rclcpp::Node
       			500ms, std::bind(&Controller::timer_callback, this));
 			
 			gridmap.create();
+			gridmap.print();
         }
     
     private:
@@ -65,7 +66,7 @@ class Controller: public rclcpp::Node
 
 void Controller::timer_callback()
 {
-	cout << "timer\n";
+	// cout << "timer\n";
 	// if (!frame_flag)
 	// {
 	// 	get_robot_pose();
@@ -272,7 +273,7 @@ void Controller::get_gate_poses(const geometry_msgs::msg::PoseArray msg)
 {
 	// cout << "gate pose sub\n";
 	gate_poses = msg;
-	cout << "gate size: " << gate_poses.poses.size() << endl;
+	// cout << "gate size: " << gate_poses.poses.size() << endl;
 	// cout << "x: " << gate_poses.poses[0].position.x << ", y: " << gate_poses.poses[0].position.y << endl;
 }
 

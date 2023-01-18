@@ -207,12 +207,12 @@ Dubins_curve dubins_shortest_path(float x0, float y0, float th0, float xf, float
 
         curve = dubins_curve(x0, y0, th0, s1, s2, s3, ksigns[pidx][0]*Kmax, ksigns[pidx][1]*Kmax, ksigns[pidx][2]*Kmax);
         
-        curve.a1.print();
-        cout<<"\n";
-        curve.a2.print();
-        cout<<"\n";
-        curve.a3.print();
-        cout<<curve.L;
+        // curve.a1.print();
+        // cout<<"\n";
+        // curve.a2.print();
+        // cout<<"\n";
+        // curve.a3.print();
+        // cout<<curve.L;
 
         //plot_dubins(curve);
         return curve;

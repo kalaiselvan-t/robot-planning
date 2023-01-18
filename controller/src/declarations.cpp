@@ -54,6 +54,7 @@ void GridMap::create()
 
 void GridMap::print()
 {
+    cout << "GridMap\n";
     for (size_t i = 0; i < content.size(); i++)
     {
         for (size_t j = 0; j < content[i].size(); j++)
@@ -582,12 +583,12 @@ vector<Dubins_arc> Planner::multipoints()
 		overall_length = overall_length + best_path_length;
 	}
 
-    cout << "============Waypoints Start============\n";
-    for(size_t i = 0; i < this->best_path.size();i++)
-    {
-        cout << "i: " << i << " x: " << this->best_path[i].x << " y: " << this->best_path[i].y << " y: " << this->best_path[i].th << endl;
-    }
-    cout << "============Waypoints End=============\n";
+    // cout << "============Waypoints Start============\n";
+    // for(size_t i = 0; i < this->best_path.size();i++)
+    // {
+    //     cout << "i: " << i << " x: " << this->best_path[i].x << " y: " << this->best_path[i].y << " y: " << this->best_path[i].th << endl;
+    // }
+    // cout << "============Waypoints End=============\n";
 
     for 
 	(size_t i = 0; i < best_path.size()-1; i++)
