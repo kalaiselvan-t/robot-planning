@@ -91,8 +91,6 @@ struct Dubins_arc{
     }
 };
 
-// Class
-
 class Planner
 {
     public:
@@ -103,6 +101,7 @@ class Planner
         vector<Dubins_arc> arcs;
         vector<vector<float>> points;
 
+        Planner() {};
         Planner(geometry_msgs::msg::Pose start, geometry_msgs::msg::Pose end, GridMap gridmap);
 
         // void create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg);
@@ -111,7 +110,7 @@ class Planner
         void find_path();
         vector<Dubins_arc> plan();
         void print();
-        vector<Dubins_arc> multipoints();
+        vector<Dubins_arc> multipoints(const std::vector<Pose2d>& waypoints);
         void get_waypoints();
         void print_waypoints();
         void print_followpath();

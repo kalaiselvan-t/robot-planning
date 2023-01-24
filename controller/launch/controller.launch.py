@@ -11,7 +11,7 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     gui = LaunchConfiguration('gui', default='true')
-    rviz = LaunchConfiguration('rviz', default='true')
+    rviz = LaunchConfiguration('rviz', default='false')
 
     return LaunchDescription([
         IncludeLaunchDescription(
@@ -27,10 +27,10 @@ def generate_launch_description():
             executable='inflate_obstacles',
             name='inflate_obstacles'
         ),
-        Node(
-            package='controller',
-            executable='controller',
-            name='controller',
-            output='screen'
-        ),
+        # Node(
+        #     package='controller',
+        #     executable='controller',
+        #     name='controller',
+        #     output='screen'
+        # ),
     ])

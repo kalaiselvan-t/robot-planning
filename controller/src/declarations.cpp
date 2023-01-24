@@ -554,9 +554,9 @@ void Planner::get_waypoints()
     }
 }
 
-vector<Dubins_arc> Planner::multipoints()
+vector<Dubins_arc> Planner::multipoints(const std::vector<Pose2d>& waypoints)
 {
-    this->best_path.insert(this->best_path.begin(),this->waypoints.begin(),this->waypoints.end());
+    this->best_path.insert(this->best_path.begin(), waypoints.begin(), waypoints.end());
 
     float overall_length = 0.0;
 
@@ -609,7 +609,7 @@ vector<Dubins_arc> Planner::plan()
     vector<Dubins_arc> ret;
     find_path();
 	get_waypoints();
-    ret = multipoints();
+    // ret = multipoints();
 
     return ret;
 }
@@ -670,3 +670,4 @@ float mod2pi(float ang){
     }
     return out;
 }
+
