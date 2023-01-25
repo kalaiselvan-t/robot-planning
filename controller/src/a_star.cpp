@@ -97,29 +97,6 @@ void AStarPlanner::PrintGridMap()
     }
 }
 
-void AStarPlanner::PrintGridState(int idx)
-{
-    for (size_t i = this->gridMap.size()-1; i >= 0; i--)
-    {
-        std::cout << "o";
-        if (i % this->gridWidth == 0) {
-            std::cout << std::endl;
-        }
-        // int y = i / cols;
-        // int x = i % cols;
-        // for (size_t x = 0)
-        // std::cout << "LoopIdx: " << i << " Idx: " << idx << " ";
-        // this->gridMap[i].print();
-        // for (size_t x = 0; x < this->gridMap[y].size(); x++)
-        // {
-        //     this->gridMap[y][x].print();
-        // }
-    }
-    std::cout << " " << std::endl;
-    std::cout << " " << std::endl;
-    std::cout << " " << std::endl;
-}
-
 std::vector<boost::geometry::model::d2::point_xy<float>> AStarPlanner::FindPath(
     const boost::geometry::model::d2::point_xy<float>& start,
     const boost::geometry::model::d2::point_xy<float>& end)
@@ -316,4 +293,16 @@ int AStarPlanner::GetGridMapNodeIndex(const boost::geometry::model::d2::point_xy
     int yIndex = (position.y() - gridOrigin.y()) / this->gridResolution;
     int xIndex = (position.x() - gridOrigin.x()) / this->gridResolution;
     return yIndex * this->gridHeight + xIndex;
+}
+
+void AStarPlanner::SetObstacles(std::vector<boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>>>& obstacles)
+{
+    for (int i = 0; i < this->gridMap.size(); i++)
+    {
+        for (const auto& obs : obstacles)
+        {
+            this->gridMap[i].occupied_ = boost::geometry::within(this->gridMap[i].position_, obs);
+            if (this->gridMap[i].occupied_) { break; }
+        }
+    }
 }

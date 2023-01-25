@@ -33,6 +33,7 @@ class Controller: public rclcpp::Node
 
 			mapBuilt = false;
 			pathSent = false;
+			obstaclesSet = false;
 			auto qos_robot1_pose = rclcpp::QoS(rclcpp::KeepLast(1), rmw_qos_profile_sensor_data);
 	  		robot1_pose_sub_ = this->create_subscription<geometry_msgs::msg::TransformStamped>(
       "/shelfino1/transform", qos_robot1_pose, std::bind(&Controller::get_robot1_pose, this, _1));
@@ -68,6 +69,7 @@ class Controller: public rclcpp::Node
 		AStarPlanner planner;
 		bool mapBuilt;
 		bool pathSent;
+		bool obstaclesSet;
 		
 		size_t count_;
 		GridMap gridmap;
@@ -173,50 +175,50 @@ void Controller::timer_callback()
 
 	// find_nearest_grid_pt(p, g);
 	// print_map(this->map);
-	bool ok = start_condition();
-	if(gate_poses.poses.size() > 0 && max_border_x > 0 && no_of_obs > 0 && ok)
-	{
-		geometry_msgs::msg::Pose p;
-		p.position.x = 2.0;
-		p.position.y = 1.0;
-		Planner planner = Planner(p,gate_poses.poses[0],this->map);
-		this->path1_arcs = planner.plan();
-		vector<Pose2d> wpts1 = planner.return_waypoints();
-		wpts1.pop_back();
-		for(size_t i = 0; i < wpts1.size(); i++)
-		{
-			cout << "=====================\n";
-			cout << "wpts x: " << wpts1[i].x << ", wpts y: " << wpts1[i].y << endl;
-			cout << "=====================\n";
-		}
-		// this->map1.grid.clear();
-		// this->map1 = this->map;
-		// update_map(this->map1, wpts1);
-		// map_updated = true;
-		// path1_publisher();
-		// Planner planner1 = Planner(robot2.pose,gate_poses.poses[1],this->map);
-		// this->path2_arcs = planner1.plan();
-		// path2_publisher();
-	}
-	else
-	{
-		if(!ok)
-		{
-			cout << "Robot or end point is inside obstacle\n";
-		}
-		else if(gate_poses.poses.size() == 0)
-		{
-			"Gate pose not received\n";
-		}
-		else if(max_border_x == -1)
-		{
-			"Borders not received\n";
-		}
-		else if(no_of_obs == 0)
-		{
-			"Obstacles not received\n";
-		}
-	}
+	// bool ok = start_condition();
+	// if(gate_poses.poses.size() > 0 && max_border_x > 0 && no_of_obs > 0 && ok)
+	// {
+	// 	geometry_msgs::msg::Pose p;
+	// 	p.position.x = 2.0;
+	// 	p.position.y = 1.0;
+	// 	Planner planner = Planner(p,gate_poses.poses[0],this->map);
+	// 	this->path1_arcs = planner.plan();
+	// 	vector<Pose2d> wpts1 = planner.return_waypoints();
+	// 	wpts1.pop_back();
+	// 	for(size_t i = 0; i < wpts1.size(); i++)
+	// 	{
+	// 		cout << "=====================\n";
+	// 		cout << "wpts x: " << wpts1[i].x << ", wpts y: " << wpts1[i].y << endl;
+	// 		cout << "=====================\n";
+	// 	}
+	// 	// this->map1.grid.clear();
+	// 	// this->map1 = this->map;
+	// 	// update_map(this->map1, wpts1);
+	// 	// map_updated = true;
+	// 	// path1_publisher();
+	// 	// Planner planner1 = Planner(robot2.pose,gate_poses.poses[1],this->map);
+	// 	// this->path2_arcs = planner1.plan();
+	// 	// path2_publisher();
+	// }
+	// else
+	// {
+	// 	if(!ok)
+	// 	{
+	// 		cout << "Robot or end point is inside obstacle\n";
+	// 	}
+	// 	else if(gate_poses.poses.size() == 0)
+	// 	{
+	// 		"Gate pose not received\n";
+	// 	}
+	// 	else if(max_border_x == -1)
+	// 	{
+	// 		"Borders not received\n";
+	// 	}
+	// 	else if(no_of_obs == 0)
+	// 	{
+	// 		"Obstacles not received\n";
+	// 	}
+	// }
 
 	// cout << "border x: " << map_border_x << ", y: " << map_border_y << endl;
 	// geometry_msgs::msg::Pose rp;
@@ -485,23 +487,40 @@ void Controller::get_gate_poses(const geometry_msgs::msg::PoseArray msg)
 
 void Controller::get_obs(const obstacles_msgs::msg::ObstacleArrayMsg msg)
 {
-	// cout << "==========Obs Start==========\n";
-	no_of_obs = obs_list.obstacles.size();
-	// cout << "no of obs: " << no_of_obs << endl;
-	if(obs.size() == 0 && obs_list.obstacles.size() == 0)
+	if (mapBuilt && !obstaclesSet && msg.obstacles.size() > 0) // ensure that we have polygons
 	{
-		obs_list = msg;
-		for 
-		(size_t i = 0; i < msg.obstacles.size(); i++)
+		std::vector<boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>>> obstacles;
+		for (auto& obs : msg.obstacles)
 		{
 			ObstacleTypes temp;
-			temp.ros_poly = msg.obstacles[i].polygon;
-			temp.get_boost_poly();
-			obs.push_back(temp);
+			temp.ros_poly = obs.polygon;
+			obstacles.push_back(temp.get_boost_poly());
+			// auto p = ObstaclesTypes::ros2boost(polygon);
+			// obstacles.push_back(p);
 		}
-
-		remove_obs_in_grid();
+		// planner.CreateGridMap(points[0], points[1], points[2], points[3], 1.0);
+		// planner.PrintGridMap();
+		planner.SetObstacles(obstacles);
+		obstaclesSet = true;
 	}
+
+	// cout << "==========Obs Start==========\n";
+	// no_of_obs = obs_list.obstacles.size();
+	// // cout << "no of obs: " << no_of_obs << endl;
+	// if(obs.size() == 0 && obs_list.obstacles.size() == 0)
+	// {
+	// 	obs_list = msg;
+	// 	for 
+	// 	(size_t i = 0; i < msg.obstacles.size(); i++)
+	// 	{
+	// 		ObstacleTypes temp;
+	// 		temp.ros_poly = msg.obstacles[i].polygon;
+	// 		temp.get_boost_poly();
+	// 		obs.push_back(temp);
+	// 	}
+
+	// 	remove_obs_in_grid();
+	// }
 	// cout << "==========Obs End==========\n";
 	// cout << "obs size: " << obs.size() << endl;
 	// cout << "x: " << obs_list.obstacles[0].polygon.points[0].x << ", y: " << obs_list.obstacles[0].polygon.points[0].y << endl;

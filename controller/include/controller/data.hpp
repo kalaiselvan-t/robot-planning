@@ -67,7 +67,7 @@ struct ObstacleTypes
     ros_polygon boost2ros(boost_polygon);
     boost_polygon ros2boost(ros_polygon);
 
-    void get_boost_poly();
+    boost_polygon get_boost_poly();
     void get_ros_poly();
 };
 

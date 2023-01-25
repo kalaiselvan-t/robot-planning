@@ -97,7 +97,7 @@ boost_polygon ObstacleTypes::ros2boost(ros_polygon inp)
     return ret;
 }
 
-void ObstacleTypes::get_boost_poly()
+boost_polygon ObstacleTypes::get_boost_poly()
 {
     boost_poly = ros2boost(ros_poly);
 }

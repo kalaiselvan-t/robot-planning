@@ -85,4 +85,5 @@ public:
         const boost::geometry::model::d2::point_xy<float>& start,
         const boost::geometry::model::d2::point_xy<float>& end);
     int GetGridMapNodeIndex(const boost::geometry::model::d2::point_xy<float>& position);
+    void SetObstacles(std::vector<boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>>>& obstacles);
 };
