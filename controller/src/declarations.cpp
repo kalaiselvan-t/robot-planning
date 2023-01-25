@@ -113,10 +113,58 @@ bool operator==(const boost_point &lhs, const boost_point &rhs)
 }
 
 /*
+========================================================ROBOT=====================================================
+*/
+void Robot::update_pose(geometry_msgs::msg::Transform tf)
+{
+    tf2::Quaternion q(tf.rotation.x,tf.rotation.y,tf.rotation.z,tf.rotation.w);
+    tf2::Matrix3x3 m(q);
+    double roll, pitch, yaw;
+    m.getRPY(roll, pitch, yaw);
+
+    pose.position.x = tf.translation.x;
+    pose.position.y = tf.translation.y;
+    pose.orientation.x = tf.rotation.x;
+    pose.orientation.y = tf.rotation.y;
+    pose.orientation.z = tf.rotation.z;
+    pose.orientation.w = tf.rotation.w;
+
+    pose_2d.x = tf.translation.x;
+    pose_2d.y = tf.translation.y;
+    pose_2d.th = yaw;
+}
+
+Robot::Robot()
+{
+
+}
+/*
 ========================================================PLANNER CLASS=====================================================
 */
 Planner::Planner(geometry_msgs::msg::Pose start, geometry_msgs::msg::Pose end, GridMap gridmap)
 {
+    // Pose2d p_st;
+    // Pose2d p_en;
+    // p_st.x = start.position.x;
+    // p_st.y = start.position.y;
+    // p_en.x = end.position.x;
+    // p_en.y = end.position.y;
+
+    // Pose2d p;
+    // p = find_nearest_grid_pt(p_st, p_en);
+    // geometry_msgs::msg::Pose sp = start;
+    // geometry_msgs::msg::Pose ep = end;
+    // sp.position.x = p.x;
+    // sp.position.y = p.y;
+    // p = find_nearest_grid_pt(p_en);
+    // ep.position.x = p.x;
+    // ep.position.y = p.y;
+
+    // cout << "sp x: " << sp.position.x << ", y: " << sp.position.y << endl;
+    // cout << "ep x: " << ep.position.x << ", y: " << ep.position.y << endl;
+    // cout << "start x: " << start.position.x << ", y: " << start.position.y << endl;
+    // cout << "end x: " << end.position.x << ", y: " << end.position.y << endl;
+
     this->start = start;
     this->end = end;
     this->dup_gridmap = gridmap;
@@ -124,6 +172,7 @@ Planner::Planner(geometry_msgs::msg::Pose start, geometry_msgs::msg::Pose end, G
 
 void Planner::find_path()
 {
+    // cout << "in find path\n";
     Point st(start);
     Point en(end);
     // Point start(start.ros_pose);
@@ -151,7 +200,7 @@ void Planner::find_path()
         }
     }
 
-    cout << start_ind.first << ", " << start_ind.second << endl;
+    // cout << start_ind.first << ", " << start_ind.second << endl;
 
     if(this->follow_path.size() == 0)
     {
@@ -161,10 +210,12 @@ void Planner::find_path()
         this->follow_path.push_back(temp);
         // cout << "follow path size: 0\n";
     }
+    // cout << "follow path size: " << follow_path.size() << endl;
+    // cout << "follow path class size: " << this->follow_path.size() << endl;
     // cout << this->follow_path[0].second.first << ", " << this->follow_path[0].second.second << endl;
     
     int count = 0;
-    while(!follow_path[follow_path.size()-1].first.operator==(en.boost_pt) && count < 100)
+    while(!this->follow_path[this->follow_path.size()-1].first.operator==(en.boost_pt) && count < 100)
     {   
         if(count > 0)
         {
@@ -174,6 +225,7 @@ void Planner::find_path()
 
         pair<Point,pair<int,int>> best;
         float best_dist = std::numeric_limits<float>::infinity();
+        // cout << "here1\n";
 
         //up
         up(en, best, best_dist);
@@ -201,7 +253,8 @@ void Planner::find_path()
         left_up(en, best, best_dist);
         
         // cout << "x: " << best.first.boost_pt.x() << ", y: " << best.first.boost_pt.y() << endl;
-        follow_path.push_back(best);
+        // cout << "follow path push back\n";
+        this->follow_path.push_back(best);
         count++;
         // cout << "-------------------------------------\n";
     }
@@ -209,9 +262,9 @@ void Planner::find_path()
 
 void Planner::up(Point en, pair<Point,pair<int,int>> &best, float &best_dist)
 {
-    int up_x = follow_path[follow_path.size()-1].second.first;
-    int up_y = follow_path[follow_path.size()-1].second.second + 1;
-    boost_point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
+    int up_x = this->follow_path[this->follow_path.size()-1].second.first;
+    int up_y = this->follow_path[this->follow_path.size()-1].second.second + 1;
+    boost_point current_pt = this->follow_path[this->follow_path.size()-1].first.boost_pt;
     // cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl; 
     // cout << "up_x: " << up_x << ", " << " up_y: " << up_y << endl;
     
@@ -239,13 +292,14 @@ void Planner::up(Point en, pair<Point,pair<int,int>> &best, float &best_dist)
             // cout << "obs\n";
         }
     }
+    // cout << "in up\n";
 }
 
 void Planner::up_right(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int up_right_x = follow_path.back().second.first + 1;
-    int up_right_y = follow_path.back().second.second + 1;
-    boost_point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
+    int up_right_x = this->follow_path.back().second.first + 1;
+    int up_right_y = this->follow_path.back().second.second + 1;
+    boost_point current_pt = this->follow_path[this->follow_path.size()-1].first.boost_pt;
     // cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     // cout << "up_right_x: " << up_right_x << ", " << " up_right_y: " << up_right_y << endl;
     
@@ -273,15 +327,17 @@ void Planner::up_right(Point en, pair<Point,pair<int,int>> &best,float &best_dis
         else
         {
             // cout << "obs\n";
+            // cout << "5 loop up_right\n";
         }
     }
+    // cout << "in up_right\n";
 }
 
 void Planner::right(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int right_x = follow_path.back().second.first + 1;
-    int right_y = follow_path.back().second.second;
-    boost_point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
+    int right_x = this->follow_path.back().second.first + 1;
+    int right_y = this->follow_path.back().second.second;
+    boost_point current_pt = this->follow_path[this->follow_path.size()-1].first.boost_pt;
     // cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     // cout << "right_x: " << right_x << ", " << " right_y: " << right_y << endl;
         
@@ -310,13 +366,14 @@ void Planner::right(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
             // cout << "obs\n";
         }
     }
+    // cout << "in right\n";
 }
 
 void Planner::right_down(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int right_down_x = follow_path.back().second.first + 1;
-    int right_down_y = follow_path.back().second.second - 1;
-    boost_point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
+    int right_down_x = this->follow_path.back().second.first + 1;
+    int right_down_y = this->follow_path.back().second.second - 1;
+    boost_point current_pt = this->follow_path[this->follow_path.size()-1].first.boost_pt;
     // cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     // cout << "right_down_x: " << right_down_x << ", " << " right_down_y: " << right_down_y << endl;
         
@@ -345,13 +402,14 @@ void Planner::right_down(Point en, pair<Point,pair<int,int>> &best,float &best_d
             // cout << "obs\n";
         }
     }
+    // cout << "in right_down\n";
 }
 
 void Planner::down(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int down_x = follow_path.back().second.first;
-    int down_y = follow_path.back().second.second - 1;
-    boost_point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
+    int down_x = this->follow_path.back().second.first;
+    int down_y = this->follow_path.back().second.second - 1;
+    boost_point current_pt = this->follow_path[this->follow_path.size()-1].first.boost_pt;
     // cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     // cout << "down_x: " << down_x << ", " << " down_y: " << down_y << endl;
         
@@ -380,13 +438,14 @@ void Planner::down(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
             // cout << "obs\n";
         }
     }
+    // cout << "in down\n";
 }
 
 void Planner::down_left(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int down_left_x = follow_path.back().second.first - 1;
-    int down_left_y = follow_path.back().second.second - 1;
-    boost_point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
+    int down_left_x = this->follow_path.back().second.first - 1;
+    int down_left_y = this->follow_path.back().second.second - 1;
+    boost_point current_pt = this->follow_path[this->follow_path.size()-1].first.boost_pt;
     // cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     // cout << "down_left_x: " << down_left_x << ", " << " down_left_y: " << down_left_y << endl;
         
@@ -415,13 +474,14 @@ void Planner::down_left(Point en, pair<Point,pair<int,int>> &best,float &best_di
             // cout << "obs\n";
         }
     }
+    // cout << "in down_left\n";
 }
 
 void Planner::left(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int left_x = follow_path.back().second.first - 1;
-    int left_y = follow_path.back().second.second;
-    boost_point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
+    int left_x = this->follow_path.back().second.first - 1;
+    int left_y = this->follow_path.back().second.second;
+    boost_point current_pt = this->follow_path[this->follow_path.size()-1].first.boost_pt;
     // cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     // cout << "left_x: " << left_x << ", " << " left_y: " << left_y << endl;
     
@@ -449,13 +509,14 @@ void Planner::left(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
             // cout << "obs\n";
         }
     }
+    // cout << "in left\n";
 }
 
 void Planner::left_up(Point en, pair<Point,pair<int,int>> &best,float &best_dist)
 {
-    int left_up_x = follow_path.back().second.first - 1;
-    int left_up_y = follow_path.back().second.second + 1;
-    boost_point current_pt = follow_path[follow_path.size()-1].first.boost_pt;
+    int left_up_x = this->follow_path.back().second.first - 1;
+    int left_up_y = this->follow_path.back().second.second + 1;
+    boost_point current_pt = this->follow_path[this->follow_path.size()-1].first.boost_pt;
     // cout << "current pt x :" << current_pt.x() << ", y: " << current_pt.y() << endl;
     // cout << "left_up_x: " << left_up_x << ", " << " left_up_y: " << left_up_y << endl;
         
@@ -484,6 +545,7 @@ void Planner::left_up(Point en, pair<Point,pair<int,int>> &best,float &best_dist
             // cout << "obs\n";
         }
     }
+    // cout << "in left_up\n";
 }
 
 void Planner::get_waypoints()
@@ -534,14 +596,14 @@ void Planner::get_waypoints()
             else
             {
                 Pose2d p;
-                p.x = follow_path[i].first.ros_pose.position.x;
-                p.y = follow_path[i].first.ros_pose.position.y;
+                p.x = this->follow_path[i].first.ros_pose.position.x;
+                p.y = this->follow_path[i].first.ros_pose.position.y;
 
                 tf2::Quaternion q(
-                    follow_path[i].first.ros_pose.orientation.x,
-                    follow_path[i].first.ros_pose.orientation.y,
-                    follow_path[i].first.ros_pose.orientation.z,
-                    follow_path[i].first.ros_pose.orientation.w);
+                    this->follow_path[i].first.ros_pose.orientation.x,
+                    this->follow_path[i].first.ros_pose.orientation.y,
+                    this->follow_path[i].first.ros_pose.orientation.z,
+                    this->follow_path[i].first.ros_pose.orientation.w);
                 tf2::Matrix3x3 m(q);
                 double roll, pitch, yaw;
                 m.getRPY(roll, pitch, yaw);
@@ -552,6 +614,7 @@ void Planner::get_waypoints()
             }
         }
     }
+    // cout << "in get waypoints\n";
 }
 
 vector<Dubins_arc> Planner::multipoints(const std::vector<Pose2d>& waypoints)
@@ -600,8 +663,105 @@ vector<Dubins_arc> Planner::multipoints(const std::vector<Pose2d>& waypoints)
 		this->arcs.push_back(temp.a2);
 		this->arcs.push_back(temp.a3);
 	}
+    // cout << "in multi points\n";
 
     return this->arcs;
+}
+
+Pose2d Planner::find_nearest_grid_pt(Pose2d inp, Pose2d goal)
+{
+	vector<pair<float,float>> list;
+	pair<float, float> p;
+	float best_dist = std::numeric_limits<float>::infinity();
+	Pose2d best_pt;
+	boost_point goal_pt;
+	goal_pt.x(goal.x);
+	goal_pt.y(goal.y);
+
+	// floor floor
+	p.first = floor(inp.x);
+	p.second = floor(inp.y);
+	list.push_back(p);
+
+	// floor ceil
+	p.first = floor(inp.x);
+	p.second = ceil(inp.y);
+	list.push_back(p);
+
+	// ceil floor
+	p.first = ceil(inp.x);
+	p.second = floor(inp.y);
+	list.push_back(p);
+
+	// ceil ceil
+	p.first = ceil(inp.x);
+	p.second = ceil(inp.y);
+	list.push_back(p);
+
+	for(size_t i = 0; i < list.size(); i++)
+	{
+		boost_point bp;
+		bp.x(list[i].first);
+		bp.y(list[i].second);
+		float dist = boost::geometry::distance(bp,goal_pt);
+		if(dist < best_dist)
+		{
+			best_dist = dist;
+			best_pt.x = list[i].first;
+			best_pt.y = list[i].second;
+		}
+		// cout << "distance to goal: " << boost::geometry::distance(bp,goal) << endl;
+	}
+	// cout << "best pt: " << "x: " << best_pt.x << ", y: " << best_pt.y << endl;
+    return best_pt;
+}
+
+Pose2d Planner::find_nearest_grid_pt(Pose2d goal)
+{
+	vector<pair<float,float>> list;
+	pair<float, float> p;
+	float best_dist = std::numeric_limits<float>::infinity();
+	Pose2d best_pt;
+	boost_point goal_pt;
+	goal_pt.x(goal.x);
+	goal_pt.y(goal.y);
+
+	// floor floor
+	p.first = floor(goal.x);
+	p.second = floor(goal.y);
+	list.push_back(p);
+
+	// floor ceil
+	p.first = floor(goal.x);
+	p.second = ceil(goal.y);
+	list.push_back(p);
+
+	// ceil floor
+	p.first = ceil(goal.x);
+	p.second = floor(goal.y);
+	list.push_back(p);
+
+	// ceil ceil
+	p.first = ceil(goal.x);
+	p.second = ceil(goal.y);
+	list.push_back(p);
+
+	for(size_t i = 0; i < list.size(); i++)
+	{
+		boost_point bp;
+		bp.x(list[i].first);
+		bp.y(list[i].second);
+		float dist = boost::geometry::distance(bp,goal_pt);
+		if(dist < best_dist)
+		{
+			best_dist = dist;
+			best_pt.x = list[i].first;
+			best_pt.y = list[i].second;
+		}
+		// cout << "distance to goal: " << boost::geometry::distance(bp,goal) << endl;
+	}
+	// cout << "best pt: " << "x: " << best_pt.x << ", y: " << best_pt.y << endl;
+    return best_pt;
 }
 
 vector<Dubins_arc> Planner::plan()
@@ -612,6 +772,11 @@ vector<Dubins_arc> Planner::plan()
     // ret = multipoints();
 
     return ret;
+}
+
+vector<Pose2d> Planner::return_waypoints()
+{
+    return this->waypoints;
 }
 
 void Planner::print_waypoints()
@@ -629,9 +794,9 @@ void Planner::print_followpath()
 {   
     cout << "============FollowPath Start============\n";
     for 
-    (size_t i = 0; i < follow_path.size(); i++)
+    (size_t i = 0; i < this->follow_path.size(); i++)
     {
-        cout << "i: " << i << " x: " << follow_path[i].first.boost_pt.x() << " y: " << follow_path[i].first.boost_pt.y() << endl;
+        cout << "i: " << i << " x: " << this->follow_path[i].first.boost_pt.x() << " y: " << this->follow_path[i].first.boost_pt.y() << endl;
     }
     cout << "============FollowPath End=============\n";
 }
@@ -642,8 +807,60 @@ void Planner::print()
     cout << "end x: " << end.position.x << " start y: " << end.position.y << endl;
 }
 
-float round_up
-(float value, int decimal_places)
+boost_multi_polygon gen_robot_polygon(Pose2d inp)
+{
+    boost_point pt;
+    pt.x(inp.x);
+    pt.y(inp.y);
+
+    const double buffer_distance = 2.0; // radius of circle
+    const int points_per_circle = 36;
+    boost::geometry::strategy::buffer::distance_symmetric<double> distance_strategy(buffer_distance);
+    boost::geometry::strategy::buffer::join_round join_strategy(points_per_circle);
+    boost::geometry::strategy::buffer::end_round end_strategy(points_per_circle);
+    boost::geometry::strategy::buffer::point_circle circle_strategy(points_per_circle);
+    boost::geometry::strategy::buffer::side_straight side_strategy;
+
+    boost_multi_polygon result;
+
+    boost::geometry::buffer(pt, result,
+                distance_strategy, side_strategy,
+                join_strategy, end_strategy, circle_strategy);
+
+    // std::cout << boost::geometry::wkt(result) << "\n";
+    
+    return result;
+}
+
+bool check_collision(boost_multi_polygon poly)
+{
+    std::deque<boost_polygon> intersectionGeometry;
+    typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double> > polygon_;
+    std::deque<polygon_> output;
+    
+    if(obs_list.obstacles.size() > 0)
+	{
+		for(size_t i = 0; i < obs_list.obstacles.size(); i++)
+		{
+            ObstacleTypes obs;
+            obs.ros_poly = obs_list.obstacles[i].polygon;
+            obs.get_boost_poly();
+            boost::geometry::intersection(obs.boost_poly, poly.front(), output);
+            if(output.size() == 1)
+            {
+                return true;
+            }
+		}
+	}
+    else
+    {
+        cout << "obs size is 0\n";
+    }
+
+    return false;
+}
+
+float round_up(float value, int decimal_places)
 {
 	const float multiplier = std::pow(10.0, decimal_places);
 	return std::ceil(value * multiplier) / multiplier;

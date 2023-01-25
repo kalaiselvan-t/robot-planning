@@ -13,9 +13,11 @@ find_package(obstacles_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(nav2_msgs REQUIRED)
+find_package(rclcpp_components REQUIRED)
 
 add_executable(controller src/controller.cpp src/data.cpp src/declarations.cpp src/a_star.cpp)
-ament_target_dependencies(controller rclcpp geometry_msgs obstacles_msgs tf2 tf2_ros nav_msgs)
+ament_target_dependencies(controller rclcpp geometry_msgs obstacles_msgs tf2 tf2_ros nav_msgs nav2_msgs rclcpp_components)
 
 add_executable(teleop src/teleop.cpp)
 ament_target_dependencies(teleop rclcpp geometry_msgs obstacles_msgs tf2 tf2_ros)

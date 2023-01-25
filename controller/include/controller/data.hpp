@@ -14,22 +14,42 @@
 #include "tf2/exceptions.h"
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/buffer.h"
+#include "nav2_msgs/action/follow_path.hpp"
+#include "geometry_msgs/msg/transform.hpp"
+
+#include "rclcpp_action/rclcpp_action.hpp"
+#include "rclcpp_components/register_node_macro.hpp"
 
 // Boost
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
+#include <boost/geometry/algorithms/intersection.hpp> 
 
 typedef geometry_msgs::msg::Point32 ros_point;
 typedef geometry_msgs::msg::Polygon ros_polygon;
 
-typedef boost::geometry::model::d2::point_xy<float> boost_point;
+typedef boost::geometry::model::d2::point_xy<double> boost_point;
+typedef boost::geometry::model::box<boost_point> boost_box;
 typedef boost::geometry::model::polygon<boost_point> boost_polygon;
+typedef boost::geometry::model::multi_polygon<boost_polygon> boost_multi_polygon;
 
 // Structs
 struct Pose2d
 {
 	float x,y,th;
+};
+
+struct Robot
+{
+    int id;
+    Pose2d pose_2d;
+    geometry_msgs::msg::Pose pose;
+    boost_polygon boost_poly;
+
+    Robot();
+    void update_pose(geometry_msgs::msg::Transform tf);
+    
 };
 
 struct GridMap
@@ -106,7 +126,6 @@ class Planner
 
         // void create_poly_list(const obstacles_msgs::msg::ObstacleArrayMsg & msg);
         // void remove_obs_in_grid();
-        // bool start_condition(ros_point start, ros_point end);
         void find_path();
         vector<Dubins_arc> plan();
         void print();
@@ -114,6 +133,10 @@ class Planner
         void get_waypoints();
         void print_waypoints();
         void print_followpath();
+        vector<Pose2d> return_waypoints();
+        Pose2d find_nearest_grid_pt(Pose2d inp, Pose2d goal);
+        Pose2d find_nearest_grid_pt(Pose2d goal);
+        // void remove_obs_in_grid();
         // void print_obs_pts();
         // void print_followpath(vector<pair<Point,pair<int,int>>> &fp);
 
@@ -140,18 +163,29 @@ class Planner
         void left_up(Point end, pair<Point,pair<int,int>> &best,float &best_dist);
 };
 
+// Functions
+boost_multi_polygon gen_robot_polygon(Pose2d inp);
+bool check_collision(boost_multi_polygon poly);
 // Data
 extern geometry_msgs::msg::Polygon border;
 extern geometry_msgs::msg::PoseArray gate_poses;
 extern obstacles_msgs::msg::ObstacleArrayMsg obs_list;
 extern std::vector<ObstacleTypes> obs;
 extern geometry_msgs::msg::Pose robot_pose;
+extern Robot robot1;
+extern Robot robot2;
+extern Robot robot3;
+extern geometry_msgs::msg::Pose robot1_pose;
+extern Pose2d bot_pos;
+extern Pose2d bot1_pos;
 
 extern int max_border_x;
 extern int max_border_y;
 extern int no_of_robots;
 extern int step;
+extern int no_of_obs;
 extern int no_of_samples;
+extern int no_of_gates;
 extern float angle_step;
 
 extern bool frame_flag;
